@@ -1,0 +1,70 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<!--This file is NOT compatible with Silverlight-->
+<Viewbox x:Key="Logo" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" Stretch="Uniform">
+  <Canvas Name="Layer_1" Width="889.5" Height="95">
+    <Canvas.RenderTransform>
+      <TranslateTransform X="0" Y="0"/>
+    </Canvas.RenderTransform>
+    <Canvas.Resources/>
+    <!--Unknown tag: sodipodi:namedview-->
+    <Canvas Name="g14">
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path6" Fill="#000000">
+        <Path.Data>
+          <PathGeometry Figures="M107.28 48.65v18.5c0 1.31-16.69 15.69-18.5 18.5H26.28v-16.5l1.5-1.5h61.5v-17.5l1.5-1.5h16.5Z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="7.28" Canvas.Top="10.65" Width="18" Height="56" Name="rect8" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="45.28" Canvas.Top="29.65" Width="43" Height="18" Name="rect10" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="89.28" Canvas.Top="10.65" Width="18" Height="18" Name="rect12" Fill="#000000"/>
+    </Canvas>
+    <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="129.28" Canvas.Top="10.65" Width="18" Height="75" Name="rect16" Fill="#000000"/>
+    <Canvas Name="g24">
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="210.28" Canvas.Top="29.65" Width="18" Height="56" Name="rect18" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="169.28" Canvas.Top="10.65" Width="40" Height="18" Name="rect20" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="229.28" Canvas.Top="10.65" Width="40" Height="18" Name="rect22" Fill="#000000"/>
+    </Canvas>
+    <Canvas Name="g32">
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path26" Fill="#000000">
+        <Path.Data>
+          <PathGeometry Figures="M391.28 47.85v18h-55.5l-19 19h-25.5v-18h18.5c1.34 0 16.12-17.14 19-19h62.5Z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="310.28" Canvas.Top="9.85" Width="81" Height="18" Name="rect28" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="291.28" Canvas.Top="28.85" Width="18" Height="18" Name="rect30" Fill="#000000"/>
+    </Canvas>
+    <Canvas Name="g38">
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="432.28" Canvas.Top="66.35" Width="81" Height="19" Name="rect34" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="413.28" Canvas.Top="9.35" Width="18" Height="56" Name="rect36" Fill="#000000"/>
+    </Canvas>
+    <Canvas Name="g46">
+      <Polygon xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Points="637.22 28.85 637.22 84.85 619.22 84.85 619.22 67.35 617.72 65.85 555.22 65.85 555.22 47.85 616.72 47.85 619.22 47.35 619.22 28.85 637.22 28.85" Name="polygon40" FillRule="NonZero" Fill="#000000"/>
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path42" Fill="#000000">
+        <Path.Data>
+          <PathGeometry Figures="M618.22 9.85v18h-64v19h-18c.05-.55-.95-18.55-.95-18.55 0 0 21-18 20.45-18.45h62.5Z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+      <Polygon xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Points="554.22 66.85 554.22 84.85 536.22 84.85 536.28 66.85 554.22 66.85" Name="polygon44" FillRule="NonZero" Fill="#000000"/>
+    </Canvas>
+    <Canvas Name="g54">
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path48" Fill="#000000">
+        <Path.Data>
+          <PathGeometry Figures="M759.22 46.85h-18v-19h-64v19h-18V9.85h81.5c1.81 2.81 18.5 17.19 18.5 18.5v18.5Z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+      <Polygon xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Points="712.72 47.85 731.72 66.85 759.22 66.85 759.22 84.85 724.72 84.85 705.72 65.85 678.22 65.85 678.22 47.85 712.72 47.85" Name="polygon50" FillRule="NonZero" Fill="#000000"/>
+      <Polygon xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Points="676.22 66.85 677.22 69.35 677.22 84.85 659.22 84.85 659.22 66.85 676.22 66.85" Name="polygon52" FillRule="NonZero" Fill="#000000"/>
+    </Canvas>
+    <Canvas Name="g64">
+      <Path xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Name="path56" Fill="#000000">
+        <Path.Data>
+          <PathGeometry Figures="M799.22 47.85v19h83v18h-82.5c-2.02-3.18-18.5-17.68-18.5-19.5v-17.5h18Z" FillRule="NonZero"/>
+        </Path.Data>
+      </Path>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="800.17" Canvas.Top="28.85" Width="63.06" Height="18" Name="rect58" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="781.22" Canvas.Top="9.85" Width="18" Height="18" Name="rect60" Fill="#000000"/>
+      <Rectangle xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Canvas.Left="864.22" Canvas.Top="9.85" Width="18" Height="18" Name="rect62" Fill="#000000"/>
+    </Canvas>
+  </Canvas>
+</Viewbox>
+</ResourceDictionary>
