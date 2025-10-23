@@ -1,14 +1,19 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Color x:Key="SoftLatte">#DCD2C8</Color>
-    <Color x:Key="DarkLatte">#B2A799</Color>
-    <Color x:Key="WalnutBrown">#594D41</Color>
-    <Color x:Key="PoppyRed">#D63640</Color>
-    
-    <SolidColorBrush x:Key="SoftLatteBrush" Color="{StaticResource SoftLatte}" />
-    <SolidColorBrush x:Key="DarkLatteBrush" Color="{StaticResource DarkLatte}" />
-    <SolidColorBrush x:Key="WalnutBrownBrush" Color="{StaticResource WalnutBrown}" />
-    <SolidColorBrush x:Key="PoppyRedBrush" Color="{StaticResource PoppyRed}" />
+    <!-- Change the colors dumbass -->
+    <Color x:Key="CadetGray">#99ACAF</Color>
+    <Color x:Key="DavyGray">#525564</Color>
+    <Color x:Key="Sage">#B7B383</Color>
+    <Color x:Key="BattleshipGray">#777B6C</Color>
+    <Color x:Key="Crayola">#FE6B2B</Color>
+    <Color x:Key="DarkCrayola">#992A00</Color>
+
+    <SolidColorBrush x:Key="CadetGrayBrush" Color="{StaticResource CadetGray}" />
+    <SolidColorBrush x:Key="DavyGrayBrush" Color="{StaticResource DavyGray}" />
+    <SolidColorBrush x:Key="SageBrush" Color="{StaticResource Sage}" />
+    <SolidColorBrush x:Key="BattleshipGrayBrush" Color="{StaticResource BattleshipGray}" />
+    <SolidColorBrush x:Key="CrayolaBrush" Color="{StaticResource Crayola}" />
+    <SolidColorBrush x:Key="DarkCrayolaBrush" Color="{StaticResource DarkCrayola}" />
     <SolidColorBrush x:Key="WhiteBrush" Color="White" />
     <SolidColorBrush x:Key="BlackBrush" Color="Black" />
 </ResourceDictionary>

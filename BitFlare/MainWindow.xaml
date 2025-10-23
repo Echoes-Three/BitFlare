@@ -4,25 +4,55 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BitFlare"
-        mc:Ignorable="d"
-        ResizeMode="NoResize"
+        mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True"
         Title="MainWindow" Height="350" Width="500">
-    <Grid>
+    <Grid >
+        
+        <!-- Separation of the main layout, two areas, title bar and body -->
         <Grid.RowDefinitions>
             <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Background="{StaticResource SoftLatteBrush}"></Border>
-        <Grid Grid.Row="0" >
+        
+        <Rectangle Grid.Row="0" Style="{StaticResource TitleBar}"/>
+        <Rectangle Grid.Row="1" Fill="{StaticResource CadetGrayBrush}"/>
+        
+        <!-- Title bar 3 sections to separate logo, draggable area, and minimize and close button -->
+        <Grid Grid.Row="0" x:Name="TitleBar" >
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20*"/>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="30*"/>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
-            <!-- using as a guide to see the grid better / remove later-->
-            <Border Grid.Column="0" Background="{StaticResource PoppyRedBrush}"></Border>
-            <Border Grid.Column="1" Background="{StaticResource DarkLatteBrush}"></Border>
-            <Border Grid.Column="2" Background="{StaticResource BlackBrush}"></Border>
+            
+            <!-- Add logo in the column = 0 here -->
+            
+            <!-- Draggable area column = 1-->
+            <Rectangle Grid.Column="1" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Style="{StaticResource TitleBar}" />
+            
+            <!-- grid inside the custom title bar (column = 2), for the minimize and close button -->
+            <Grid Grid.Column="2">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="31*"/>
+                    <ColumnDefinition Width="10*"/>
+                    <ColumnDefinition Width="31*"/>
+                    <ColumnDefinition Width="10*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Button Grid.Row="1" Grid.Column="1" x:Name="MinimizeButton"  Style="{StaticResource TitleBarButtonsStyle}"/>
+                <Button Grid.Row="1" Grid.Column="3" x:Name="CloseButton" Style="{StaticResource CloseButtonStyle}" />
+            </Grid>
+            
         </Grid>
+        
     </Grid>
 </Window>

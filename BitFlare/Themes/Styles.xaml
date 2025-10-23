@@ -1,4 +1,31 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="TitleBar" TargetType="Rectangle">
+        <Setter Property="Fill" Value="{StaticResource DavyGrayBrush}"/>
+    </Style>
     
-</ResourceDictionary>
+    <Style x:Key="TitleBarButtonsStyle" TargetType="Button">
+        <Setter Property="Height" Value="10"/>
+        <Setter Property="Background" Value="{StaticResource CadetGrayBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    
+    <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonsStyle}" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource CrayolaBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary> 

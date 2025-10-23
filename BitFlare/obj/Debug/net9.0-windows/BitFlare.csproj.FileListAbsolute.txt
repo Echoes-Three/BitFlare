@@ -20,3 +20,5 @@ C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\ref\BitFlare.dll
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\Styles.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\App.baml
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\Brushes.baml
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare.sourcelink.json
