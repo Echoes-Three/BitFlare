@@ -25,4 +25,14 @@ public partial class MainWindow : Window
     {
         if (e.ButtonState == MouseButtonState.Pressed) DragMove();
     }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
+    {
+        Close();
+    }
+
+    private void Minimize_Click(object sender, RoutedEventArgs e)
+    {
+        WindowState = WindowState.Minimized;
+    }
 }

@@ -1,17 +1,79 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <Style x:Key="TitleBar" TargetType="Rectangle">
-        <Setter Property="Fill" Value="{StaticResource DavyGrayBrush}"/>
+    
+    <!-- Window border design -->
+    <Style x:Key="MainWindowBorder" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
     </Style>
     
-    <Style x:Key="TitleBarButtonsStyle" TargetType="Button">
-        <Setter Property="Height" Value="10"/>
-        <Setter Property="Background" Value="{StaticResource CadetGrayBrush}"/>
-        <Setter Property="BorderThickness" Value="0"/>
+    <!-- Title bar design -->
+    <Style x:Key="TitleBar" TargetType="{x:Type Border}">
+        <Setter Property="Background" Value="{StaticResource DavyGrayBrush}"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="Margin" Value="4, 4, 4, 3"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
+        
+        <!-- Draggable area style, without the border -->
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="DraggableArea">
+                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
     
-    <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonsStyle}" TargetType="Button">
+    <!-- Bolts style -->
+    <Style x:Key="BoltsDesign" TargetType="{x:Type Ellipse}">
+        <Setter Property="Width" Value="7"/>
+        <Setter Property="Height" Value="7"/>
+        <Setter Property="Fill" Value="{StaticResource BattleshipGrayBrush}"/>
+        <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="Stroke" Value="{StaticResource BlackBrush}"/>
+    </Style>
+    
+    <!-- Title bar base buttons appearance -->
+    <Style x:Key="TitleBarButtonsStyle" TargetType="{x:Type Border}">
+        <Setter Property="BorderThickness" Value="1.2"/>
+        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
+        <Setter Property="Height" Value="15"/>
+        <Setter Property="Background" Value="{StaticResource BattleshipGrayBrush}"/>
+    </Style>
+    
+    <!-- Close button on hover -->
+    <Style x:Key="CloseButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource PoppyRedBrush}"/>
+            </Trigger>
+        </Style.Triggers>    
+    </Style>
+    
+    <!-- Minimize button on hover -->
+    <Style x:Key="MinimizeButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource TrueBlueBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="TitleBarLogo" TargetType="{x:Type Image}">
+        <Setter Property="Stretch" Value="Uniform"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        
+    </Style>
+        
+            
+    
+    <!-- Disabling button default style -->
+    <Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -21,11 +83,8 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource CrayolaBrush}"/>
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="Background" Value="Transparent"/>
+    
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     </Style>
 </ResourceDictionary> 
