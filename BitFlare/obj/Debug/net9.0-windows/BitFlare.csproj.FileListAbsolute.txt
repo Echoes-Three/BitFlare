@@ -22,4 +22,4 @@ C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\S
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\App.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\Brushes.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare.sourcelink.json
-C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Assets\BitFlareLogo.baml
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\Fonts.baml

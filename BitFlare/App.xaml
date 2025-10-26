@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Assets/BitFlareLogo.xaml"/>
+                <ResourceDictionary Source="Themes/Fonts.xaml"/>
                 <ResourceDictionary Source="Themes/Brushes.xaml"/>
                 <ResourceDictionary Source="Themes/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>

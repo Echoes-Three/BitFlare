@@ -1,17 +1,10 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <!-- Change the colors dumbass -->
-    <Color x:Key="Alabaster">#EBE8DF</Color>
-    <Color x:Key="BattleshipGray">#868B8D</Color>
-    <Color x:Key="DavyGray">#4D5055</Color>
-    <Color x:Key="PoppyRed">#D63640</Color>
-    <Color x:Key="TrueBlue"> #5172AB</Color>
+    
+    <Color x:Key="Alabaster">#FCFD00</Color>
+    <Color x:Key="DavyGray">#1B1112</Color>
     
     <SolidColorBrush x:Key="AlabasterBrush" Color="{StaticResource Alabaster}" />
-    <SolidColorBrush x:Key="BattleshipGrayBrush" Color="{StaticResource BattleshipGray}" />
     <SolidColorBrush x:Key="DavyGrayBrush" Color="{StaticResource DavyGray}" />
-    <SolidColorBrush x:Key="PoppyRedBrush" Color="{StaticResource PoppyRed}" />
-    <SolidColorBrush x:Key="TrueBlueBrush" Color="{StaticResource TrueBlue}" />
-    <SolidColorBrush x:Key="WhiteBrush" Color="White" />
-    <SolidColorBrush x:Key="BlackBrush" Color="Black" />
+
 </ResourceDictionary>

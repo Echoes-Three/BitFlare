@@ -3,54 +3,43 @@
     
     <!-- Window border design -->
     <Style x:Key="MainWindowBorder" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
-        <Setter Property="CornerRadius" Value="5"/>
-        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Background" Value="{StaticResource DavyGrayBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
     </Style>
     
     <!-- Title bar design -->
     <Style x:Key="TitleBar" TargetType="{x:Type Border}">
-        <Setter Property="Background" Value="{StaticResource DavyGrayBrush}"/>
-        <Setter Property="CornerRadius" Value="3"/>
+        <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Margin" Value="4, 4, 4, 3"/>
-        <Setter Property="BorderThickness" Value="2"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AlabasterBrush}"/>
         
         <!-- Draggable area style, without the border -->
         <Style.Triggers>
             <Trigger Property="Tag" Value="DraggableArea">
-                <Setter Property="CornerRadius" Value="0"/>
+                <Setter Property="Background" Value="#01FFFFFF"/>
                 <Setter Property="Margin" Value="0,5"/>
                 <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     
-    <!-- Bolts style -->
-    <Style x:Key="BoltsDesign" TargetType="{x:Type Ellipse}">
-        <Setter Property="Width" Value="7"/>
-        <Setter Property="Height" Value="7"/>
-        <Setter Property="Fill" Value="{StaticResource BattleshipGrayBrush}"/>
-        <Setter Property="StrokeThickness" Value="1"/>
-        <Setter Property="Stroke" Value="{StaticResource BlackBrush}"/>
-    </Style>
     
     <!-- Title bar base buttons appearance -->
     <Style x:Key="TitleBarButtonsStyle" TargetType="{x:Type Border}">
-        <Setter Property="BorderThickness" Value="1.2"/>
-        <Setter Property="CornerRadius" Value="3"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BlackBrush}"/>
-        <Setter Property="Height" Value="15"/>
-        <Setter Property="Background" Value="{StaticResource BattleshipGrayBrush}"/>
+        <Setter Property="CornerRadius" Value="2"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AlabasterBrush}"/>
     </Style>
     
     <!-- Close button on hover -->
     <Style x:Key="CloseButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource PoppyRedBrush}"/>
+                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
             </Trigger>
         </Style.Triggers>    
     </Style>
@@ -59,18 +48,11 @@
     <Style x:Key="MinimizeButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource TrueBlueBrush}"/>
+                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="TitleBarLogo" TargetType="{x:Type Image}">
-        <Setter Property="Stretch" Value="Uniform"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        
-    </Style>
-        
-            
     
     <!-- Disabling button default style -->
     <Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}">
@@ -87,4 +69,27 @@
     
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
     </Style>
-</ResourceDictionary> 
+    
+    <Style x:Key="MainMenuStyle" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
+        
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="MainMenuInteractionButtons">
+                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>    
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="BasicTextStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource IBM BIOS}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{StaticResource AlabasterBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="LogoTitleBar">
+                <Setter Property="FontSize" Value="22"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

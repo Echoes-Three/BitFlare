@@ -9,7 +9,19 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Assets\" />
+      <Folder Include="Assets\Icons\" />
+      <Folder Include="Assets\Typefaces\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\Typefaces\Edit Undo Line BRK.ttf" />
+      <None Remove="Assets\Typefaces\Monocraft.ttf" />
+      <None Remove="Assets\Typefaces\Upheaval Pro.ttf" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Assets\Typefaces\Perfect DOS VGA 437 Win.ttf" />
+      <Resource Include="Assets\Typefaces\Perfect DOS VGA 437 Win.ttf" />
     </ItemGroup>
 
 </Project>
