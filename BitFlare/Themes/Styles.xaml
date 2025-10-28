@@ -4,7 +4,7 @@
     <!-- Window border design -->
     <Style x:Key="MainWindowBorder" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Background" Value="{StaticResource DavyGrayBrush}"/>
+        <Setter Property="Background" Value="{StaticResource BlackBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
     </Style>
@@ -14,7 +14,7 @@
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Margin" Value="4, 4, 4, 3"/>
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{StaticResource AlabasterBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource WhiteBrush}"/>
         
         <!-- Draggable area style, without the border -->
         <Style.Triggers>
@@ -23,39 +23,47 @@
                 <Setter Property="Margin" Value="0,5"/>
                 <Setter Property="BorderThickness" Value="0"/>
             </Trigger>
-        </Style.Triggers>
-    </Style>
-    
-    
-    <!-- Title bar base buttons appearance -->
-    <Style x:Key="TitleBarButtonsStyle" TargetType="{x:Type Border}">
-        <Setter Property="CornerRadius" Value="2"/>
-        <Setter Property="Height" Value="12"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{StaticResource AlabasterBrush}"/>
-    </Style>
-    
-    <!-- Close button on hover -->
-    <Style x:Key="CloseButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
+            
+            <Trigger Property="Tag" Value="CloseButtonHover">
+                <Setter Property="Margin" Value="4,12,15, 12"/>
             </Trigger>
-        </Style.Triggers>    
-    </Style>
-    
-    <!-- Minimize button on hover -->
-    <Style x:Key="MinimizeButtonHoverStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource TitleBarButtonsStyle}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>
+            
+            <Trigger Property="Tag" Value="MinimizeButtonHover">
+                <Setter Property="Margin" Value="16,12, 4, 12"/>
+            </Trigger>
+            
+            <Trigger Property="Tag" Value="InputBox">
+                <Setter Property="Margin" Value="150, 4"/>
+            </Trigger>
+            
+            <Trigger Property="Tag" Value="ConvertButton">
+                <Setter Property="Margin" Value="200, 10"/>
+            </Trigger>
+            
+            <Trigger Property="Tag" Value="BinaryOutputBox">
+                <Setter Property="Margin" Value="100, 4"/>
+            </Trigger>
+            
+            <Trigger Property="Tag" Value="HexadecimalOutputBox">
+                <Setter Property="Margin" Value="200, 4"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     
+    <Style x:Key="HoverButtonAnimation" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
+        
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+        
+    </Style>
     
-    <!-- Disabling button default style -->
-    <Style x:Key="DefaultButtonStyle" TargetType="{x:Type Button}">
+    
+    <!-- Disabling button default style, and applying hover -->
+    <Style x:Key="ButtonStyleHover" TargetType="{x:Type Button}">
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -65,30 +73,50 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
         <Setter Property="Background" Value="Transparent"/>
-    
+        <Setter Property="FontFamily" Value="{StaticResource IBM BIOS}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-    </Style>
-    
-    <Style x:Key="MainMenuStyle" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
+        <Setter Property="BorderThickness" Value="0"/>
         
         <Style.Triggers>
-            <Trigger Property="Tag" Value="MainMenuInteractionButtons">
-                <Setter Property="Background" Value="{StaticResource AlabasterBrush}"/>    
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="ConvertButtonText">
+                <Setter Property="FontSize" Value="13"/>
+                <Setter Property="Width" Value="100"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="CopyButtonHover">
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Width" Value="100"/>
             </Trigger>
         </Style.Triggers>
+        
+        
     </Style>
     
     <Style x:Key="BasicTextStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="FontFamily" Value="{StaticResource IBM BIOS}"/>
         <Setter Property="FontSize" Value="11"/>
-        <Setter Property="Foreground" Value="{StaticResource AlabasterBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         
         <Style.Triggers>
             <Trigger Property="Tag" Value="LogoTitleBar">
                 <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="DescriptionTextBlock">
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Margin" Value="16,0,0,0"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
             </Trigger>
         </Style.Triggers>
     </Style>

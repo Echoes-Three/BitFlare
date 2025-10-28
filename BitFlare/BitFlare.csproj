@@ -9,7 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Assets\Icons\" />
       <Folder Include="Assets\Typefaces\" />
     </ItemGroup>
 
@@ -22,6 +21,12 @@
     <ItemGroup>
       <None Remove="Assets\Typefaces\Perfect DOS VGA 437 Win.ttf" />
       <Resource Include="Assets\Typefaces\Perfect DOS VGA 437 Win.ttf" />
+      <None Remove="Assets\Texture\noise-pattern-250x250.png" />
+      <Resource Include="Assets\Texture\noise-pattern-250x250.png" />
+      <Page Remove="Themes\StyleResources.xaml" />
+      <Resource Include="Themes\StyleResources.xaml" />
+      <Page Remove="Themes\Styles.xaml" />
+      <Resource Include="Themes\Styles.xaml" />
     </ItemGroup>
 
 </Project>
