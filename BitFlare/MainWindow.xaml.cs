@@ -35,4 +35,26 @@ public partial class MainWindow : Window
     {
         WindowState = WindowState.Minimized;
     }
+
+    private async void BinaryCopyButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(BinaryOutputTextBox.Text))
+        {
+            Clipboard.SetText(BinaryOutputTextBox.Text);
+            BinaryCopyButton.Content = "COPIED";
+            await Task.Delay(1000);
+            BinaryCopyButton.Content = "COPY";
+        }
+    }
+
+    private async void HexadecimalCopyButton_Click(object sender, RoutedEventArgs e)
+    {
+        if (!string.IsNullOrEmpty(HexadecimalOutputTextBox.Text))
+        {
+            Clipboard.SetText(HexadecimalOutputTextBox.Text);
+            HexadecimalCopyButton.Content = "COPIED";
+            await Task.Delay(1000);
+            HexadecimalCopyButton.Content = "COPY";
+        }
+    }
 }

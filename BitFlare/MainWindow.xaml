@@ -117,11 +117,15 @@
                     <!-- Output textbox (dynamic) -->
                     <TextBlock Grid.Row="0" Grid.Column="0"  Text="OUTPUT" Style="{DynamicResource BasicTextStyle}" Tag="DescriptionTextBlock"/>
                     <!-- Main output box -->
-                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource TitleBar}"/>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource TitleBar}">
+                        <TextBox x:Name="BinaryOutputTextBox" Style="{StaticResource OutputTextBox}"/>
+                    </Border>
                     <!-- Output textbox (static) -->
                     <TextBlock Grid.Row="2" Grid.Column="0"  Text="HEXADECIMAL" Style="{StaticResource BasicTextStyle}" Tag="DescriptionTextBlock"/>
                     <!-- Hexadecimal output box -->
-                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource TitleBar}" />
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource TitleBar}" >
+                        <TextBox x:Name="HexadecimalOutputTextBox" Style="{StaticResource OutputTextBox}" Tag="HexadecimalOutputTextBox"/>
+                    </Border>
                     
                     <!-- Grid inside the main output box that holds the copy button-->
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3">
@@ -133,7 +137,7 @@
                         
                         <!-- Copy button-->
                         <Border Grid.Column="1"  Style="{DynamicResource HoverButtonAnimation}">
-                            <!-- add copy event--> <Button Grid.Row="3" Grid.Column="1" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
+                            <Button Grid.Row="3" Grid.Column="1"  x:Name="BinaryCopyButton" Click="BinaryCopyButton_Click" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
                         </Border>
                         
                     </Grid>
@@ -148,7 +152,7 @@
                         
                         <!-- Copy button-->
                         <Border Grid.Column="1"  Style="{DynamicResource HoverButtonAnimation}" Tag="">
-                            <!-- add copy event--> <Button Grid.Row="3" Grid.Column="1" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
+                            <Button Grid.Row="3" Grid.Column="1" x:Name="HexadecimalCopyButton" Click="HexadecimalCopyButton_Click" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
                         </Border>
                     </Grid>
                     

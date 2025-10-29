@@ -24,9 +24,7 @@
       <None Remove="Assets\Texture\noise-pattern-250x250.png" />
       <Resource Include="Assets\Texture\noise-pattern-250x250.png" />
       <Page Remove="Themes\StyleResources.xaml" />
-      <Resource Include="Themes\StyleResources.xaml" />
       <Page Remove="Themes\Styles.xaml" />
-      <Resource Include="Themes\Styles.xaml" />
     </ItemGroup>
 
 </Project>
