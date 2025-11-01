@@ -25,6 +25,8 @@
       <Resource Include="Assets\Texture\noise-pattern-250x250.png" />
       <Page Remove="Themes\StyleResources.xaml" />
       <Page Remove="Themes\Styles.xaml" />
+      <None Remove="Assets\Icon\BitFlare-Icon.ico" />
+      <Resource Include="Assets\Icon\BitFlare-Icon.ico" />
     </ItemGroup>
 
 </Project>

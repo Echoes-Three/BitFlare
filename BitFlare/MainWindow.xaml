@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Icon="Assets/Icon/BitFlare-Icon.ico"
         Title="MainWindow" Height="400" Width="600">
     
     <Border Style="{DynamicResource MainWindowBorder}">
@@ -55,12 +56,12 @@
                     
                     <!-- Minimize button -->
                     <Border Grid.Column="0" x:Name="MinimizeButtonContainer" Style="{StaticResource HoverButtonAnimation}" Tag="MinimizeButtonHover">
-                        <Button Grid.Column="0" Content="-" Click="Minimize_Click" Style="{DynamicResource ButtonStyleHover}"/>
+                        <Button  Grid.Column="0" x:Name="MinimizeButton" Content="-" Click="Minimize_Click" Style="{DynamicResource ButtonStyleHover}"/>
                     </Border>
                     
                     <!-- Close button -->
                     <Border Grid.Column="1" x:Name="CloseButtonContainer" Style="{StaticResource HoverButtonAnimation}" Tag="CloseButtonHover">
-                        <Button Grid.Column="1" Content="x"  Click="Close_Click" Style="{StaticResource ButtonStyleHover}"/>
+                        <Button Grid.Column="1" x:Name="CloseButton" Content="x"  Click="Close_Click" Style="{StaticResource ButtonStyleHover}"/>
                     </Border>
                    
                 </Grid>
@@ -91,8 +92,13 @@
                     <ColumnDefinition Width="10*"/>
                 </Grid.ColumnDefinitions>
                 
+                <!-- Invalid character warning -->
+                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="InvalidCharacterWarning" Text="NUMBERS AND DECIMAL POINTS ONLY!" Style="{DynamicResource BasicTextStyle}" Tag="InvalidCharacterWarning"/>
+                
                 <!-- Input box border -->
-                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource TitleBar}" Tag="InputBox"/>
+                <Border Grid.Row="1" Grid.Column="1" x:Name="InputBoxBorder" Style="{DynamicResource TitleBar}" Tag="InputBox">
+                    <TextBox x:Name="InputBox" KeyUp="WarningLevel_OnKeyUp" Style="{DynamicResource InputTextBox}"/>
+                </Border>
                 
                 <!-- Convert button border and button action -->
                 <Border Grid.Row="3" Grid.Column="1" Style="{DynamicResource HoverButtonAnimation}" Tag="ConvertButton">
