@@ -64,13 +64,14 @@ public partial class MainWindow : Window
 
     private void WarningLevel_OnKeyUp(object sender, KeyEventArgs e)
     {
-        var validator = new ValidationState();
+        var validator = new InputValidationState();
         
         if (!validator.IsValid(InputBox.Text))
             InputBoxBorder.BorderBrush = Brushes.Yellow;
         else
             InputBoxBorder.BorderBrush = Brushes.White;
 
-        (InputBox.Text, InputBox.CaretIndex) = Canonicalization.ToName(InputBox.Text, InputBox.CaretIndex);
+        (InputBox.Text, InputBox.CaretIndex) = InputCanonicalization.RepeatedCharacterNormalizer(InputBox.Text, InputBox.CaretIndex);
+        (InputBox.Text, InputBox.CaretIndex) = InputCanonicalization.IsDoubled(InputBox.Text, InputBox.CaretIndex);
     }
 }

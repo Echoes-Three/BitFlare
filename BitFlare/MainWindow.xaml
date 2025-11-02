@@ -19,12 +19,13 @@
             <!-- Background noise -->
             <Rectangle Grid.Row="0" Grid.RowSpan="2">
                 <Rectangle.Fill>
-                    <ImageBrush ImageSource="Assets/Texture/noise-pattern-250x250.png"
-                                Opacity="0.1"
-                                TileMode="Tile"
-                                Viewport="0,0,128,128"
-                                ViewportUnits="Absolute"
-                                Stretch="None"/>
+                    <ImageBrush
+                        ImageSource="Assets/Texture/noise-pattern-250x250.png"
+                        Opacity="0.1"
+                        TileMode="Tile"
+                        Viewport="0,0,128,128"
+                        ViewportUnits="Absolute"
+                        Stretch="None"/>
                 </Rectangle.Fill>
             </Rectangle>
             
@@ -41,10 +42,16 @@
                 </Grid.ColumnDefinitions>
                 
                 <!-- Application name -->
-                <TextBlock Grid.Column="0" Text="BITFLARE" Style="{StaticResource BasicTextStyle}" Tag="LogoTitleBar"/>
+                <TextBlock Grid.Column="0"
+                    Text="BITFLARE"
+                    Style="{StaticResource BasicTextStyle}"
+                    Tag="LogoTitleBar"/>
                 
                 <!-- Draggable middle area -->
-                <Border Grid.Column="1" MouseLeftButtonDown="TitleBar_MouseLeftButtonDown" Style="{StaticResource TitleBar}" Tag="DraggableArea"/>
+                <Border Grid.Column="1"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                    Style="{StaticResource TitleBar}"
+                    Tag="DraggableArea"/>
                 
                 <!-- Minimize and Close buttons -->
                 <Grid Grid.Column="2" Background="Transparent">
@@ -55,20 +62,36 @@
                     </Grid.ColumnDefinitions>
                     
                     <!-- Minimize button -->
-                    <Border Grid.Column="0" x:Name="MinimizeButtonContainer" Style="{StaticResource HoverButtonAnimation}" Tag="MinimizeButtonHover">
-                        <Button  Grid.Column="0" x:Name="MinimizeButton" Content="-" Click="Minimize_Click" Style="{DynamicResource ButtonStyleHover}"/>
+                    <Border Grid.Column="0"
+                        x:Name="MinimizeButtonContainer"
+                        Style="{StaticResource HoverButtonAnimation}"
+                        Tag="MinimizeButtonHover">
+                        
+                        <Button Grid.Column="0"
+                            x:Name="MinimizeButton"
+                            Content="-" Click="Minimize_Click"
+                            Style="{DynamicResource ButtonStyleHover}"/>
                     </Border>
                     
                     <!-- Close button -->
-                    <Border Grid.Column="1" x:Name="CloseButtonContainer" Style="{StaticResource HoverButtonAnimation}" Tag="CloseButtonHover">
-                        <Button Grid.Column="1" x:Name="CloseButton" Content="x"  Click="Close_Click" Style="{StaticResource ButtonStyleHover}"/>
+                    <Border Grid.Column="1" 
+                        x:Name="CloseButtonContainer" 
+                        Style="{StaticResource HoverButtonAnimation}" 
+                        Tag="CloseButtonHover">
+                        
+                        <Button Grid.Column="1" 
+                            x:Name="CloseButton" 
+                            Content="x"  Click="Close_Click" 
+                            Style="{StaticResource ButtonStyleHover}"/>
                     </Border>
                    
                 </Grid>
                 
             </Grid>
             
+            
             <!--////////////////////////////////////////////////////////////-->
+            
             
             <!-- Main Menu border -->
             <Border Grid.Row="1" Style="{StaticResource TitleBar}"/>
@@ -93,20 +116,36 @@
                 </Grid.ColumnDefinitions>
                 
                 <!-- Invalid character warning -->
-                <TextBlock Grid.Row="0" Grid.Column="1" x:Name="InvalidCharacterWarning" Text="NUMBERS AND DECIMAL POINTS ONLY!" Style="{DynamicResource BasicTextStyle}" Tag="InvalidCharacterWarning"/>
+                <TextBlock Grid.Row="0" Grid.Column="1"
+                           x:Name="InvalidCharacterWarning"
+                           Text="NUMBERS AND DECIMAL POINTS ONLY!"
+                           Style="{DynamicResource BasicTextStyle}"
+                           Tag="InvalidCharacterWarning"/>
                 
                 <!-- Input box border -->
-                <Border Grid.Row="1" Grid.Column="1" x:Name="InputBoxBorder" Style="{DynamicResource TitleBar}" Tag="InputBox">
-                    <TextBox x:Name="InputBox" KeyUp="WarningLevel_OnKeyUp" Style="{DynamicResource InputTextBox}"/>
+                <Border Grid.Row="1" Grid.Column="1"
+                        x:Name="InputBoxBorder"
+                        Style="{DynamicResource TitleBar}"
+                        Tag="InputBox">
+                    <TextBox
+                        x:Name="InputBox"
+                        KeyUp="WarningLevel_OnKeyUp"
+                        Style="{DynamicResource InputTextBox}"/>
                 </Border>
                 
                 <!-- Convert button border and button action -->
-                <Border Grid.Row="3" Grid.Column="1" Style="{DynamicResource HoverButtonAnimation}" Tag="ConvertButton">
-                <!-- add convert event--> <Button Grid.Row="3" Grid.Column="1" Content="CONVERT" Style="{DynamicResource ButtonStyleHover}" Tag="ConvertButtonText"/>
+                <Border Grid.Row="3" Grid.Column="1"
+                        Style="{DynamicResource HoverButtonAnimation}"
+                        Tag="ConvertButton">
+                    <Button Grid.Row="3" Grid.Column="1"
+                            Content="CONVERT"
+                            Style="{DynamicResource ButtonStyleHover}"
+                            Tag="ConvertButtonText"/>
                 </Border>
                 
                 <!-- Output area -->
                 <Grid Grid.Row="5" Grid.Column="1">
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="15"/> <!-- Output textbox (dynamic) -->
                         <RowDefinition Height="45"/> <!-- Main output box and copy button -->
@@ -121,16 +160,32 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Output textbox (dynamic) -->
-                    <TextBlock Grid.Row="0" Grid.Column="0"  Text="OUTPUT" Style="{DynamicResource BasicTextStyle}" Tag="DescriptionTextBlock"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                               Text="OUTPUT"
+                               Style="{DynamicResource BasicTextStyle}"
+                               Tag="DescriptionTextBlock"/>
+                    
                     <!-- Main output box -->
-                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Style="{StaticResource TitleBar}">
-                        <TextBox x:Name="BinaryOutputTextBox" Style="{StaticResource OutputTextBox}"/>
+                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                            Style="{StaticResource TitleBar}">
+                        <TextBox
+                            x:Name="BinaryOutputTextBox"
+                            Style="{StaticResource OutputTextBox}"/>
                     </Border>
-                    <!-- Output textbox (static) -->
-                    <TextBlock Grid.Row="2" Grid.Column="0"  Text="HEXADECIMAL" Style="{StaticResource BasicTextStyle}" Tag="DescriptionTextBlock"/>
+                    
+                    <!-- Hexadecimal output textbox (static) -->
+                    <TextBlock Grid.Row="2" Grid.Column="0"
+                               Text="HEXADECIMAL"
+                               Style="{StaticResource BasicTextStyle}"
+                               Tag="DescriptionTextBlock"/>
+                    
                     <!-- Hexadecimal output box -->
-                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource TitleBar}" >
-                        <TextBox x:Name="HexadecimalOutputTextBox" Style="{StaticResource OutputTextBox}" Tag="HexadecimalOutputTextBox"/>
+                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                            Style="{StaticResource TitleBar}" >
+                        <TextBox
+                            x:Name="HexadecimalOutputTextBox"
+                            Style="{StaticResource OutputTextBox}"
+                            Tag="HexadecimalOutputTextBox"/>
                     </Border>
                     
                     <!-- Grid inside the main output box that holds the copy button-->
@@ -142,8 +197,13 @@
                         </Grid.ColumnDefinitions>
                         
                         <!-- Copy button-->
-                        <Border Grid.Column="1"  Style="{DynamicResource HoverButtonAnimation}">
-                            <Button Grid.Row="3" Grid.Column="1"  x:Name="BinaryCopyButton" Click="BinaryCopyButton_Click" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
+                        <Border Grid.Column="1" 
+                                Style="{DynamicResource HoverButtonAnimation}">
+                            <Button Grid.Row="3" Grid.Column="1"
+                                    x:Name="BinaryCopyButton" Click="BinaryCopyButton_Click"
+                                    Content="COPY"
+                                    Style="{DynamicResource ButtonStyleHover}"
+                                    Tag="CopyButtonHover"/>
                         </Border>
                         
                     </Grid>
@@ -157,9 +217,15 @@
                         </Grid.ColumnDefinitions>
                         
                         <!-- Copy button-->
-                        <Border Grid.Column="1"  Style="{DynamicResource HoverButtonAnimation}" Tag="">
-                            <Button Grid.Row="3" Grid.Column="1" x:Name="HexadecimalCopyButton" Click="HexadecimalCopyButton_Click" Content="COPY" Style="{DynamicResource ButtonStyleHover}" Tag="CopyButtonHover"/>
+                        <Border Grid.Column="1"
+                                Style="{DynamicResource HoverButtonAnimation}">
+                            <Button Grid.Row="3" Grid.Column="1"
+                                    x:Name="HexadecimalCopyButton"
+                                    Click="HexadecimalCopyButton_Click" Content="COPY"
+                                    Style="{DynamicResource ButtonStyleHover}"
+                                    Tag="CopyButtonHover"/>
                         </Border>
+                        
                     </Grid>
                     
                 </Grid>
