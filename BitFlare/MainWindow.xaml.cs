@@ -35,7 +35,6 @@ public partial class MainWindow : Window
 
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
     
-
     private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
     private async void BinaryCopyButton_Click(object sender, RoutedEventArgs e)
@@ -61,17 +60,49 @@ public partial class MainWindow : Window
             HexadecimalCopyButton.Content = "COPY";
         }
     }
-
-    private void WarningLevel_OnKeyUp(object sender, KeyEventArgs e)
+    
+    private void Utilities_OnKeyUp(object sender, KeyEventArgs e)
     {
+        /*Warning level UI helper*/
         var validator = new InputValidationState();
         
-        if (!validator.IsValid(InputBox.Text))
-            InputBoxBorder.BorderBrush = Brushes.Yellow;
-        else
-            InputBoxBorder.BorderBrush = Brushes.White;
+        InputBoxBorder.BorderBrush = !validator.IsValid(InputBox.Text) switch
+        {
+            true => InputBoxBorder.BorderBrush = Brushes.Yellow,
+            false => InputBoxBorder.BorderBrush = Brushes.White
+        };
+        
+        /*Normalizer and Sanitizer*/
+        (InputBox.Text, InputBox.CaretIndex) = 
+            InputCanonicalization.IsDoubled(InputBox.Text, InputBox.CaretIndex);
+        (InputBox.Text, InputBox.CaretIndex) =
+            InputCanonicalization.CharacterNormalizer(InputBox.Text, InputBox.CaretIndex);
+        
+        /*Enables conversion on textbox blur*/
+        if (e.Key == Key.Enter)
+        {
+            Keyboard.ClearFocus();
+            switch (!validator.IsValid(InputBox.Text))
+            {
+                case true:
+                    InputBoxBorder.BorderBrush = Brushes.Red;
+                    InvalidCharacterWarning.Visibility = Visibility.Visible;
+                    break;
+                case false:
+                    InputBoxBorder.BorderBrush = Brushes.White;
+                    InvalidCharacterWarning.Visibility = Visibility.Hidden;
+                    break;
+            }
+        }
+        
+        /*Updates the output text title*/
+        OutputBoxDynamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
 
-        (InputBox.Text, InputBox.CaretIndex) = InputCanonicalization.RepeatedCharacterNormalizer(InputBox.Text, InputBox.CaretIndex);
-        (InputBox.Text, InputBox.CaretIndex) = InputCanonicalization.IsDoubled(InputBox.Text, InputBox.CaretIndex);
     }
+    
+    private void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
+    {
+        ClickAnimation(ConvertButton);
+    }
+    
 }

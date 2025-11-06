@@ -1,12 +1,16 @@
-// public static class validateInputAndUpdateButtons
-// {
-//     public bool IsValidToConvert(string inputBoxText)
-//     {
-//         if (inputBoxText is null or )
-//     }
-//
-//     public bool IsValidToCopy(string OutputBoxText)
-//     {
-//         
-//     }
-// }
+namespace BitFlare.Logic.Input_Logic;
+
+public static class ValidateInputAndUpdateButtons
+{
+    private static bool IsValid { get; set; } =  true;
+    public static bool IsValidToConvert(string? inputBoxText)
+    {
+        if (inputBoxText == null) IsValid = false;
+        return IsValid;
+    }
+
+    // public bool IsValidToCopy(string OutputBoxText)
+    // {
+    //     
+    // }
+}

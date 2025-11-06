@@ -58,27 +58,39 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="HoverButtonAnimation" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
-        
+    <Style x:Key="ButtonBorderHoverAnimation" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
+        <Setter Property="IsEnabled" Value="True"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
             </Trigger>
         </Style.Triggers>
     </Style>
-
+    
+    <Style x:Key="CopyBinaryButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
+        
+    </Style>
+    
+    <Style x:Key="CopyHexadecimalButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
+        
+    </Style>
+    
+    
+    
     <!-- Disabling button default style, and applying hover -->
     <Style x:Key="ButtonStyleHover" TargetType="{x:Type Button}">
-        
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="50"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -91,10 +103,26 @@
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
         
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
-            </Trigger>
+            <!-- <MultiTrigger> -->
+            <!--     <MultiTrigger.Conditions> -->
+            <!--         <Condition Property="IsMouseOver" Value="true"/> -->
+            <!--         <Condition Binding="{Binding Text, HexadecimalOutputBox}" Value=""/> -->
+            <!--     </MultiTrigger.Conditions> -->
+            <!--     <MultiTrigger.Setters> -->
+            <!--     <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/> -->
+            <!--     </MultiTrigger.Setters> -->
+            <!--     <Setter /> -->
+            <!-- </MultiTrigger> -->
             <Trigger Property="Tag" Value="ConvertButtonText">
                 <Setter Property="FontSize" Value="13"/>
                 <Setter Property="Width" Value="100"/>
@@ -107,6 +135,7 @@
         
         
     </Style>
+    
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>
         <Setter Property="Margin" Value="10,0,0,0"/>
@@ -154,13 +183,14 @@
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Margin" Value="16,0,0,0"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
             </Trigger>
             <Trigger Property="Tag" Value="InvalidCharacterWarning">
+                <Setter Property="Visibility" Value="Hidden"/>
                 <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Margin" Value="140,0,0,0"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
                 <Setter Property="VerticalAlignment" Value="Bottom"/>
-                <Setter Property="Foreground" Value="Transparent"/>
             </Trigger>
         </Style.Triggers>
     </Style>
