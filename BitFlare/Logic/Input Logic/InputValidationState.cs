@@ -21,10 +21,8 @@ public class InputValidationState
                     break;
             }
         }
-        
         return hasValid && !hasInvalid;
     }
-
 }
 
 

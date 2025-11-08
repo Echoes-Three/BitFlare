@@ -65,6 +65,7 @@
                 <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
             </Trigger>
         </Style.Triggers>
+        
     </Style>
     
     <Style x:Key="CopyBinaryButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
@@ -102,6 +103,7 @@
         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="IsEnabled" Value="True"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -113,28 +115,45 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <!-- <MultiTrigger> -->
-            <!--     <MultiTrigger.Conditions> -->
-            <!--         <Condition Property="IsMouseOver" Value="true"/> -->
-            <!--         <Condition Binding="{Binding Text, HexadecimalOutputBox}" Value=""/> -->
-            <!--     </MultiTrigger.Conditions> -->
-            <!--     <MultiTrigger.Setters> -->
-            <!--     <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/> -->
-            <!--     </MultiTrigger.Setters> -->
-            <!--     <Setter /> -->
-            <!-- </MultiTrigger> -->
-            <Trigger Property="Tag" Value="ConvertButtonText">
-                <Setter Property="FontSize" Value="13"/>
-                <Setter Property="Width" Value="100"/>
-            </Trigger>
-            <Trigger Property="Tag" Value="CopyButtonHover">
-                <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Width" Value="100"/>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
             </Trigger>
         </Style.Triggers>
         
-        
     </Style>
+    
+    <Style x:Key="HexadecimalCopyButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Width" Value="100"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="BinaryCopyButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Width" Value="100"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="ConvertButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Width" Value="100"/>
+        <!-- <Style.Triggers> -->
+        <!--     <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value=""> -->
+        <!--         <Setter Property="IsEnabled" Value="False"/> -->
+        <!--     </DataTrigger> -->
+        <!-- </Style.Triggers> -->
+    </Style>
+    
     
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>

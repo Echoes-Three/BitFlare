@@ -8,15 +8,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BitFlare.Logic;
 using BitFlare.Logic.Input_Logic;
 
 namespace BitFlare;
 
 
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public MainWindow() => InitializeComponent();
@@ -103,6 +100,8 @@ public partial class MainWindow : Window
     private void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
     {
         ClickAnimation(ConvertButton);
+
+        // (BinaryOutputTextBox.Text, OutputBoxDynamicTitle.Text ) = (IntegerConverter.BasicConverter(InputBox.Text), OutputTitleUpdater.UpdateTitleWithBit());
     }
     
 }

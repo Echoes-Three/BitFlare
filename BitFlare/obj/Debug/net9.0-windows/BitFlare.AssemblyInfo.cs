@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BitFlare")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+eeb19019a7514672c0dc0e3c343d338a4c9f1825")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6ab2d465ce699fb3895d1a01218fe4319a0b085a")]
 [assembly: System.Reflection.AssemblyProductAttribute("BitFlare")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BitFlare")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

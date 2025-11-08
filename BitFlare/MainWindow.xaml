@@ -141,8 +141,8 @@
                             x:Name="ConvertButton"
                             Click="ConvertButton_Click"
                             Content="CONVERT"
-                            Style="{DynamicResource ButtonStyleHover}"
-                            Tag="ConvertButtonText"/>
+                            Style="{DynamicResource ConvertButtonHover}"
+                            Tag=""/>
                 </Border>
                 
                 <!-- Output area -->
@@ -209,8 +209,8 @@
                                     x:Name="BinaryCopyButton"
                                     Click="BinaryCopyButton_Click"
                                     Content="COPY"
-                                    Style="{DynamicResource ButtonStyleHover}"
-                                    Tag="CopyButtonHover"/>
+                                    Style="{DynamicResource BinaryCopyButtonHover}"
+                                    Tag=""/>
                         </Border>
                         
                     </Grid>
@@ -231,8 +231,8 @@
                                     x:Name="HexadecimalCopyButton"
                                     Click="HexadecimalCopyButton_Click"
                                     Content="COPY"
-                                    Style="{DynamicResource ButtonStyleHover}"
-                                    Tag="CopyButtonHover"/>
+                                    Style="{DynamicResource HexadecimalCopyButtonHover}"
+                                    Tag=""/>
 
                         </Border>
                         

@@ -6,15 +6,16 @@ public static class InputCanonicalization
 
     private static (string, int) DoubleRemover(string inputBoxText, int caretIndex)
     {
-        var normalizedInputBoxText = inputBoxText;
         var newCaretIndex = caretIndex;
-        var unique = "";
+        var normalizedInputBoxText = "";
         foreach (var character in inputBoxText)
         {
-            unique = (unique.Contains(character) && ForbiddenChars.Contains(character)) ? unique : unique + character;
-            newCaretIndex = normalizedInputBoxText.Length;
+            if (normalizedInputBoxText.Contains(character) && ForbiddenChars.Contains(character)) 
+                newCaretIndex = caretIndex - 1;
+            else 
+                normalizedInputBoxText += character;
+            
         }
-        
         return (normalizedInputBoxText, newCaretIndex);
     }
     
@@ -33,16 +34,13 @@ public static class InputCanonicalization
         return (normalizedInputBoxText, newCaretIndex);
     }
     
-    private static (string, int) Replacer(string oldText, string toReplace, int caretIndex) =>
-        (oldText.Replace(toReplace, toReplace.Remove(1)), caretIndex--);
-    
     public static (string, int) CharacterNormalizer(string inputBoxText, int caretIndex)
     {
         var normalizedInputBoxText = inputBoxText;
         var newCaretIndex = caretIndex;
         
         if (inputBoxText.Contains(",,"))
-            (normalizedInputBoxText, newCaretIndex) = Replacer(inputBoxText, ",,", caretIndex);
+            normalizedInputBoxText = inputBoxText.Replace(",,", ",");
         
         if (inputBoxText.Contains('E'))
             normalizedInputBoxText = inputBoxText.Replace('E', 'e');
