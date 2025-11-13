@@ -130,12 +130,48 @@
                     <TextBox
                         x:Name="InputBox"
                         KeyUp="Utilities_OnKeyUp"
+                        GotKeyboardFocus="InputBox_OnGotKeyboardFocus"
                         Style="{DynamicResource InputTextBox}"/>
                 </Border>
                 
+                <TextBlock Grid.Row="1" Grid.Column="1"
+                           Text="ⓘ"
+                           Style="{StaticResource BasicTextStyle}"
+                           Tag="ToolTipHover">
+                    <TextBlock.ToolTip>
+                        <ToolTip Style="{StaticResource ToolTip}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Grid.Row="0" 
+                                           Style="{StaticResource BasicTextStyle}"
+                                           Text="ONLY:"
+                                           Tag="ToolTipTextBlock"/>
+                                <TextBlock Grid.Row="1"
+                                           Style="{StaticResource BasicTextStyle}" 
+                                           Text="- INTEGERS"
+                                           Tag="ToolTipTextBlock"/>
+                                <TextBlock Grid.Row="2"
+                                           Style="{StaticResource BasicTextStyle}" 
+                                           Text="- FLOATING POINTS"
+                                           Tag="ToolTipTextBlock"/>
+                                <TextBlock Grid.Row="3"
+                                           Style="{StaticResource BasicTextStyle}" 
+                                           Text="- NORMALIZED E-NOTATION"
+                                           Tag="ToolTipTextBlock"/>
+                            </Grid>
+                        </ToolTip>
+                    </TextBlock.ToolTip>
+                </TextBlock>
+                
                 <!-- Convert button border and button action -->
                 <Border Grid.Row="3" Grid.Column="1"
-                        Style="{DynamicResource ButtonBorderHoverAnimation}"
+                        Style="{DynamicResource ConvertButtonBorderHoverAnimation}"
                         Tag="ConvertButton">
                     <Button Grid.Row="3" Grid.Column="1"
                             x:Name="ConvertButton"
