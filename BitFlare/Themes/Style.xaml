@@ -9,7 +9,7 @@
     
     <!--////////////////////////////////////////////////////////////-->
     
-    <!-- Window border design -->
+    <!-- Window border -->
     <Style x:Key="MainWindowBorder" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Background" Value="{StaticResource BlackBrush}"/>
@@ -17,14 +17,56 @@
         <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
     </Style>
     
-    <!-- Title bar design -->
-    <Style x:Key="TitleBar" TargetType="{x:Type Border}">
+    <!-- Basic text style -->
+    <Style x:Key="BasicTextStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontFamily" Value="{StaticResource IBM BIOS}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        
+        <Style.Triggers>
+            <Trigger Property="Tag" Value="LogoTitleBar">
+                <Setter Property="FontSize" Value="22"/>
+                <Setter Property="Margin" Value="10,0,0,0"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="OutputTitle">
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Margin" Value="16,0,0,0"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="InvalidCharacterWarning">
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Margin" Value="0"/>
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="ToolTipHover">
+                <Setter Property="Margin" Value="0,0,130,0"/>
+                <Setter Property="HorizontalAlignment" Value="Right"/>
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="Cursor" Value="Help"/>
+                <Setter Property="ToolTipService.InitialShowDelay" Value="0"/>
+                <Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
+            </Trigger>
+            <Trigger Property="Tag" Value="ToolTipTextBlock">
+                <Setter Property="Margin" Value="0,0,0,5"/>
+                <Setter Property="HorizontalAlignment" Value="Left"/>
+                <Setter Property="FontSize" Value="11"/>
+                <Setter Property="Cursor" Value="Help"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Basic border -->
+    <Style x:Key="BasicBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Margin" Value="4, 4, 4, 3"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{StaticResource WhiteBrush}"/>
         
-        <!-- Draggable area style, without the border -->
         <Style.Triggers>
             <Trigger Property="Tag" Value="DraggableArea">
                 <Setter Property="Background" Value="#01FFFFFF"/>
@@ -58,38 +100,36 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="ButtonBorderHoverAnimation" BasedOn="{StaticResource TitleBar}" TargetType="{x:Type Border}">
+    <!-- hoverable border for minimize, close, convert, and both copy buttons -->
+    <Style x:Key="ButtonBorderHover" BasedOn="{StaticResource BasicBorderStyle}" TargetType="{x:Type Border}">
         <Setter Property="IsEnabled" Value="True"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
             </Trigger>
         </Style.Triggers>
-        
     </Style>
     
-    <Style x:Key="CopyBinaryButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
-        
+    <!-- Data Triggered output copy button border-->
+    <Style x:Key="OutputCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
         </Style.Triggers>
-        
     </Style>
     
-    <Style x:Key="CopyHexadecimalButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
-        
+    <!-- Data Triggered hexadecimal copy button border -->
+    <Style x:Key="HexadecimalCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
         </Style.Triggers>
-        
     </Style>
     
-    <Style x:Key="ConvertButtonBorderHoverAnimation" BasedOn="{StaticResource ButtonBorderHoverAnimation}" TargetType="{x:Type Border}">
-        
+    <!-- Data Triggered convert button border-->
+    <Style x:Key="ConvertButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
@@ -99,13 +139,12 @@
                 <Setter Property="IsEnabled" Value="False"/>
             </MultiDataTrigger>
         </Style.Triggers>
-        
     </Style>
     
     
     
-    <!-- Disabling button default style, and applying hover -->
-    <Style x:Key="ButtonStyleHover" TargetType="{x:Type Button}">
+    <!-- Basic Button -->
+    <Style x:Key="ButtonHover" TargetType="{x:Type Button}">
         <Setter Property="Height" Value="50"/>
         <Setter Property="Width" Value="50"/>
         <Setter Property="Background" Value="Transparent"/>
@@ -119,6 +158,7 @@
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="IsEnabled" Value="True"/>
         
+        <!-- Remove default highlight and background on all buttons-->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -128,17 +168,20 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        
+        <!-- Button hover -->
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
             </Trigger>
         </Style.Triggers>
-        
     </Style>
     
-    <Style x:Key="HexadecimalCopyButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+    <!-- Data Triggered hexadecimal copy button hover -->
+    <Style x:Key="HexadecimalCopyButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="Width" Value="100"/>
+        
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
@@ -147,9 +190,11 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="BinaryCopyButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+    <!-- Data Triggered output copy button hover -->
+    <Style x:Key="OutputCopyButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="11"/>
         <Setter Property="Width" Value="100"/>
+        
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
@@ -158,7 +203,8 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="ConvertButtonHover" BasedOn="{StaticResource ButtonStyleHover}" TargetType="{x:Type Button}">
+    <!-- Data Triggered convert button hover -->
+    <Style x:Key="ConvertButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
         <Setter Property="FontSize" Value="13"/>
         <Setter Property="Width" Value="100"/>
         
@@ -168,14 +214,14 @@
                     <!-- <Condition Binding="{Binding Text, ElementName=InputBox}" Value=""/> -->
                     <Condition Binding="{Binding IsValidToConvert}" Value="False"/>
                 </MultiDataTrigger.Conditions>
+                
                 <Setter Property="IsEnabled" Value="False"/>
                 <Setter Property="Foreground" Value="DimGray"/>
             </MultiDataTrigger>
         </Style.Triggers>
-        
     </Style>
     
-    
+    <!-- Output box -->
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>
         <Setter Property="Margin" Value="10,0,0,0"/>
@@ -191,14 +237,15 @@
         <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="Cursor" Value="Arrow"/>
         
+         <!-- Hexadecimal custom box -->
         <Style.Triggers>
             <Trigger Property="Tag" Value="HexadecimalOutputTextBox">
-                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Width" Value="260"/>
             </Trigger>
         </Style.Triggers>
     </Style>
     
+    <!-- Input text box -->
     <Style x:Key="InputTextBox" BasedOn="{StaticResource OutputTextBox}" TargetType="{x:Type TextBox}">
         <Setter Property="IsReadOnly" Value="False"/>
         <Setter Property="Width" Value="165"/>
@@ -208,55 +255,15 @@
         <Setter Property="SelectionBrush" Value="{StaticResource WhiteBrush}"/>
         <Setter Property="SelectionOpacity" Value="0.5"/>
     </Style>
-
-    <Style x:Key="BasicTextStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="FontFamily" Value="{StaticResource IBM BIOS}"/>
-        <Setter Property="FontSize" Value="11"/>
-        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        
-        <Style.Triggers>
-            <Trigger Property="Tag" Value="LogoTitleBar">
-                <Setter Property="FontSize" Value="22"/>
-                <Setter Property="Margin" Value="10,0,0,0"/>
-            </Trigger>
-            <Trigger Property="Tag" Value="DescriptionTextBlock">
-                <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Margin" Value="16,0,0,0"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-            </Trigger>
-            <Trigger Property="Tag" Value="InvalidCharacterWarning">
-                <Setter Property="Visibility" Value="Hidden"/>
-                <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Margin" Value="0"/>
-                <Setter Property="HorizontalAlignment" Value="Center"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-            </Trigger>
-            <Trigger Property="Tag" Value="ToolTipHover">
-                <Setter Property="Margin" Value="0,0,130,0"/>
-                <Setter Property="HorizontalAlignment" Value="Right"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="Cursor" Value="Help"/>
-                <Setter Property="ToolTipService.InitialShowDelay" Value="0"/>
-                <Setter Property="ToolTipService.BetweenShowDelay" Value="0"/>
-            </Trigger>
-            <Trigger Property="Tag" Value="ToolTipTextBlock">
-                <Setter Property="Margin" Value="0,0,0,5"/>
-                <Setter Property="HorizontalAlignment" Value="Left"/>
-                <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Cursor" Value="Help"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
     
+    <!-- Tooltip -->
     <Style x:Key="ToolTip" TargetType="{x:Type ToolTip}">
         <Setter Property="Placement" Value="Left"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Width" Value="160"/>
         <Setter Property="Height" Value="80"/>
         <Setter Property="HorizontalOffset" Value="10"/>
+        
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToolTip}">

@@ -40,15 +40,15 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     
     private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
-    private async void BinaryCopyButton_Click(object sender, RoutedEventArgs e)
+    private async void OutputCopyButton_Click(object sender, RoutedEventArgs e)
     {
-        ClickAnimation(BinaryCopyButton);
+        ClickAnimation(OutputCopyButton);
         if (!string.IsNullOrEmpty(BinaryOutputTextBox.Text))
         {
             Clipboard.SetText(BinaryOutputTextBox.Text);
-            BinaryCopyButton.Content = "COPIED";
+            OutputCopyButton.Content = "COPIED";
             await Task.Delay(1000);
-            BinaryCopyButton.Content = "COPY";
+            OutputCopyButton.Content = "COPY";
         }
     }
 
@@ -65,7 +65,6 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
     
     private bool _isValidToConvert = false;
-
     public bool IsValidToConvert
     {
         get => _isValidToConvert;
@@ -84,42 +83,32 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     {
         /*Warning level UI helper*/
         var validator = new InputValidationState();
-        
-        (InputBoxBorder.BorderBrush, IsValidToConvert) = validator.IsValid(InputBox.Text) switch
-        {
-            true => (InputBoxBorder.BorderBrush = Brushes.White, true),
-            false => (InputBoxBorder.BorderBrush = Brushes.Yellow, false)
-        };
-        
+
         /*Sanitizer*/
         (InputBox.Text, InputBox.CaretIndex) =
             InputSanitizer.Sanitize(InputBox.Text, InputBox.CaretIndex);
         
-        /*Enables conversion on textbox blur*/
-        if (e.Key == Key.Enter)
+        switch (validator.IsValid(InputBox.Text) && (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
         {
-            Keyboard.ClearFocus();
-            
-            switch (validator.IsValid(InputBox.Text) && Canonicalization.InputFilter(InputBox.Text) != "INVALID")
-            {
-                case true:
-                    InputBoxBorder.BorderBrush = Brushes.White;
-                    InvalidCharacterWarning.Visibility = Visibility.Hidden;
-                    IsValidToConvert = true;
-                    break;
-                case false:
-                    InputBoxBorder.BorderBrush = Brushes.Red;
-                    InvalidCharacterWarning.Visibility = Visibility.Visible;
-                    IsValidToConvert = false;
-                    break;
-            }
-
-            BinaryOutputTextBox.Text = Canonicalization.InputFilter(InputBox.Text);
-            HexadecimalOutputTextBox.Text = validator.IsValid(InputBox.Text) ? "true" : "false";
+            case true:
+                InputBoxBorder.BorderBrush = Brushes.White;
+                InvalidCharacterWarning.Visibility = Visibility.Hidden;
+                IsValidToConvert = true;
+                break;
+            case false:
+                InputBoxBorder.BorderBrush = Brushes.Red;
+                InvalidCharacterWarning.Visibility = Visibility.Visible;
+                IsValidToConvert = false;
+                break;
         }
+
+        // BinaryOutputTextBox.Text = Canonicalization.InputFilter(InputBox.Text);
+        // HexadecimalOutputTextBox.Text = validator.IsValid(InputBox.Text) ? "true" : "false";
         
         /*Updates the output text title*/
         OutputBoxDynamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
+        
+        if (e.Key == Key.Enter) Keyboard.ClearFocus();
     }
     
     private void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
