@@ -81,14 +81,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     
     private void Utilities_OnKeyUp(object sender, KeyEventArgs e)
     {
-        /*Warning level UI helper*/
-        var validator = new InputValidationState();
-
         /*Sanitizer*/
         (InputBox.Text, InputBox.CaretIndex) =
             InputSanitizer.Sanitize(InputBox.Text, InputBox.CaretIndex);
         
-        switch (validator.IsValid(InputBox.Text) && (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
+        switch (InputValidation.IsValid(InputBox.Text) &&
+                (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
         {
             case true:
                 InputBoxBorder.BorderBrush = Brushes.White;
@@ -96,14 +94,11 @@ public partial class MainWindow : Window, INotifyPropertyChanged
                 IsValidToConvert = true;
                 break;
             case false:
-                InputBoxBorder.BorderBrush = Brushes.Red;
+                InputBoxBorder.BorderBrush = Brushes.Yellow;
                 InvalidCharacterWarning.Visibility = Visibility.Visible;
                 IsValidToConvert = false;
                 break;
         }
-
-        // BinaryOutputTextBox.Text = Canonicalization.InputFilter(InputBox.Text);
-        // HexadecimalOutputTextBox.Text = validator.IsValid(InputBox.Text) ? "true" : "false";
         
         /*Updates the output text title*/
         OutputBoxDynamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
@@ -111,13 +106,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         if (e.Key == Key.Enter) Keyboard.ClearFocus();
     }
     
-    private void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
+    private async void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
     {
         ClickAnimation(ConvertButton);
+        ConvertButton.Content = "CONVERTED";
+        await Task.Delay(1000);
+        ConvertButton.Content = "CONVERT";
 
-        // (BinaryOutputTextBox.Text, OutputBoxDynamicTitle.Text ) = (IntegerConverter.BasicConverter(InputBox.Text), OutputTitleUpdater.UpdateTitleWithBit());
+        (BinaryOutputTextBox.Text, OutputBoxDynamicTitle.Text) = InputConverterHelper.ConverterCaller(InputBox.Text);
     }
 
+    /* Select input box text on focus*/
     private void InputBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         if (e.OriginalSource is TextBox textBox)

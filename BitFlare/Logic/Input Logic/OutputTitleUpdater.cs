@@ -22,9 +22,9 @@ public static class OutputTitleUpdater
         var correctTitleWithBit = "";
         return correctTitleWithBit = bitIdentification switch 
         {
-            1 => $"{UpdateTitle(textBoxInput)} 8-BIT",
-            2 => $"{UpdateTitle(textBoxInput)} 16-BIT",
-            3 => $"{UpdateTitle(textBoxInput)} 8-BIT"
+            8 => $"{UpdateTitle(textBoxInput)} 8-BIT",
+            16 => $"{UpdateTitle(textBoxInput)} 16-BIT",
+            32 => $"{UpdateTitle(textBoxInput)} 32-BIT"
         };
         
         
