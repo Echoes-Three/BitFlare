@@ -4,31 +4,18 @@ namespace BitFlare.Logic;
 
 public static class IntegerConverter
 {
-    public static (string, string) BasicConverter(string inputBoxText)
+    public static string BasicConverter(ulong parsedInput)
     {
-        var toConvert = uint.Parse(inputBoxText);
+        if (parsedInput == 0) return "0";
         
-        if (toConvert == 0) return ("0", "8-BIT");
+        var converted = "";
         
-        var bitLimit = toConvert switch
-                { 
-                    <= byte.MaxValue
-                        => 8,
-                    <= ushort.MaxValue
-                        => 16,
-                    > ushort.MaxValue
-                        => 32,
-                };
-        
-        var converted = new int[bitLimit];
-
-
-        for (var bit = 1; toConvert > 0; bit++)
+        while (parsedInput > 0)
         {
-            converted[^bit] = (int)toConvert % 2;
-            toConvert /= 2;
+            converted = parsedInput % 2 + converted;
+            parsedInput /= 2;
         }
 
-        return (string.Join("",converted), OutputTitleUpdater.UpdateTitleWithBit(inputBoxText,bitLimit));
+        return converted;
     }
 }

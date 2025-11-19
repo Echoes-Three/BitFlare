@@ -23,7 +23,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         DataContext = this;
         InitializeComponent();
     }
-    
+
     private static async void ClickAnimation(Button button)
     {
         button.Margin = button.Margin with { Top = 10 };
@@ -37,7 +37,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
-    
+
     private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
 
     private async void OutputCopyButton_Click(object sender, RoutedEventArgs e)
@@ -63,8 +63,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             HexadecimalCopyButton.Content = "COPY";
         }
     }
-    
+
     private bool _isValidToConvert = false;
+
     public bool IsValidToConvert
     {
         get => _isValidToConvert;
@@ -77,46 +78,69 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             }
         }
     }
-    
-    
+
+
     private void Utilities_OnKeyUp(object sender, KeyEventArgs e)
     {
         /*Sanitizer*/
         (InputBox.Text, InputBox.CaretIndex) =
             InputSanitizer.Sanitize(InputBox.Text, InputBox.CaretIndex);
-        
-        switch (InputValidation.IsValid(InputBox.Text) &&
-                (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
+
+        if (InputValidation.IsValid(InputBox.Text) &&
+            (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
         {
-            case true:
+            if ((Canonicalization.InputFilter(InputBox.Text) == "INTEGER"
+                 && InputConverterHelper.GetParsed(InputBox.Text) <= uint.MaxValue) ||
+                string.IsNullOrEmpty(InputBox.Text))
+            {
                 InputBoxBorder.BorderBrush = Brushes.White;
+                InvalidCharacterWarning.Text = "INVALID CHARACTER OR FORMAT";
                 InvalidCharacterWarning.Visibility = Visibility.Hidden;
                 IsValidToConvert = true;
-                break;
-            case false:
+            }
+            else
+            {
                 InputBoxBorder.BorderBrush = Brushes.Yellow;
+                InvalidCharacterWarning.Text = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
                 InvalidCharacterWarning.Visibility = Visibility.Visible;
                 IsValidToConvert = false;
-                break;
+            }
         }
-        
+        else
+        {
+            InputBoxBorder.BorderBrush = Brushes.Yellow;
+            InvalidCharacterWarning.Text = "INVALID CHARACTER OR FORMAT";
+            InvalidCharacterWarning.Visibility = Visibility.Visible;
+            IsValidToConvert = false;
+        }
+
         /*Updates the output text title*/
         OutputBoxDynamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
-        
-        if (e.Key == Key.Enter) Keyboard.ClearFocus();
+
+        if (e.Key == Key.Enter)
+        {
+            Keyboard.ClearFocus();
+            ConversionAction();
+        }
     }
+
+    private void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs) =>
+        ConversionAction();
     
-    private async void ConvertButton_Click(object sender, RoutedEventArgs routedEventArgs)
+    private async void ConversionAction()
     {
         ClickAnimation(ConvertButton);
-        ConvertButton.Content = "CONVERTED";
+        ConvertButton.Content = "...";
         await Task.Delay(1000);
         ConvertButton.Content = "CONVERT";
 
-        (BinaryOutputTextBox.Text, OutputBoxDynamicTitle.Text) = InputConverterHelper.ConverterCaller(InputBox.Text);
+        BinaryOutputTextBox.Text =
+            InputConverterHelper.ConverterCaller(InputBox.Text);
+        OutputBoxDynamicTitle.Text =
+            OutputTitleUpdater.UpdateTitleWithBit(InputBox.Text, InputConverterHelper.GetMagnitude(InputBox.Text));
     }
 
-    /* Select input box text on focus*/
+/* Select input box text on focus*/
     private void InputBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         if (e.OriginalSource is TextBox textBox)

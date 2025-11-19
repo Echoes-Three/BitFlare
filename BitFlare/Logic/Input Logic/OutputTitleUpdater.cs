@@ -17,14 +17,13 @@ public static class OutputTitleUpdater
         return correctTitle;
     }
 
-    public static string UpdateTitleWithBit(string textBoxInput, int bitIdentification)
+    public static string UpdateTitleWithBit(string textBoxInput, BitDefinition bitDefinition)
     {
-        var correctTitleWithBit = "";
-        return correctTitleWithBit = bitIdentification switch 
+        return bitDefinition switch 
         {
-            8 => $"{UpdateTitle(textBoxInput)} 8-BIT",
-            16 => $"{UpdateTitle(textBoxInput)} 16-BIT",
-            32 => $"{UpdateTitle(textBoxInput)} 32-BIT"
+            BitDefinition.EightBit => $"{UpdateTitle(textBoxInput)} 8-BIT",
+            BitDefinition.SixteenBit => $"{UpdateTitle(textBoxInput)} 16-BIT",
+            BitDefinition.ThirtyTwoBit => $"{UpdateTitle(textBoxInput)} 32-BIT"
         };
         
         
