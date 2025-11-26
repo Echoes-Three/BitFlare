@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using BitFlare.Logic;
+using BitFlare.Logic.Conversion_Helper;
 using BitFlare.Logic.Input_Logic;
 
 namespace BitFlare;
@@ -80,18 +81,43 @@ public partial class MainWindow : Window, INotifyPropertyChanged
     }
 
 
+    private bool ConvertLimiter()
+    {
+        var isValid = false;
+        var typeDefinition = InputTypeDefinition.InputFilter(InputBox.Text);
+        var comparisonLimit = ConversionUtilities.GetParsed(InputBox.Text);
+        switch (typeDefinition)
+        {
+            case TypeDefinition.Integer:
+            case TypeDefinition.FloatingPoint:
+            case TypeDefinition.ENotation:
+                if (typeDefinition == TypeDefinition.Integer)
+                {
+                    isValid = ConversionUtilities.IsNegative switch
+                    {
+                        true when comparisonLimit <= 2_147_483_648 => true,
+                        false when comparisonLimit <= uint.MaxValue => true,
+                        _ => isValid
+                    };
+                }
+
+                break;
+        }
+        return isValid;
+    }
+    
+    
     private void Utilities_OnKeyUp(object sender, KeyEventArgs e)
     {
-        /*Sanitizer*/
+        /*DuplicateSanitizer*/
         (InputBox.Text, InputBox.CaretIndex) =
-            InputSanitizer.Sanitize(InputBox.Text, InputBox.CaretIndex);
-
+            InputSanitizer.DuplicateSanitizer(InputBox.Text, InputBox.CaretIndex);
+        
         if (InputValidation.IsValid(InputBox.Text) &&
-            (Canonicalization.InputFilter(InputBox.Text) != "INVALID" || string.IsNullOrEmpty(InputBox.Text)))
+            (InputTypeDefinition.InputFilter(InputBox.Text) != TypeDefinition.InvalidType ||
+             string.IsNullOrEmpty(InputBox.Text)))
         {
-            if ((Canonicalization.InputFilter(InputBox.Text) == "INTEGER"
-                 && InputConverterHelper.GetParsed(InputBox.Text) <= uint.MaxValue) ||
-                string.IsNullOrEmpty(InputBox.Text))
+            if ( ConvertLimiter() || string.IsNullOrEmpty(InputBox.Text))
             {
                 InputBoxBorder.BorderBrush = Brushes.White;
                 InvalidCharacterWarning.Text = "INVALID CHARACTER OR FORMAT";
@@ -101,9 +127,17 @@ public partial class MainWindow : Window, INotifyPropertyChanged
             else
             {
                 InputBoxBorder.BorderBrush = Brushes.Yellow;
-                InvalidCharacterWarning.Text = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
                 InvalidCharacterWarning.Visibility = Visibility.Visible;
                 IsValidToConvert = false;
+
+                if (InputTypeDefinition.InputFilter(InputBox.Text) == TypeDefinition.Integer && ConversionUtilities.IsNegative)
+                {
+                    InvalidCharacterWarning.Text = "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648";
+                }
+                else
+                {
+                    InvalidCharacterWarning.Text = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
+                }
             }
         }
         else
@@ -135,12 +169,12 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ConvertButton.Content = "CONVERT";
 
         BinaryOutputTextBox.Text =
-            InputConverterHelper.ConverterCaller(InputBox.Text);
+            ConverterPointers.PointerCaller(InputBox.Text);
         OutputBoxDynamicTitle.Text =
-            OutputTitleUpdater.UpdateTitleWithBit(InputBox.Text, InputConverterHelper.GetMagnitude(InputBox.Text));
+            OutputTitleUpdater.UpdateTitleWithBit(InputBox.Text, ConversionUtilities.GetMagnitude(InputBox.Text));
     }
-
-/* Select input box text on focus*/
+    
+    /* Select input box text on focus*/
     private void InputBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
     {
         if (e.OriginalSource is TextBox textBox)

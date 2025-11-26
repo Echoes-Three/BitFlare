@@ -2,26 +2,18 @@ namespace BitFlare.Logic.Input_Logic;
 
 public static class InputValidation
 {
-    private static readonly char[] AllowedCharacters = ['1','2','3','4','5','6','7','8','9','0','-','e','E',',','.',' '];
-
+    private const string AllowedCharacters = "1234567890-eE,. ";
+    private static bool HasValid { get; set; }
+    private static bool HasInvalid { get; set; }
+    
     public static bool IsValid(string textBoxContent)
     {
-        var hasValid = true;
-        var hasInvalid = false;
-        
         foreach (var character in textBoxContent)
         {
-            switch (AllowedCharacters.Contains(character))
-            {
-                case true:
-                    hasValid = true;
-                    break;
-                case false:
-                    hasInvalid = true;
-                    break;
-            }
+            (HasValid, HasInvalid) = 
+                AllowedCharacters.Contains(character) ? (true, false) : (false, true);
         }
-        return hasValid && !hasInvalid;
+        return HasValid && !HasInvalid;
     }
 }
 

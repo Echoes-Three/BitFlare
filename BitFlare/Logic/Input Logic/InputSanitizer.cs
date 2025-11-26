@@ -3,52 +3,60 @@ namespace BitFlare.Logic.Input_Logic;
 public static class InputSanitizer
 {
     
-    public static (string, int) Sanitize(string inputBoxText, int caretIndex)
+    public static (string, int) DuplicateSanitizer(string inputBoxText, int caretIndex)
     {
-        var sanitizedInputBoxText = inputBoxText;
-        var newCaretIndex = caretIndex;
-
         if (inputBoxText.Contains('+'))
-            (sanitizedInputBoxText, newCaretIndex) = 
+            (inputBoxText, caretIndex) = 
                 (inputBoxText.Replace("+", ""), caretIndex < 1 ? caretIndex : caretIndex - 1);
         
         if (inputBoxText.Contains(' '))
-            (sanitizedInputBoxText, newCaretIndex) =
+            (inputBoxText, caretIndex) =
                 (inputBoxText.Replace(" ", ""), caretIndex < 1 ? caretIndex : caretIndex - 1);
         
         if (inputBoxText.Contains("--"))
-            (sanitizedInputBoxText, newCaretIndex) =
+            (inputBoxText, caretIndex) =
                 (inputBoxText.Replace("--", "-"), caretIndex < 1 ? caretIndex : caretIndex - 1);
         
         if (inputBoxText.Contains(",,"))
-            (sanitizedInputBoxText, newCaretIndex) =
+            (inputBoxText, caretIndex) =
                 (inputBoxText.Replace(",,", ","), caretIndex < 1 ? caretIndex : caretIndex - 1);
         
         if (inputBoxText.Contains('E'))
-            sanitizedInputBoxText = inputBoxText.ToLower();
+            inputBoxText = inputBoxText.ToLower();
         
         if (inputBoxText.StartsWith('.'))
-            (sanitizedInputBoxText, newCaretIndex) = ($"0{inputBoxText}", + 2);
+            (inputBoxText, caretIndex) = ($"0{inputBoxText}", + 2);
         
-        return SanitizeHelper(sanitizedInputBoxText, newCaretIndex);
+        return InvalidSanitizer(inputBoxText, caretIndex);
     }
     
-    private static (string, int) SanitizeHelper(string inputBoxText, int caretIndex)
+    private static (string, int) InvalidSanitizer(string inputBoxText, int caretIndex)
     {
         var sanitizedInputBoxText = "";
-        var newCaretIndex = caretIndex;
 
-        if (inputBoxText.Contains('.') || inputBoxText.Contains('e'))
+        if (!inputBoxText.Contains('.') && !inputBoxText.Contains('e'))
+            return LenghtSanitizer(inputBoxText, caretIndex);
+        
+        foreach (var character in inputBoxText)
         {
-            foreach (var character in inputBoxText)
-            {
-                if (sanitizedInputBoxText.Contains(character) && character is 'e' or '.') 
-                    newCaretIndex = caretIndex - 1;
-                else 
-                    sanitizedInputBoxText += character;
-            }
-            return (sanitizedInputBoxText, newCaretIndex);
+            if (sanitizedInputBoxText.Contains(character) && character is 'e' or '.') 
+                caretIndex -= 1;
+            else 
+                sanitizedInputBoxText += character;
         }
-        return (inputBoxText, newCaretIndex);
+        return LenghtSanitizer(sanitizedInputBoxText, caretIndex);
+    }
+
+    private static (string, int) LenghtSanitizer(string inputBoxText, int caretIndex)
+    {
+        if (InputTypeDefinition.InputFilter(inputBoxText) != TypeDefinition.ENotation && inputBoxText.Length > 15)
+        {
+            return (inputBoxText[..15], caretIndex);
+        }
+        else
+        {
+            //prepare e-notation limiter
+        }
+        return (inputBoxText, caretIndex);
     }
 }
