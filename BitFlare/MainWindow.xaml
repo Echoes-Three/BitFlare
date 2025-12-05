@@ -41,20 +41,19 @@
                 </Grid.ColumnDefinitions>
                 
                 <!-- Title bar border -->
-                <Border Grid.Column="0" Grid.ColumnSpan="3"
+                <Border Grid.Column="0" Grid.ColumnSpan="3" 
                         Style="{StaticResource BasicBorderStyle}"/>
                 
                 <!-- Application name -->
-                <TextBlock Grid.Column="0"
-                    Text="BITFLARE"
-                    Style="{StaticResource BasicTextStyle}"
-                    Tag="LogoTitleBar"/>
+                <TextBlock Grid.Column="0" 
+                           Text="BITFLARE"
+                           Style="{StaticResource BasicTextStyle}"
+                           Tag="LogoTitleBar"/>
                 
                 <!-- Draggable middle area -->
-                <Border Grid.Column="1"
-                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
-                    Style="{StaticResource BasicBorderStyle}"
-                    Tag="DraggableArea"/>
+                <Rectangle Grid.Column="1"
+                           MouseLeftButtonDown="TitleBar_MouseLeftButtonDown"
+                           Style="{StaticResource DraggableArea}"/>
                 
                 <!-- Minimize and Close buttons -->
                 <Grid Grid.Column="2" Background="Transparent">

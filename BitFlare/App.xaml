@@ -7,7 +7,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/Style.xaml"/>
+                <ResourceDictionary Source="Themes/Brushes.xaml"/>
+                <ResourceDictionary Source="Themes/TypeFace.xaml"/>
+                <ResourceDictionary Source="Themes/BorderStyle.xaml"/>
+                <ResourceDictionary Source="Themes/ButtonStyle.xaml"/>
+                <ResourceDictionary Source="Themes/MainWindowStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

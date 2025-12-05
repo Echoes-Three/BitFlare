@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Basic Button -->
+    <Style x:Key="ButtonHover" TargetType="{x:Type Button}">
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="Width" Value="50"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontFamily" Value="{StaticResource Ibm Bios}"/>
+        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="IsEnabled" Value="True"/>
+        
+        <!-- Remove default highlight and background on all buttons-->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        
+        <!-- Button hover -->
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{StaticResource BlackBrush}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Data Triggered hexadecimal copy button hover -->
+    <Style x:Key="HexadecimalCopyButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Width" Value="100"/>
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Data Triggered output copy button hover -->
+    <Style x:Key="OutputCopyButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Width" Value="100"/>
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Data Triggered convert button hover -->
+    <Style x:Key="ConvertButtonHover" BasedOn="{StaticResource ButtonHover}" TargetType="{x:Type Button}">
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="Width" Value="100"/>
+        
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <!-- <Condition Binding="{Binding Text, ElementName=InputBox}" Value=""/> -->
+                    <Condition Binding="{Binding IsValidToConvert}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+</ResourceDictionary>

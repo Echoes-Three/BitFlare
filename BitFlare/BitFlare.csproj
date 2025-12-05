@@ -11,6 +11,7 @@
     <ItemGroup>
       <Folder Include="Assets\Typefaces\" />
       <Folder Include="Logic\Conversion Logic\" />
+      <Folder Include="View\" />
     </ItemGroup>
 
     <ItemGroup>

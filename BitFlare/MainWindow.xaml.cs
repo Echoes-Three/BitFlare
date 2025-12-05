@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using BitFlare.Logic;
 using BitFlare.Logic.Conversion_Helper;
 using BitFlare.Logic.Input_Logic;
+using BitFlare.ViewModel;
 
 namespace BitFlare;
 
@@ -21,8 +22,9 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 {
     public MainWindow()
     {
-        DataContext = this;
         InitializeComponent();
+        var viewModel = new MainWindowViewModel();
+        DataContext = viewModel;
     }
 
     private static async void ClickAnimation(Button button)
@@ -169,7 +171,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         ConvertButton.Content = "CONVERT";
 
         BinaryOutputTextBox.Text =
-            ConverterPointers.PointerCaller(InputBox.Text);
+            ConverterPointer.PointerCaller(InputBox.Text);
         OutputBoxDynamicTitle.Text =
             OutputTitleUpdater.UpdateTitleWithBit(InputBox.Text, ConversionUtilities.GetMagnitude(InputBox.Text));
     }
