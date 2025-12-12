@@ -15,7 +15,7 @@ using BitFlare.Logic.Conversion_Helper;
 using BitFlare.Logic.Input_Logic;
 using BitFlare.ViewModel;
 
-namespace BitFlare;
+namespace BitFlare.View;
 
 
 public partial class MainWindow : Window, INotifyPropertyChanged
@@ -25,46 +25,43 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         InitializeComponent();
         var viewModel = new MainWindowViewModel();
         DataContext = viewModel;
+        viewModel.BinaryCopyAnimation = BinaryCopyButtonAnimation;
+        viewModel.HexadecimalCopyAnimation = HexadecimalCopyButtonAnimation;
     }
-
+    
+    private void Close_Click(object sender, RoutedEventArgs e) => Close();
+    
+    private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+    
+    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (e.ButtonState == MouseButtonState.Pressed) DragMove();
+    }
+    
     private static async void ClickAnimation(Button button)
     {
         button.Margin = button.Margin with { Top = 10 };
         await Task.Delay(100);
         button.Margin = button.Margin with { Top = 0 };
     }
-
-    private void TitleBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    
+    private static async void ContentChangeAnimation(Button button)
     {
-        if (e.ButtonState == MouseButtonState.Pressed) DragMove();
+        button.Content = "COPIED";
+        await Task.Delay(1000);
+        button.Content = "COPY";
     }
-
-    private void Close_Click(object sender, RoutedEventArgs e) => Close();
-
-    private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
-
-    private async void OutputCopyButton_Click(object sender, RoutedEventArgs e)
+    
+    public void BinaryCopyButtonAnimation()
     {
-        ClickAnimation(OutputCopyButton);
-        if (!string.IsNullOrEmpty(BinaryOutputTextBox.Text))
-        {
-            Clipboard.SetText(BinaryOutputTextBox.Text);
-            OutputCopyButton.Content = "COPIED";
-            await Task.Delay(1000);
-            OutputCopyButton.Content = "COPY";
-        }
+        ClickAnimation(BinaryCopyButton);
+        ContentChangeAnimation(BinaryCopyButton);
     }
-
-    private async void HexadecimalCopyButton_Click(object sender, RoutedEventArgs e)
+    
+    public void HexadecimalCopyButtonAnimation()
     {
         ClickAnimation(HexadecimalCopyButton);
-        if (!string.IsNullOrEmpty(HexadecimalOutputTextBox.Text))
-        {
-            Clipboard.SetText(HexadecimalOutputTextBox.Text);
-            HexadecimalCopyButton.Content = "COPIED";
-            await Task.Delay(1000);
-            HexadecimalCopyButton.Content = "COPY";
-        }
+        ContentChangeAnimation(HexadecimalCopyButton);
     }
 
     private bool _isValidToConvert = false;
@@ -151,7 +148,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         }
 
         /*Updates the output text title*/
-        OutputBoxDynamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
+        BinaryOutputDinamicTitle.Text = OutputTitleUpdater.UpdateTitle(InputBox.Text);
 
         if (e.Key == Key.Enter)
         {
@@ -172,7 +169,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
         BinaryOutputTextBox.Text =
             ConverterPointer.PointerCaller(InputBox.Text);
-        OutputBoxDynamicTitle.Text =
+        BinaryOutputDinamicTitle.Text =
             OutputTitleUpdater.UpdateTitleWithBit(InputBox.Text, ConversionUtilities.GetMagnitude(InputBox.Text));
     }
     

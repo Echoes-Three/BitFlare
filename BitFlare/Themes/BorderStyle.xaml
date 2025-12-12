@@ -48,7 +48,10 @@
     <!-- Data Triggered Binary output copy button border-->
     <Style x:Key="OutputCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
+            <DataTrigger Binding="{Binding BinaryOutput}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding BinaryOutput}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
         </Style.Triggers>
@@ -57,7 +60,10 @@
     <!-- Data Triggered hexadecimal copy button border -->
     <Style x:Key="HexadecimalCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
+            <DataTrigger Binding="{Binding HexadecimalOutput}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding HexadecimalOutput}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>
         </Style.Triggers>

@@ -1,4 +1,4 @@
-﻿<Window x:Class="BitFlare.MainWindow"
+﻿<Window x:Class="BitFlare.View.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -8,7 +8,7 @@
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
-        Icon="Assets/Icon/BitFlare-Icon.ico"
+        Icon="/Assets/Icon/BitFlare-Icon.ico"
         Title="MainWindow" Height="400" Width="600">
     
     <Border Style="{DynamicResource MainWindowBorder}">
@@ -23,7 +23,7 @@
             <Rectangle Grid.Row="0" Grid.RowSpan="2">
                 <Rectangle.Fill>
                     <ImageBrush
-                        ImageSource="Assets/Texture/noise-pattern-250x250.png"
+                        ImageSource="/Assets/Texture/noise-pattern-250x250.png"
                         Opacity="0.1"
                         TileMode="Tile"
                         Viewport="0,0,128,128"
@@ -205,7 +205,7 @@
 
                     <!-- Output title (dynamic) -->
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                               x:Name="OutputBoxDynamicTitle"
+                               x:Name="BinaryOutputDinamicTitle"
                                Text="OUTPUT"
                                Style="{DynamicResource BasicTextStyle}"
                                Tag="OutputTitle"/>
@@ -215,6 +215,7 @@
                             Style="{StaticResource BasicBorderStyle}">
                         <TextBox
                             x:Name="BinaryOutputTextBox"
+                            Text="{Binding BinaryOutput}"
                             Style="{StaticResource OutputTextBox}"/>
                     </Border>
                     
@@ -231,6 +232,7 @@
                             Style="{StaticResource BasicBorderStyle}" >
                         <TextBox
                             x:Name="HexadecimalOutputTextBox"
+                            Text="{Binding HexadecimalOutput}"
                             Style="{StaticResource OutputTextBox}"
                             Tag="HexadecimalOutputTextBox"/>
                     </Border>
@@ -247,8 +249,8 @@
                                 x:Name="BinaryCopyButtonBorder"
                                 Style="{DynamicResource OutputCopyButtonBorderHover}">
                             <Button Grid.Row="3" Grid.Column="1"
-                                    x:Name="OutputCopyButton"
-                                    Click="OutputCopyButton_Click"
+                                    x:Name="BinaryCopyButton"
+                                    Command="{Binding CopyBinary}"
                                     Content="COPY"
                                     Style="{DynamicResource OutputCopyButtonHover}"/>
                         </Border>
@@ -267,7 +269,7 @@
                                 Style="{DynamicResource HexadecimalCopyButtonBorderHover}">
                             <Button Grid.Row="3" Grid.Column="1"
                                     x:Name="HexadecimalCopyButton"
-                                    Click="HexadecimalCopyButton_Click"
+                                    Command="{Binding CopyHexadecimal}"
                                     Content="COPY"
                                     Style="{DynamicResource HexadecimalCopyButtonHover}"/>
                         </Border>

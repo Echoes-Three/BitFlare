@@ -3,8 +3,6 @@ C:\Users\migue\RiderProjects\BitFlare\BitFlare\bin\Debug\net9.0-windows\BitFlare
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\bin\Debug\net9.0-windows\BitFlare.deps.json
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\bin\Debug\net9.0-windows\BitFlare.runtimeconfig.json
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\bin\Debug\net9.0-windows\BitFlare.pdb
-C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\MainWindow.baml
-C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\MainWindow.g.cs
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\App.g.cs
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare_MarkupCompile.cache
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare_MarkupCompile.lref
@@ -24,5 +22,6 @@ C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\B
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\Brushes.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\ButtonStyle.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\MainWindowStyle.baml
-C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\TextStyle.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\TypeFace.baml
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\View\MainWindow.baml
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\View\MainWindow.g.cs
