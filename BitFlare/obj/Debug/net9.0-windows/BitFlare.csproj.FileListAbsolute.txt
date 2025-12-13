@@ -25,3 +25,7 @@ C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\M
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\Themes\TypeFace.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\View\MainWindow.baml
 C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\View\MainWindow.g.cs
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare.csproj.AssemblyReference.cache
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\bin\Debug\net9.0-windows\Microsoft.Xaml.Behaviors.dll
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\BitFlare.csproj.Up2Date
+C:\Users\migue\RiderProjects\BitFlare\BitFlare\obj\Debug\net9.0-windows\GeneratedInternalTypeHelper.g.cs

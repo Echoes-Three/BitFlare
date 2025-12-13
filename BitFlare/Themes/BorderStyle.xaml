@@ -72,13 +72,15 @@
     <!-- Data Triggered convert button border-->
     <Style x:Key="ConvertButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <!-- <Condition Binding="{Binding Text, ElementName=InputBox}" Value=""/> -->
-                    <Condition Binding="{Binding IsValidToConvert}" Value="False"/>
-                </MultiDataTrigger.Conditions>
+            <DataTrigger Binding="{Binding Input}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
-            </MultiDataTrigger>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Input}" Value="{x:Null}">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsValidToConvert}" Value="False">
+                <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
     

@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "wv2nu6qHgnE=",
+  "dgSpecHash": "saQ9yZO3VTI=",
   "success": true,
   "projectFilePath": "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\migue\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.135\\microsoft.xaml.behaviors.wpf.1.1.135.nupkg.sha512"
+  ],
   "logs": []
 }

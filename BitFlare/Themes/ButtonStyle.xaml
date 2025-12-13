@@ -41,7 +41,11 @@
         <Setter Property="Width" Value="100"/>
         
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=HexadecimalOutputTextBox}" Value="">
+            <DataTrigger Binding="{Binding HexadecimalOutput}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding HexadecimalOutput}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False"/>
                 <Setter Property="Foreground" Value="DimGray"/>
             </DataTrigger>
@@ -54,7 +58,11 @@
         <Setter Property="Width" Value="100"/>
         
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=BinaryOutputTextBox}" Value="">
+            <DataTrigger Binding="{Binding BinaryOutput}" Value="">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding BinaryOutput}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False"/>
                 <Setter Property="Foreground" Value="DimGray"/>
             </DataTrigger>
@@ -67,15 +75,18 @@
         <Setter Property="Width" Value="100"/>
         
         <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <!-- <Condition Binding="{Binding Text, ElementName=InputBox}" Value=""/> -->
-                    <Condition Binding="{Binding IsValidToConvert}" Value="False"/>
-                </MultiDataTrigger.Conditions>
-                
+            <DataTrigger Binding="{Binding Input}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
                 <Setter Property="Foreground" Value="DimGray"/>
-            </MultiDataTrigger>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Input}" Value="{x:Null}">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsValidToConvert}" Value="False">
+                <Setter Property="IsEnabled" Value="False"/>
+                <Setter Property="Foreground" Value="DimGray"/>
+            </DataTrigger>
         </Style.Triggers>
     </Style>
     

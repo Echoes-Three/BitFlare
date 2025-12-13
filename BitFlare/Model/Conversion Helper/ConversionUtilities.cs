@@ -1,32 +1,30 @@
+using BitFlare.Logic;
 using BitFlare.Logic.Input_Logic;
+using BitFlare.Model.Input_Logic;
 
-namespace BitFlare.Logic.Conversion_Helper;
+namespace BitFlare.Model.Conversion_Helper;
 
 public static class ConversionUtilities
 {
-    internal static bool IsNegative { get; set; }
-    internal static ulong ReadyToConvert {get; set; }
-    internal static BitDefinition BitMagnitude {get; set;}
-    internal static TypeDefinition InputType { get; set; } = TypeDefinition.Integer;
+    public static bool IsNegative { get; private set; }
+    public static ulong ReadyToConvert { get; private set; }
+    public static BitDefinition BitMagnitude { get; private set; }
+    public static TypeDefinition InputType { get; private set; } = TypeDefinition.Integer;
 
-    internal static bool SignChecker(string inputBoxText) =>
-         IsNegative = inputBoxText.StartsWith('-');
-    
-    internal static ulong InputParser(string toParse)
+    public static void Initializers(string? input)
     {
-        if (InputTypeDefinition.InputFilter(toParse) == TypeDefinition.InvalidType)
-            return 0;
+        IsNegative = input.StartsWith('-');
+        
+        if (InputTypeDefinition.Current == TypeDefinition.InvalidType)
+            ReadyToConvert = 0;
         if (IsNegative)
-            toParse = toParse.Replace("-","");
-        if (toParse.Contains(','))
-            toParse = toParse.Replace(",","");
-
-        return ReadyToConvert = ulong.Parse(toParse);
-    }
-    
-    internal static BitDefinition MagnitudeChecker()
-    {
-        var bit = ReadyToConvert switch
+            input = input.Replace("-","");
+        if (input.Contains(','))
+            input = input.Replace(",","");
+        
+        ReadyToConvert = ulong.Parse(input);
+        
+        BitMagnitude = ReadyToConvert switch
         { 
             <= byte.MaxValue
                 => BitDefinition.EightBit,
@@ -35,21 +33,6 @@ public static class ConversionUtilities
             > ushort.MaxValue
                 => BitDefinition.ThirtyTwoBit
         };
-
-        return BitMagnitude = bit;
-    }
-    
-    public static BitDefinition GetMagnitude(string inputBoxText)
-    {
-        InputParser(inputBoxText);
-        return MagnitudeChecker();
-    }
-    
-    public static ulong GetParsed(string inputBoxText)
-    {
-        SignChecker(inputBoxText);
-        var parsed = InputParser(inputBoxText);
-        return parsed;
     }
     
     internal static string FormatedOutput(int[] paddedResult)

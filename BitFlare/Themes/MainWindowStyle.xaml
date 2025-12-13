@@ -33,8 +33,7 @@
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Bottom"/>
             </Trigger>
-            <Trigger Property="Tag" Value="InvalidCharacterWarning">
-                <Setter Property="Visibility" Value="Hidden"/>
+            <Trigger Property="Tag" Value="WarningText">
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Margin" Value="0"/>
                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -57,7 +56,7 @@
         </Style.Triggers>
     </Style>
     
-    <!-- Output box -->
+    <!-- Text box -->
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>
         <Setter Property="Margin" Value="10,0,0,0"/>

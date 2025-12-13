@@ -1,20 +1,17 @@
-using BitFlare.Logic.Input_Logic;
+using BitFlare.Logic;
+using BitFlare.Model.Input_Logic;
 
-namespace BitFlare.Logic.Conversion_Helper;
+namespace BitFlare.Model.Conversion_Helper;
 
-public class ConverterPointer
+public static class ConverterPointer
 {
     public static string PointerCaller(string inputBoxText)
     {
         var conversionResult = "";
         
-        switch (InputTypeDefinition.InputFilter(inputBoxText))
+        switch (InputTypeDefinition.Current)
         {
             case TypeDefinition.Integer:
-                ConversionUtilities.SignChecker(inputBoxText);
-                ConversionUtilities.InputParser(inputBoxText);
-                ConversionUtilities.MagnitudeChecker();
-                ConversionUtilities.InputType = TypeDefinition.Integer;
                 conversionResult = IntegerConversionPointer();
                 break;
             /*case "FLOATING POINT":

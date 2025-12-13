@@ -1,6 +1,7 @@
-using System.ComponentModel;
 using System.Text.RegularExpressions;
-namespace BitFlare.Logic.Input_Logic;
+using BitFlare.Logic;
+
+namespace BitFlare.Model.Input_Logic;
 
 public static class InputTypeDefinition
 {
@@ -8,18 +9,20 @@ public static class InputTypeDefinition
     private const string FloatingPointRegexFilter = @"^-?(?:[0-9]+\.[0-9]+|[0-9]{1,3}(?:,[0-9]{3})*\.[0-9]+)$";
     private const string ENotationRegexFilter = @"^-?[1-9](?:\.[0-9]+)?e-?[0-9]{1,3}$";
 
-    public static TypeDefinition InputFilter(string inputBoxText)
+    public static TypeDefinition Current { get; private set; }
+
+    public static void InputFilter(string input)
     {
         var filters =
             (IntegerFilter: new Regex(IntegerRegexFilter),
             FloatingPointFilter: new Regex(FloatingPointRegexFilter),
             ENotationFilter: new Regex(ENotationRegexFilter));
         
-        return inputBoxText switch
+        Current = input switch
         {
-            _ when filters.IntegerFilter.IsMatch(inputBoxText) => TypeDefinition.Integer,
-            _ when filters.FloatingPointFilter.IsMatch(inputBoxText) => TypeDefinition.FloatingPoint,
-            _ when filters.ENotationFilter.IsMatch(inputBoxText) => TypeDefinition.ENotation,
+            _ when filters.IntegerFilter.IsMatch(input) => TypeDefinition.Integer,
+            _ when filters.FloatingPointFilter.IsMatch(input) => TypeDefinition.FloatingPoint,
+            _ when filters.ENotationFilter.IsMatch(input) => TypeDefinition.ENotation,
             _ => TypeDefinition.InvalidType
         };
     }
