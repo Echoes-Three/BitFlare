@@ -2,7 +2,7 @@ namespace BitFlare.Logic.Input_Logic;
 
 public static class OutputTitleUpdater
 {
-    public static string UpdateTitle(string input, BitDefinition? bitDefinition = null)
+    public static string UpdateTitle(string input, DefinedBits? bitDefinition = null)
     {
         var updatedTitle = input switch
         {
@@ -13,13 +13,13 @@ public static class OutputTitleUpdater
         return updatedTitle;
     }
 
-    private static string Bit(BitDefinition? bitDefinition)
+    private static string Bit(DefinedBits? bitDefinition)
     {
         return bitDefinition switch 
         {
-            BitDefinition.EightBit => "8-BIT",
-            BitDefinition.SixteenBit => "16-BIT",
-            BitDefinition.ThirtyTwoBit => "32-BIT",
+            DefinedBits.EightBit => "8-BIT",
+            DefinedBits.SixteenBit => "16-BIT",
+            DefinedBits.ThirtyTwoBit => "32-BIT",
             null => ""
         };
     }

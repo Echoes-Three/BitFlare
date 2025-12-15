@@ -1,6 +1,6 @@
 namespace BitFlare.Logic.Input_Logic;
 
-public static class InputValidation
+public static class CharacterValidation
 {
     private const string AllowedCharacters = "1234567890-eE,. ";
     private static bool HasValid { get; set; } = true;

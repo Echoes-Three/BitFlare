@@ -8,14 +8,14 @@ public static class ConversionUtilities
 {
     public static bool IsNegative { get; private set; }
     public static ulong ReadyToConvert { get; private set; }
-    public static BitDefinition BitMagnitude { get; private set; }
-    public static TypeDefinition InputType { get; private set; } = TypeDefinition.Integer;
+    public static DefinedBits BitMagnitude { get; private set; }
+    public static DefinedTypes InputType { get; private set; } = DefinedTypes.Integer;
 
-    public static void Initializers(string? input)
+    public static void Initializers(string input)
     {
         IsNegative = input.StartsWith('-');
         
-        if (InputTypeDefinition.Current == TypeDefinition.InvalidType)
+        if (TypeClassification.Current == DefinedTypes.InvalidType)
             ReadyToConvert = 0;
         if (IsNegative)
             input = input.Replace("-","");
@@ -27,11 +27,11 @@ public static class ConversionUtilities
         BitMagnitude = ReadyToConvert switch
         { 
             <= byte.MaxValue
-                => BitDefinition.EightBit,
+                => DefinedBits.EightBit,
             <= ushort.MaxValue
-                => BitDefinition.SixteenBit,
+                => DefinedBits.SixteenBit,
             > ushort.MaxValue
-                => BitDefinition.ThirtyTwoBit
+                => DefinedBits.ThirtyTwoBit
         };
     }
     
@@ -41,14 +41,14 @@ public static class ConversionUtilities
 
         switch (InputType)
         {
-            case TypeDefinition.Integer:
-            case TypeDefinition.FloatingPoint:
+            case DefinedTypes.Integer:
+            case DefinedTypes.FloatingPoint:
                 // 0000 0000 0000 0000
                 var spaceLimiter = BitMagnitude switch
                 {
-                    BitDefinition.EightBit => 0,
-                    BitDefinition.SixteenBit => 2,
-                    BitDefinition.ThirtyTwoBit => 6
+                    DefinedBits.EightBit => 0,
+                    DefinedBits.SixteenBit => 2,
+                    DefinedBits.ThirtyTwoBit => 6
                 };
         
                 for (var i = (bitSpaces: 4, accounter: 0);
@@ -58,7 +58,7 @@ public static class ConversionUtilities
                     formatted = formatted.Insert(i.bitSpaces + i.accounter, " ");
                 }
                 break;
-            case TypeDefinition.ENotation:
+            case DefinedTypes.ENotation:
                 // 0 00000000 00000000000000000000000
                 break;
         }

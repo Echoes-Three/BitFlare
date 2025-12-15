@@ -9,9 +9,9 @@ public static class ConverterPointer
     {
         var conversionResult = "";
         
-        switch (InputTypeDefinition.Current)
+        switch (TypeClassification.Current)
         {
-            case TypeDefinition.Integer:
+            case DefinedTypes.Integer:
                 conversionResult = IntegerConversionPointer();
                 break;
             /*case "FLOATING POINT":

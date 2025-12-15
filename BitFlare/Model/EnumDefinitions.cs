@@ -1,7 +1,7 @@
 namespace BitFlare.Logic;
 
-public enum BitDefinition
+public enum DefinedBits
 {EightBit = 8, SixteenBit = 16, ThirtyTwoBit = 32 }
 
-public enum TypeDefinition
+public enum DefinedTypes
 {Integer,  FloatingPoint, ENotation, InvalidType}

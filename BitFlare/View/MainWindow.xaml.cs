@@ -26,6 +26,19 @@ public partial class MainWindow : Window
         if (e.ButtonState == MouseButtonState.Pressed) DragMove();
     }
     
+    private void InputBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+    {
+        if (e.OriginalSource is TextBox textBox)
+        {
+            textBox.Dispatcher.BeginInvoke(() => textBox.SelectAll());
+        }
+    }
+
+    private void Grid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        grid.Focus();
+    }
+    
     private static async void ClickAnimation(Button button)
     {
         button.Margin = button.Margin with { Top = 10 };
@@ -49,28 +62,12 @@ public partial class MainWindow : Window
         HexadecimalCopyButton.Content = "COPY";
     }
     
-    private void Utilities_OnKeyUp(object sender, KeyEventArgs e)
-    {
-        
-        if (e.Key == Key.Enter)
-            Keyboard.ClearFocus();
-    }
-    
     private async void ConvertAnimation()
     {
         ClickAnimation(ConvertButton);
         ConvertButton.Content = "...";
         await Task.Delay(1000);
         ConvertButton.Content = "CONVERT";
-    }
-    
-    /* Select input box text on focus*/
-    private void InputBox_OnGotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
-    {
-        if (e.OriginalSource is TextBox textBox)
-        {
-            textBox.Dispatcher.BeginInvoke(() => textBox.SelectAll());
-        }
     }
     
 }

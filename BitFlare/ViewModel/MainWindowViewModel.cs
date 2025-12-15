@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Media;
 using BitFlare.Logic;
 using BitFlare.Logic.Input_Logic;
@@ -19,65 +20,83 @@ public class MainWindowViewModel : ViewModelBase
     {
         CopyBinary = new RelayCommand(execute: _ => OnBinaryCopy());
         CopyHexadecimal = new RelayCommand(execute: _ => OnHexadecimalCopy());
-        ConvertInput = new RelayCommand(execute: _ => OnConvertInput(), canExecute: _ => CanConvert() );
+        ConvertInput = new RelayCommand(execute: _ => OnConvertInput(), canExecute: _ => IsValidToConvert );
     }
 
     public Action BinaryCopyAnimation;
     public Action HexadecimalCopyAnimation;
     public Action ConvertAnimation;
-
-    private bool CanConvert() =>
-         !string.IsNullOrEmpty(Input) && Sanitizer();
     
-    private bool Sanitizer()
+    private void InputValidation(string input)
     {
-        (Input, CaretIndex) = InputSanitizer.Sanitizers(Input, CaretIndex);
-        ConversionUtilities.Initializers(Input);
-        InputTypeDefinition.InputFilter(Input);
-        
-        if (InputValidation.IsValid(Input) && InputTypeDefinition.Current != TypeDefinition.InvalidType)
-            /*If Input has an invalid character OR is not a valid type*/
+        if (CharacterValidation.IsValid(input))
         {
-            if (IsWithinLimit()) /*Checks if it's withing the limits of the conversion for its type*/
+            TypeClassification.TypeFilter(input);
+            if (TypeClassification.Current != DefinedTypes.InvalidType)
             {
-                InputBoxBorder = Brushes.White;
-                WarningText = "INVALID CHARACTER OR FORMAT";
-                _warningVisibility = Visibility.Hidden;
-                IsValidToConvert = true;
+                switch (TypeClassification.Current)
+                {
+                    case DefinedTypes.FloatingPoint:
+                    case DefinedTypes.Integer:
+                        ConversionUtilities.Initializers(input);
+                        break;
+                    case DefinedTypes.ENotation:
+                        //E-notation decoder
+                        break;
+                    
+                        
+                        
+                }
+                if (IsWithinLimit())
+                {
+                    IsValid();
+                    WarningText = "INVALID CHARACTER!";
+                }
+                else
+                {
+                    IsInvalid();
+                    WarningText = CheckMagnitudeLimit();
+                }
             }
-            else /*If its not withing the limits gives the appropriate waring*/
+            else
             {
-                InputBoxBorder = Brushes.Yellow;
-                WarningText = DealsWithMagnitudeLimit();
-                _warningVisibility = Visibility.Visible;
-                IsValidToConvert = false;
-                
+                IsInvalid();
+                WarningText = "INVALID NUMBER FORMAT!";
             }
         }
-        else /*If Input has an invalid character OR is not a valid type*/
+        else
         {
-            InputBoxBorder = Brushes.Yellow;
-            WarningText = "INVALID CHARACTER OR FORMAT";
-            _warningVisibility = Visibility.Visible;
-            IsValidToConvert = false;
+            IsInvalid();
+            WarningText = "INVALID CHARACTER!";
         }
-        
-        return IsValidToConvert;
     }
-
-    private static string DealsWithMagnitudeLimit()
+    
+    private void IsInvalid()
+    {
+        InputBoxBorder = Brushes.Yellow;
+        WarningVisibility = Visibility.Visible;
+        IsValidToConvert = false;
+    }
+    private void IsValid()
+    {
+        InputBoxBorder = Brushes.White;
+        WarningVisibility = Visibility.Hidden;
+        IsValidToConvert = true;
+    }
+    
+    private static string CheckMagnitudeLimit()
     {
         var limitMessage = "";
         if (ConversionUtilities.IsNegative)
         {
-            if (InputTypeDefinition.Current == TypeDefinition.Integer)
+            if (TypeClassification.Current == DefinedTypes.Integer)
                 limitMessage = "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648";
             //else
                 //Add limit to negative fractions
         }
         else
         {
-            if (InputTypeDefinition.Current == TypeDefinition.Integer)
+            if (TypeClassification.Current == DefinedTypes.Integer)
                 limitMessage = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
             //else
                 //Add limit to positive fractions
@@ -90,9 +109,9 @@ public class MainWindowViewModel : ViewModelBase
     {
         var isWithinLimit = false;
         var parsedInput = ConversionUtilities.ReadyToConvert;
-        switch (InputTypeDefinition.Current)
+        switch (TypeClassification.Current)
         {
-            case TypeDefinition.Integer:
+            case DefinedTypes.Integer:
                 isWithinLimit = ConversionUtilities.IsNegative switch
                 {
                     true when parsedInput <= /*-*/2_147_483_648 => true,
@@ -125,13 +144,12 @@ public class MainWindowViewModel : ViewModelBase
     ////////////// Properties
 
     private bool _isValidToConvert;
-
     public bool IsValidToConvert
     {
         get => _isValidToConvert;
         set
         {
-            if (!Equals(_isValidToConvert, value)) return;
+            if (Equals(_isValidToConvert, value)) return;
             _isValidToConvert = value;
             OnPropertyChanged();
         }
@@ -144,7 +162,7 @@ public class MainWindowViewModel : ViewModelBase
         get => _warningVisibility;
         set
         {
-            if (!Equals(_warningVisibility, value)) return;
+            if (Equals(_warningVisibility, value)) return;
             _warningVisibility = value;
             OnPropertyChanged();
         }
@@ -156,7 +174,7 @@ public class MainWindowViewModel : ViewModelBase
         get => _inputBoxBorder;
         set
         {
-            if (!Equals(_inputBoxBorder, value)) return;
+            if (Equals(_inputBoxBorder, value)) return;
             _inputBoxBorder = value;
             OnPropertyChanged();
         }
@@ -168,7 +186,7 @@ public class MainWindowViewModel : ViewModelBase
         get => _warningText;
         set
         {
-            if (!Equals(_warningText, value)) return;
+            if (Equals(_warningText, value)) return;
             _warningText = value;
             OnPropertyChanged();
         }
@@ -180,7 +198,7 @@ public class MainWindowViewModel : ViewModelBase
         get => _caretIndex;
         set
         {
-            if (!Equals(_caretIndex, value)) return;
+            if (Equals(_caretIndex, value)) return;
             _caretIndex = value;
             OnPropertyChanged();
         }
@@ -197,14 +215,26 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private string _input = "";
+    private string _input;
     public string Input
     {
         get => _input;
         set
         {
-            if (!Equals(_input, value)) return;
-            _input = value;
+            if (Equals(_input, value)) return;
+            
+            var (sanitized, newCaret) = InputSanitizer.Sanitizers(value, CaretIndex);
+            
+            _input = sanitized;
+            CaretIndex = newCaret;
+
+            if (string.IsNullOrEmpty(_input))
+            {
+                IsValid();
+                return;
+            }
+            InputValidation(_input);
+            
             OnPropertyChanged();
         }
     }
@@ -230,4 +260,5 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+    
 }

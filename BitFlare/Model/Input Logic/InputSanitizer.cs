@@ -4,7 +4,7 @@ namespace BitFlare.Model.Input_Logic;
 
 public static class InputSanitizer
 {
-    public static (string? input, int caretIndex) Sanitizers(string input, int caretIndex)
+    public static (string input, int caretIndex) Sanitizers(string input, int caretIndex)
     {
         if (input.Contains('+'))
             (input, caretIndex) = 
@@ -28,10 +28,10 @@ public static class InputSanitizer
         if (input.StartsWith('.'))
             (input, caretIndex) = ($"0{input}", + 2);
         
-        return InvalidSanitizer(input, caretIndex);
+        return DuplicateSanitizer(input, caretIndex);
     }
     
-    private static (string, int) InvalidSanitizer(string input, int caretIndex)
+    private static (string, int) DuplicateSanitizer(string input, int caretIndex)
     {
         var sanitizedInputBoxText = "";
 
@@ -50,8 +50,8 @@ public static class InputSanitizer
 
     private static (string, int) LenghtSanitizer(string input, int caretIndex)
     {
-        //prepare better the deciaml limeter using precison
-        if (InputTypeDefinition.Current != TypeDefinition.ENotation && input.Length > 15)
+        //prepare better the decimal limiter using precision
+        if (TypeClassification.Current != DefinedTypes.ENotation && input.Length > 15)
         {
             return (input[..15], caretIndex);
         }
