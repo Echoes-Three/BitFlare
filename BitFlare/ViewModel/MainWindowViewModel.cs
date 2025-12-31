@@ -41,11 +41,9 @@ public class MainWindowViewModel : ViewModelBase
                         ConversionUtilities.Initializers(input);
                         break;
                     case DefinedTypes.ENotation:
-                        //E-notation decoder
+                        BinaryOutput = input.ToBaseTen();
+                        //ConversionUtilities.Initializers(input);
                         break;
-                    
-                        
-                        
                 }
                 if (IsWithinLimit())
                 {

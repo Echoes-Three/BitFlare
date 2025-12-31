@@ -6,9 +6,9 @@ public static class InputSanitizer
 {
     public static (string input, int caretIndex) Sanitizers(string input, int caretIndex)
     {
-        if (input.Contains('+'))
+        if (input.Contains("++"))
             (input, caretIndex) = 
-                (input.Replace("+", ""), caretIndex < 1 ? caretIndex : caretIndex - 1);
+                (input.Replace("++", "+"), caretIndex < 1 ? caretIndex : caretIndex - 1);
         
         if (input.Contains(' '))
             (input, caretIndex) =

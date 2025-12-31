@@ -5,9 +5,9 @@ namespace BitFlare.Model.Input_Logic;
 
 public static class TypeClassification
 {
-    private const string IntegerRegexFilter = "^-?(?:[0-9]+|[0-9]{1,3}(?:,[0-9]{3})*)$";
-    private const string FloatingPointRegexFilter = @"^-?(?:[0-9]+\.[0-9]+|[0-9]{1,3}(?:,[0-9]{3})*\.[0-9]+)$";
-    private const string ENotationRegexFilter = @"^-?[1-9](?:\.[0-9]+)?e-?[0-9]{1,3}$";
+    private const string IntegerRegexFilter = "^[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})*|[0-9]+)$";
+    private const string FloatingPointRegexFilter = @"^[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})*|[0-9]+)(?:\.[0-9]+)?$";
+    private const string ENotationRegexFilter = @"^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)e[+-]?[0-9]{1,3}$";
 
     public static DefinedTypes Current { get; private set; }
 

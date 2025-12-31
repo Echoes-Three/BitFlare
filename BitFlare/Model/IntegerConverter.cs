@@ -4,16 +4,16 @@ namespace BitFlare.Logic;
 
 public static class IntegerConverter
 {
-    public static string BasicConverter(ulong parsedInput)
+    public static string BasicConverter(ulong input)
     {
-        if (parsedInput == 0) return "0";
+        if (input == 0) return "0";
 
         var converted = string.Empty;
         
-        while (parsedInput > 0)
+        while (input > 0)
         {
-            converted = parsedInput % 2 + converted;
-            parsedInput /= 2;
+            converted = input % 2 + converted;
+            input /= 2;
         }
 
         return converted;
