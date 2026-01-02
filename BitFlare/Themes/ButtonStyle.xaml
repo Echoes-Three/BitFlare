@@ -75,14 +75,6 @@
         <Setter Property="Width" Value="100"/>
         
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Input}" Value="">
-                <Setter Property="IsEnabled" Value="False"/>
-                <Setter Property="Foreground" Value="DimGray"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Input}" Value="{x:Null}">
-                <Setter Property="IsEnabled" Value="False"/>
-                <Setter Property="Foreground" Value="DimGray"/>
-            </DataTrigger>
             <DataTrigger Binding="{Binding IsValidToConvert}" Value="False">
                 <Setter Property="IsEnabled" Value="False"/>
                 <Setter Property="Foreground" Value="DimGray"/>

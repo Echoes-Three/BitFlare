@@ -10,7 +10,6 @@
 
     <ItemGroup>
       <Folder Include="Assets\Typefaces\" />
-      <Folder Include="Model\Conversion Logic\" />
     </ItemGroup>
 
     <ItemGroup>

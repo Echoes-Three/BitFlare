@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj": {}
+    "C:\\Users\\camig\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj": {}
   },
   "projects": {
-    "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj": {
+    "C:\\Users\\camig\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj",
+        "projectUniqueName": "C:\\Users\\camig\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj",
         "projectName": "BitFlare",
-        "projectPath": "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj",
-        "packagesPath": "C:\\Users\\migue\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\migue\\RiderProjects\\BitFlare\\BitFlare\\obj\\",
+        "projectPath": "C:\\Users\\camig\\RiderProjects\\BitFlare\\BitFlare\\BitFlare.csproj",
+        "packagesPath": "C:\\Users\\camig\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\camig\\RiderProjects\\BitFlare\\BitFlare\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\migue\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\camig\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0-windows"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net9.0-windows7.0": {
@@ -54,6 +54,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[9.0.11, 9.0.11]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[9.0.11, 9.0.11]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -62,7 +80,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.307/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

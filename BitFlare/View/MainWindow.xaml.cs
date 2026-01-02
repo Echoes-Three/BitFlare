@@ -36,7 +36,7 @@ public partial class MainWindow : Window
 
     private void Grid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        grid.Focus();
+        Grid.Focus();
     }
     
     private static async void ClickAnimation(Button button)

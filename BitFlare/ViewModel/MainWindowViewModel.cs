@@ -141,42 +141,81 @@ public class MainWindowViewModel : ViewModelBase
     
     ////////////// Properties
 
-    private bool _isValidToConvert;
-    public bool IsValidToConvert
+    private string _input;
+    public string Input
     {
-        get => _isValidToConvert;
+        get => _input;
         set
         {
-            if (Equals(_isValidToConvert, value)) return;
-            _isValidToConvert = value;
+            if (Equals(_input, value)) return;
+            
+            var (sanitized, newCaret) = InputSanitizer.Sanitizers(value, CaretIndex);
+
+            _input = sanitized;
+            CaretIndex = newCaret;
+            
+            if (string.IsNullOrEmpty(_input))
+            {
+                InputBoxBorder = Brushes.White;
+                WarningVisibility = Visibility.Hidden;
+                IsValidToConvert = false;
+                return;
+            }
+
+            InputValidation(_input);
             OnPropertyChanged();
         }
     }
 
-    
-    private Visibility _warningVisibility = Visibility.Hidden;
-    public Visibility WarningVisibility
+
+    private int _caretIndex;
+    public int CaretIndex
     {
-        get => _warningVisibility;
+        get => _caretIndex;
         set
         {
-            if (Equals(_warningVisibility, value)) return;
-            _warningVisibility = value;
+            if (Equals(_caretIndex, value)) return;
+            _caretIndex = value;
             OnPropertyChanged();
         }
     }
 
-    private Brush _inputBoxBorder = Brushes.White;
-    public Brush InputBoxBorder
+
+    private string _outputDynamicTitle = "OUTPUT";
+    public string OutputDynamicTitle
     {
-        get => _inputBoxBorder;
+        get => _outputDynamicTitle;
         set
         {
-            if (Equals(_inputBoxBorder, value)) return;
-            _inputBoxBorder = value;
+            _outputDynamicTitle = value;
             OnPropertyChanged();
         }
     }
+
+
+    private string _binaryOutput = "hoverhover";
+    public string BinaryOutput
+    {
+        get => _binaryOutput;
+        set
+        {
+            _binaryOutput = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    private string _hexadecimalOutput = string.Empty;
+    public string HexadecimalOutput
+    {
+        get => _hexadecimalOutput;
+        set
+        {
+            _hexadecimalOutput = value;
+            OnPropertyChanged();
+        }
+    }
+
     
     private string _warningText = "INVALID CHARACTER OR FORMAT";
     public string WarningText
@@ -189,74 +228,44 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
+
+
+    private Visibility _warningVisibility = Visibility.Hidden;
+    public Visibility WarningVisibility
+    {
+        get => _warningVisibility;
+        set
+        {
+            if (Equals(_warningVisibility, value)) return;
+            _warningVisibility = value;
+            OnPropertyChanged();
+        }
+    }
+
+
+    private Brush _inputBoxBorder = Brushes.White;
+    public Brush InputBoxBorder
+    {
+        get => _inputBoxBorder;
+        set
+        {
+            if (Equals(_inputBoxBorder, value)) return;
+            _inputBoxBorder = value;
+            OnPropertyChanged();
+        }
+    }
+
     
-    private int _caretIndex;
-    public int CaretIndex
+    private bool _isValidToConvert;
+    public bool IsValidToConvert
     {
-        get => _caretIndex;
+        get => _isValidToConvert;
         set
         {
-            if (Equals(_caretIndex, value)) return;
-            _caretIndex = value;
+            if (Equals(_isValidToConvert, value)) return;
+            _isValidToConvert = value;
             OnPropertyChanged();
+            ConvertInput.RaiseCanExecuteChanged();
         }
     }
-    
-    private string _outputDynamicTitle = "OUTPUT";
-    public string OutputDynamicTitle
-    {
-        get => _outputDynamicTitle;
-        set
-        {
-            _outputDynamicTitle = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _input;
-    public string Input
-    {
-        get => _input;
-        set
-        {
-            if (Equals(_input, value)) return;
-            
-            var (sanitized, newCaret) = InputSanitizer.Sanitizers(value, CaretIndex);
-            
-            _input = sanitized;
-            CaretIndex = newCaret;
-
-            if (string.IsNullOrEmpty(_input))
-            {
-                IsValid();
-                return;
-            }
-            InputValidation(_input);
-            
-            OnPropertyChanged();
-        }
-    }
-
-    private string _binaryOutput = string.Empty;
-    public string BinaryOutput
-    {
-        get => _binaryOutput;
-        set
-        {
-            _binaryOutput = value;
-            OnPropertyChanged();
-        }
-    }
-
-    private string _hexadecimalOutput = string.Empty;
-    public string HexadecimalOutput
-    {
-        get => _hexadecimalOutput;
-        set
-        {
-            _hexadecimalOutput = value;
-            OnPropertyChanged();
-        }
-    }
-    
 }

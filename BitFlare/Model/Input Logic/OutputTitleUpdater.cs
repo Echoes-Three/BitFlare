@@ -8,7 +8,7 @@ public static class OutputTitleUpdater
         {
             _ when input.Contains("e-") || input.Contains('.') && !input.Contains('e') => "IEEE-754 SINGLE PRECISION",
             _ when input.StartsWith('-') && !input.Contains("e-") => "2'S COMPLEMENT",
-            _ when !input.StartsWith('-') && !input.Contains("e-") => "BASIC"
+            _ when !input.StartsWith('-') && !input.Contains("e-") => "UNSIGNED"
         } + $" {Bit(bitDefinition)}";
         return updatedTitle;
     }

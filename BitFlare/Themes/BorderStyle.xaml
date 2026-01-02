@@ -5,7 +5,7 @@
     <Style x:Key="BasicBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Margin" Value="4, 4, 4, 3"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="BorderBrush" Value="{StaticResource WhiteBrush}"/>
         
         <Style.Triggers>
@@ -72,12 +72,6 @@
     <!-- Data Triggered convert button border-->
     <Style x:Key="ConvertButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Input}" Value="">
-                <Setter Property="IsEnabled" Value="False"/>
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Input}" Value="{x:Null}">
-                <Setter Property="IsEnabled" Value="False"/>
-            </DataTrigger>
             <DataTrigger Binding="{Binding IsValidToConvert}" Value="False">
                 <Setter Property="IsEnabled" Value="False"/>
             </DataTrigger>

@@ -15,7 +15,7 @@
     <Border Style="{DynamicResource MainWindowBorder}">
         
         <Grid
-            Name="grid"
+            Name="Grid"
             MouseLeftButtonDown="Grid_OnMouseLeftButtonDown"
             Focusable="True">
             <Grid.RowDefinitions>
@@ -184,7 +184,7 @@
                 <Border Grid.Row="3" Grid.Column="1"
                         Style="{DynamicResource ConvertButtonBorderHover}"
                         Tag="ConvertButton">
-                    <Button Grid.Row="3" Grid.Column="1"
+                    <Button Grid.Column="1"
                             x:Name="ConvertButton"
                             Command="{Binding ConvertInput}"
                             Content="CONVERT"
