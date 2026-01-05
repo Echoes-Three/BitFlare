@@ -13,15 +13,14 @@ public static class ConversionUtilities
 
     public static void Initializers(string input)
     {
-        IsNegative = input.StartsWith('-');
-        
-        if (TypeClassification.Current == DefinedTypes.InvalidType)
-            ReadyToConvert = 0;
-        if (IsNegative)
+        if (input.StartsWith('-'))
+        {
+            IsNegative = true;
             input = input.Replace("-","");
+        }
         if (input.Contains(','))
             input = input.Replace(",","");
-        
+        //add the 
         ReadyToConvert = ulong.Parse(input);
         
         BitMagnitude = ReadyToConvert switch

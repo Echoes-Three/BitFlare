@@ -148,8 +148,8 @@ public class MainWindowViewModel : ViewModelBase
         set
         {
             if (Equals(_input, value)) return;
-            
-            var (sanitized, newCaret) = InputSanitizer.Sanitizers(value, CaretIndex);
+           
+            var (sanitized, newCaret) = InputSafety.Sanitize(value, CaretIndex);
 
             _input = sanitized;
             CaretIndex = newCaret;

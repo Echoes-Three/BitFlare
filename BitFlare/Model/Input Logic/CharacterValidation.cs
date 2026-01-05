@@ -1,4 +1,4 @@
-namespace BitFlare.Logic.Input_Logic;
+namespace BitFlare.Model.Input_Logic;
 
 public static class CharacterValidation
 {
