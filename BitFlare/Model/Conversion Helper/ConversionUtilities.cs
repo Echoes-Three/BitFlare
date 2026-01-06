@@ -20,8 +20,8 @@ public static class ConversionUtilities
         }
         if (input.Contains(','))
             input = input.Replace(",","");
-        //add the 
-        ReadyToConvert = ulong.Parse(input);
+        
+        ReadyToConvert = uint.Parse(input);
         
         BitMagnitude = ReadyToConvert switch
         { 

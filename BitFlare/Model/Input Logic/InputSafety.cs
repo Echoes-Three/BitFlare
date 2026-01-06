@@ -16,7 +16,6 @@ public static class InputSafety
 
         BasicSanitizer();
         DuplicateSanitizer();
-        LengthSanitizer();
         
         return (Input, CaretIndex);
     }
@@ -62,43 +61,5 @@ public static class InputSafety
         }
         
         Input = sanitizedInput;
-    }
-
-    private static void LengthSanitizer()
-    {
-        string integerLimit;
-        var isNegative = false;
-
-        if (Input.StartsWith('-'))
-        {
-            integerLimit = Input.Contains(',') ? "2,147,483,648" : "2147483648";
-            isNegative = true;
-        }
-        else
-            integerLimit = Input.Contains(',') ? "4,294,967,295" : "4294967295";
-        
-        TypeClassification.TypeFilter(Input);
-
-        if (TypeClassification.Current == DefinedTypes.Integer)
-        {
-            if (isNegative)
-                Input.Remove('-');
-
-            for (var i = 0; i <= integerLimit.Length; i++)
-            {
-                
-            }
-
-        }
-        //prepare better the decimal limiter using precision
-        if (TypeClassification.Current != DefinedTypes.ENotation && input.Length > 15)
-        {
-            return (input[..15], caretIndex);
-        }
-        else
-        {
-            //prepare e-notation limiter
-        }
-        return (input, caretIndex);
     }
 }

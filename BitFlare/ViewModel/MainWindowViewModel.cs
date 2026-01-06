@@ -32,28 +32,29 @@ public class MainWindowViewModel : ViewModelBase
         if (CharacterValidation.IsValid(input))
         {
             TypeClassification.TypeFilter(input);
+            
             if (TypeClassification.Current != DefinedTypes.InvalidType)
             {
-                switch (TypeClassification.Current)
+                if (IsWithinLimit(input))
                 {
-                    case DefinedTypes.FloatingPoint:
-                    case DefinedTypes.Integer:
-                        ConversionUtilities.Initializers(input);
-                        break;
-                    case DefinedTypes.ENotation:
-                        BinaryOutput = input.ToBaseTen();
-                        //ConversionUtilities.Initializers(input);
-                        break;
-                }
-                if (IsWithinLimit())
-                {
+                    switch (TypeClassification.Current)
+                     {
+                         case DefinedTypes.FloatingPoint:
+                         case DefinedTypes.Integer:
+                             ConversionUtilities.Initializers(input);
+                             break;
+                         case DefinedTypes.ENotation:
+                             BinaryOutput = input.ToBaseTen();
+                             //ConversionUtilities.Initializers(input);
+                             break;
+                     }
                     IsValid();
                     WarningText = "INVALID CHARACTER!";
                 }
                 else
                 {
                     IsInvalid();
-                    WarningText = CheckMagnitudeLimit();
+                    WarningText = CheckMagnitudeLimit(input);
                 }
             }
             else
@@ -82,10 +83,11 @@ public class MainWindowViewModel : ViewModelBase
         IsValidToConvert = true;
     }
     
-    private static string CheckMagnitudeLimit()
+    private static string CheckMagnitudeLimit(string input)
     {
         var limitMessage = "";
-        if (ConversionUtilities.IsNegative)
+        
+        if (input.StartsWith('-'))
         {
             if (TypeClassification.Current == DefinedTypes.Integer)
                 limitMessage = "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648";
@@ -103,20 +105,77 @@ public class MainWindowViewModel : ViewModelBase
         return limitMessage;
     }
 
-    private static bool IsWithinLimit()
+    private static bool IsWithinLimit(string input)
     {
         var isWithinLimit = false;
-        var parsedInput = ConversionUtilities.ReadyToConvert;
-        switch (TypeClassification.Current)
+        string integerLimit;
+        bool isNegative;
+
+        if (input.StartsWith('-'))
+            (integerLimit, isNegative) =
+                input.Contains(',') ? ("2,147,483,648", true) : ("2147483648", true);
+        else
+            (integerLimit, isNegative) =
+                input.Contains(',') ? ("4,294,967,295", false) : ("4294967295", false);
+
+        TypeClassification.TypeFilter(input);
+
+        if (TypeClassification.Current == DefinedTypes.Integer)
         {
-            case DefinedTypes.Integer:
-                isWithinLimit = ConversionUtilities.IsNegative switch
+            if (isNegative)
+                input.Remove('-');
+
+            if (input.Contains(','))
+            {
+                if (input.Length < 13)
                 {
-                    true when parsedInput <= /*-*/2_147_483_648 => true,
-                    false when parsedInput <= 4_294_967_295 => true,
-                    _ => isWithinLimit
-                };
-                break;
+                    isWithinLimit = true;
+                }
+                else if (input.Length <= 13)
+                {
+                    for (var index = 0; index <= 12; index++)
+                    {
+                        var userDigit = input[index] - '0';
+                        var limitDigit = integerLimit[index] - '0';
+
+                        if (userDigit <= limitDigit) 
+                            isWithinLimit = true;
+                        else
+                        {
+                            isWithinLimit = false;
+                            break;
+                        }
+                    }
+                }
+                else 
+                    isWithinLimit = false;
+                
+            }
+            else
+            {
+                if (input.Length < 10)
+                {
+                    isWithinLimit = true;
+                }
+                else if (input.Length == 10)
+                {
+                    for (var index = 0; index <= 9; index++)
+                    {
+                        var userDigit = input[index] - '0';
+                        var limitDigit = integerLimit[index] - '0';
+
+                        if (userDigit <= limitDigit) 
+                            isWithinLimit = true;
+                        else
+                        {
+                            isWithinLimit = false;
+                            break;
+                        }
+                    }
+                }
+                else 
+                    isWithinLimit = false;
+            }
         }
         
         return isWithinLimit;
@@ -193,7 +252,7 @@ public class MainWindowViewModel : ViewModelBase
     }
 
 
-    private string _binaryOutput = "hoverhover";
+    private string _binaryOutput = "testing";
     public string BinaryOutput
     {
         get => _binaryOutput;
