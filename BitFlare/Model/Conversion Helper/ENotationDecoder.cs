@@ -10,7 +10,7 @@ public static class ENotationDecoder
     
     public static string ToBaseTen(this string input)
     {
-        var normalized = input.Normalize();
+        var normalized = input.ToNormalized();
         var eNotation = Regex.Match(normalized, GroupCapturing);
         var baseTen = new List<string[]>();
 
@@ -57,40 +57,61 @@ public static class ENotationDecoder
         return string.Join("",baseTen[0]) + string.Join("",baseTen[1]) + string.Join("",baseTen[2]);
     }
 
-    private static string Normalization(this string input)
+    private static string ToNormalized(this string input)
     {
+        if (input is "0e0" or "0.0e0") return "0.0e0";
+        
         var normalized = input;
         
-        if (input.Contains('+')) input = input.Replace("+", "");
-
+        //Positive sign: +5e+5 => 5e5
+        if (input.Contains('+')) normalized = normalized.Replace("+", "");
+        
         if (input.Contains('.'))
-        {
-            if (input.StartsWith('.') && input[input.IndexOf('e') + 1] == '-')
+        { 
+            //Remove trailing zeros: 5.5000e5 => 5.5e5
+            while (normalized[normalized.IndexOf('e') - 1] == '0') 
+                normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
+            //Remove leading zeros: 0005.5e5 => 5.5e5
+            while (normalized[0] == '0')
+                normalized = normalized.Remove(0, 1);
+            
+            //No leading digit: .5e5 => 5e4
+            if (input.StartsWith('.'))
             {
+                //Shifts the radix to the correct spot
                 for (var digit = 1;; digit++)
                 {
-                    if (input[digit] != '0')
+                    if (normalized[digit] != '0')
                     {
-                        var leadingDigit = input[digit];
-                        if (input[input.IndexOf('e') + 1] == '-')
+                        var leadingDigit = normalized[digit];
+                        if (normalized[normalized.IndexOf('e') + 1] == '-')
                         {
+                            //.5e-5 => 5e-6
                             normalized = normalized[normalized.IndexOf(leadingDigit)..(normalized.IndexOf('e') + 2)];
                             normalized += (int.Parse(input[(input.IndexOf('e') + 2)..]) + input.IndexOf(leadingDigit))
                                 .ToString();
-                            normalized = normalized.Insert(1, ".");
+                            
+                            if (normalized[..normalized.IndexOf('e')].Length != 1)
+                                normalized = normalized.Insert(1, ".");
+                            
                             break;
                         }
-
+                        //.5e5 => 5e4
                         normalized = normalized[normalized.IndexOf(leadingDigit)..(normalized.IndexOf('e') + 1)];
                         normalized += (int.Parse(input[(input.IndexOf('e') + 1)..]) - input.IndexOf(leadingDigit))
                             .ToString();
-                        normalized = normalized.Insert(1, ".");
+                        
+                        if (normalized[..normalized.IndexOf('e')].Length != 1)
+                            normalized = normalized.Insert(1, ".");
+                        
                         break;
                     }
-
+                    //Catches .0ex scenarios
                     if (input[digit] == 'e') normalized = "0.0e0";
                 }
             }
+            
+            //
         }
         else
         {
