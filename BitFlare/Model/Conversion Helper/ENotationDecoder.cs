@@ -60,35 +60,42 @@ public static class ENotationDecoder
     private static string ToNormalized(this string input)
     {
         if (input is "0e0" or "0.0e0") return "0.0e0";
-        
+    
         var normalized = input;
+        var snapshot = normalized;
+        var marker = snapshot.IndexOf('e');
         
         //Positive sign: +5e+5 => 5e5
         if (input.Contains('+')) normalized = normalized.Replace("+", "");
         
         if (input.Contains('.'))
         { 
-            //Remove trailing zeros: 5.5000e5 => 5.5e5
-            while (normalized[normalized.IndexOf('e') - 1] == '0') 
-                normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
-            //Remove leading zeros: 0005.5e5 => 5.5e5
+            //Remove leading zeros: 0005.5e5 => 5.5e5 or 000.5e5 => .5e5
             while (normalized[0] == '0')
                 normalized = normalized.Remove(0, 1);
             
+            //Remove trailing zeros: 0005.5e5 => 5.5e5 or .5000e5 => 5.5e5
+            while (normalized[normalized.IndexOf('e') - 1] == '0') 
+                normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
+            
             //No leading digit: .5e5 => 5e4
-            if (input.StartsWith('.'))
+            if (normalized.StartsWith('.'))
             {
+                //condition changed, so does the snapshot
+                snapshot = normalized;
+                
                 //Shifts the radix to the correct spot
                 for (var digit = 1;; digit++)
                 {
                     if (normalized[digit] != '0')
                     {
                         var leadingDigit = normalized[digit];
+                        
                         if (normalized[normalized.IndexOf('e') + 1] == '-')
                         {
                             //.5e-5 => 5e-6
                             normalized = normalized[normalized.IndexOf(leadingDigit)..(normalized.IndexOf('e') + 2)];
-                            normalized += (int.Parse(input[(input.IndexOf('e') + 2)..]) + input.IndexOf(leadingDigit))
+                            normalized += (int.Parse(snapshot[(marker + 2)..]) + snapshot.IndexOf(leadingDigit))
                                 .ToString();
                             
                             if (normalized[..normalized.IndexOf('e')].Length != 1)
@@ -98,7 +105,7 @@ public static class ENotationDecoder
                         }
                         //.5e5 => 5e4
                         normalized = normalized[normalized.IndexOf(leadingDigit)..(normalized.IndexOf('e') + 1)];
-                        normalized += (int.Parse(input[(input.IndexOf('e') + 1)..]) - input.IndexOf(leadingDigit))
+                        normalized += (int.Parse(snapshot[(snapshot.IndexOf('e') + 1)..]) - snapshot.IndexOf(leadingDigit))
                             .ToString();
                         
                         if (normalized[..normalized.IndexOf('e')].Length != 1)
@@ -111,24 +118,91 @@ public static class ENotationDecoder
                 }
             }
             
-            //
-        }
-        else
-        {
-            
-        }
-
-        if (input.Contains('.'))
-        {
-            if (input[input.IndexOf('e') + 1] == '-')
+            //If the radix is in index 1, no correction is required. e.g. 5.001e5
+            if (normalized.IndexOf('.') != 1 && normalized.IndexOf('e') != 1)
             {
+                //condition changed, so does the snapshot
+                snapshot = normalized;
                 
-                //create a cleaner that gets the 0s before a norma digit in a negative(fraction) notation with "." and removes it
-                //2.0455000e-6
-                // 1
+                //No empty or zeroed exponent digits: 500.e5 => 5e7 or 500.1e5 => 5.001e7
+                if (normalized[normalized.IndexOf('e') - 1] == '.')
+                {
+                    if (normalized[normalized.IndexOf('e') + 1] == '-')
+                    {
+                        //500.e-5 => 5e-3
+                        normalized = normalized.Replace(".", "");
+                        normalized = normalized[..(normalized.IndexOf('e') + 2)];
+
+                        while (normalized[normalized.IndexOf('e') - 1] == '0')
+                            normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
+
+                        normalized += (int.Parse(snapshot[(marker + 2)..]) - snapshot[1..marker].Length)
+                            .ToString();
+                    }
+                    else
+                    {
+                        //500.e5 => 5e7
+                        normalized = normalized.Replace(".", "");
+                        normalized = normalized[..(normalized.IndexOf('e') + 1)];
+
+                        while (normalized[normalized.IndexOf('e') - 1] == '0')
+                            normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
+
+                        normalized += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..marker].Length)
+                            .ToString();
+                    }
+                }
+                else
+                {
+                    if (normalized[normalized.IndexOf('e') + 1] == '-')
+                    {
+                        //500.1e5 => 5.001e7
+                        normalized = normalized.Replace(".", "");
+                        normalized = normalized[..(normalized.IndexOf('e') + 2)];
+                        normalized += (int.Parse(snapshot[(marker + 2)..]) - snapshot[1..marker].Length)
+                            .ToString();
+                    }
+                    else
+                    {
+                        //500.1e-5 => 5.001e-3
+                        normalized = normalized.Replace(".", "");
+                        normalized = normalized[..(normalized.IndexOf('e') + 1)];
+                        normalized += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..marker].Length)
+                            .ToString();
+                    }
+                }
+
+                if (normalized[..normalized.IndexOf('e')].Length != 1)
+                    normalized = normalized.Insert(1, ".");
             }
         }
+        else if (normalized.IndexOf('e') != 1)
+        {
+            //condition changed, so does the snapshot
+            snapshot = normalized;
+            
+            //Remove leading zeros: 005e5 => 5e5
+            while (normalized[0] == '0')
+                normalized = normalized.Remove(0, 1);
+            
+            int exponent;
 
+            exponent = int.Parse(snapshot[snapshot.IndexOf('e') + 1] != '-' ? snapshot[(marker + 1)..] : snapshot[(marker + 2)..]);
+            
+            normalized = normalized[..(marker + 1)];
+            
+            while (normalized[normalized.IndexOf('e') - 1] == '0')
+            {
+                normalized = normalized.Remove(normalized.IndexOf('e') - 1, 1);
+                
+                if (snapshot[snapshot.IndexOf('e') + 1] != '-')
+                    exponent += 1;
+            }
+            
+            normalized +=  exponent.ToString();
+           
+        }
+        
         return normalized;
     }
     
