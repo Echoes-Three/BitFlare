@@ -9,7 +9,7 @@ public static class ConverterPointer
     {
         var conversionResult = "";
         
-        switch (TypeClassification.Current)
+        switch (TypeClassification.ClassifiedType)
         {
             case DefinedTypes.Integer:
                 conversionResult = IntegerConversionPointer();

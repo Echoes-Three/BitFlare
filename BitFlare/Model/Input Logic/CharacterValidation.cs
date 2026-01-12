@@ -6,7 +6,7 @@ public static class CharacterValidation
     private static bool HasValid { get; set; } = true;
     private static bool HasInvalid { get; set; }
     
-    public static bool IsValid(string input)
+    public static bool HasOnlyValidChars(this string input)
     {
         foreach (var character in input)
         {

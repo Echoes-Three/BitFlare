@@ -7,18 +7,18 @@ public static class TypeClassification
 {
     private const string IntegerRegexFilter = "^[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})*|[0-9]+)$";
     private const string FloatingPointRegexFilter = @"^[+-]?(?:[0-9]{1,3}(?:,[0-9]{3})*|[0-9]+)(?:\.[0-9]+)?$";
-    private const string ENotationRegexFilter = @"^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)e[+-]?[0-9]{1,3}$";
+    private const string ENotationRegexFilter = @"^[+-]?(?:[0-9]+(?:\.[0-9]*)?|\.[0-9]+)e[+-]?[0-9]{1,2}$";
 
-    public static DefinedTypes Current { get; private set; }
+    public static DefinedTypes ClassifiedType { get; private set; }
 
-    public static void TypeFilter(string input)
+    public static void classifyInputType(string input)
     {
         var filters =
             (IntegerFilter: new Regex(IntegerRegexFilter),
             FloatingPointFilter: new Regex(FloatingPointRegexFilter),
             ENotationFilter: new Regex(ENotationRegexFilter));
         
-        Current = input switch
+        ClassifiedType = input switch
         {
             _ when filters.IntegerFilter.IsMatch(input) => DefinedTypes.Integer,
             _ when filters.FloatingPointFilter.IsMatch(input) => DefinedTypes.FloatingPoint,

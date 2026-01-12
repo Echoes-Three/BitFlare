@@ -66,7 +66,7 @@ public partial class MainWindow : Window
     {
         ClickAnimation(ConvertButton);
         ConvertButton.Content = "...";
-        await Task.Delay(1000);
+        await Task.Delay(500);
         ConvertButton.Content = "CONVERT";
     }
     

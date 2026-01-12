@@ -29,15 +29,15 @@ public class MainWindowViewModel : ViewModelBase
     
     private void InputValidation(string input)
     {
-        if (CharacterValidation.IsValid(input))
+        if (input.HasOnlyValidChars())
         {
-            TypeClassification.TypeFilter(input);
+            TypeClassification.classifyInputType(input);
             
-            if (TypeClassification.Current != DefinedTypes.InvalidType)
+            if (TypeClassification.ClassifiedType != DefinedTypes.InvalidType)
             {
                 if (IsWithinLimit(input))
                 {
-                    switch (TypeClassification.Current)
+                    switch (TypeClassification.ClassifiedType)
                      {
                          case DefinedTypes.FloatingPoint:
                          case DefinedTypes.Integer:
@@ -89,14 +89,14 @@ public class MainWindowViewModel : ViewModelBase
         
         if (input.StartsWith('-'))
         {
-            if (TypeClassification.Current == DefinedTypes.Integer)
+            if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
                 limitMessage = "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648";
             //else
                 //Add limit to negative fractions
         }
         else
         {
-            if (TypeClassification.Current == DefinedTypes.Integer)
+            if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
                 limitMessage = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
             //else
                 //Add limit to positive fractions
@@ -117,65 +117,35 @@ public class MainWindowViewModel : ViewModelBase
         else
             (integerLimit, isNegative) =
                 input.Contains(',') ? ("4,294,967,295", false) : ("4294967295", false);
-
-        TypeClassification.TypeFilter(input);
-
-        if (TypeClassification.Current == DefinedTypes.Integer)
+        
+        if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
         {
-            if (isNegative)
-                input.Remove('-');
-
-            if (input.Contains(','))
+            input = isNegative ? input.Remove('-') : input;
+            var limitLength = input.Contains(',') ? 13 : 10;
+            
+            // Has one less digit than the limit, automatically smaller: input < limit 
+            if (input.Length < limitLength)
+                isWithinLimit = true;
+            // Has the same amount of digits, requiring iteration: input == limit
+            else if (input.Length == limitLength)
             {
-                if (input.Length < 13)
+                for (var index = 0; index <= limitLength - 1; index++)
                 {
-                    isWithinLimit = true;
-                }
-                else if (input.Length <= 13)
-                {
-                    for (var index = 0; index <= 12; index++)
+                    var userDigit = input[index] - '0';
+                    var limitDigit = integerLimit[index] - '0';
+                   
+                    if (userDigit <= limitDigit) 
+                        isWithinLimit = true;
+                    else
                     {
-                        var userDigit = input[index] - '0';
-                        var limitDigit = integerLimit[index] - '0';
-
-                        if (userDigit <= limitDigit) 
-                            isWithinLimit = true;
-                        else
-                        {
-                            isWithinLimit = false;
-                            break;
-                        }
+                        isWithinLimit = false;
+                        break;
                     }
                 }
-                else 
-                    isWithinLimit = false;
-                
             }
-            else
-            {
-                if (input.Length < 10)
-                {
-                    isWithinLimit = true;
-                }
-                else if (input.Length == 10)
-                {
-                    for (var index = 0; index <= 9; index++)
-                    {
-                        var userDigit = input[index] - '0';
-                        var limitDigit = integerLimit[index] - '0';
-
-                        if (userDigit <= limitDigit) 
-                            isWithinLimit = true;
-                        else
-                        {
-                            isWithinLimit = false;
-                            break;
-                        }
-                    }
-                }
-                else 
-                    isWithinLimit = false;
-            }
+            // Has more digits, automatically bigger: input > limit
+            else 
+                isWithinLimit = false;
         }
         
         return isWithinLimit;
