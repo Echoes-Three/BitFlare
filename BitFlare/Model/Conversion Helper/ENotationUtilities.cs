@@ -3,14 +3,14 @@ using System.Text.RegularExpressions;
 
 namespace BitFlare.Model.Conversion_Helper;
 
-public static class ENotationDecoder
+public static class ENotationUtilities
 {
     private const string GroupCapturing =
         @"^(?<sign>-?)(?<fixedDigit>[1-9])(?:\.(?<varyingDigits>[0-9]+))?e-?(?<coefficient>[0-9]{1,2})$";
     
-    public static string ToBaseTen(this string input)
+    public static string ToBaseTen( string input)
     {
-        var normalized = input.ToNormalized();
+        var normalized = input;
         var eNotation = Regex.Match(normalized, GroupCapturing);
         var baseTen = new List<string[]>();
 
@@ -58,7 +58,7 @@ public static class ENotationDecoder
         return string.Join("",baseTen[0]) + string.Join("",baseTen[1]) + string.Join("",baseTen[2]);
     }
 
-    private static string ToNormalized(this string input)
+    public static string ToNormalized(string input)
     {
         //Zero Handling
         const string zeroPattern = @"^[+-]?0+(?:\.0+)?e";
@@ -119,8 +119,7 @@ public static class ENotationDecoder
                             
                         if (result[..result.IndexOf('e')].Length != 1)
                             result = result.Insert(1, ".");
-
-
+                        
                         break;
                     }
                     
@@ -136,25 +135,23 @@ public static class ENotationDecoder
                 marker = snapshot.IndexOf('e');
                 
                 //No empty or zeroed exponent digits: 500.e5 => 5e7 or 500.1e5 => 5.001e7
-                if (result[result.IndexOf('e') - 1] == '.' || result[result.IndexOf('e') - 2] == '.')
+                if (isFraction)
                 {
-                    if (isFraction)
-                    {
-                        //500.e-5 => 5e-3
-                        result = result.Replace(".", "");
-                        result = result[..(result.IndexOf('e') + 1)];
-                        result += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..snapshot.IndexOf('.')].Length)
-                            .ToString();
-                    }
-                    else
-                    {
-                        //500.e5 => 5e7
-                        result = result.Replace(".", "");
-                        result = result[..(result.IndexOf('e') + 1)];
-                        result += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..snapshot.IndexOf('.')].Length)
-                            .ToString();
-                    }
+                    //500.e-5 => 5e-3
+                    result = result.Replace(".", "");
+                    result = result[..(result.IndexOf('e') + 1)];
+                    result += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..snapshot.IndexOf('.')].Length)
+                        .ToString();
                 }
+                else
+                {
+                    //500.e5 => 5e7
+                    result = result.Replace(".", "");
+                    result = result[..(result.IndexOf('e') + 1)];
+                    result += (int.Parse(snapshot[(marker + 1)..]) + snapshot[1..snapshot.IndexOf('.')].Length)
+                        .ToString();
+                }
+                
                 
                 while (result[result.IndexOf('e') - 1] == '0')
                     result = result.Remove(result.IndexOf('e') - 1, 1);

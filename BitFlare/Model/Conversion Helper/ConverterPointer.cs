@@ -18,7 +18,7 @@ public static class ConverterPointer
                 conversionResult = FractionConverterPointer(inputBoxText);
                 break;
             case "E-NOTATION":
-                conversionResult = ENotationDecoder(inputBoxText);
+                conversionResult = ENotationUtilities(inputBoxText);
                 break;*/
         }
         return conversionResult;

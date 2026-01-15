@@ -35,7 +35,10 @@ public class MainWindowViewModel : ViewModelBase
             
             if (TypeClassification.ClassifiedType != DefinedTypes.InvalidType)
             {
-                if (IsWithinLimit(input))
+                if (TypeClassification.ClassifiedType == DefinedTypes.ENotation)
+                    input = ENotationUtilities.ToNormalized(input);
+                
+                if (input.IsWithinLimit())
                 {
                     switch (TypeClassification.ClassifiedType)
                      {
@@ -44,7 +47,8 @@ public class MainWindowViewModel : ViewModelBase
                              ConversionUtilities.Initializers(input);
                              break;
                          case DefinedTypes.ENotation:
-                             BinaryOutput = input.ToBaseTen();
+                             BinaryOutput = input;
+                             HexadecimalOutput = ENotationUtilities.ToBaseTen(input);
                              //ConversionUtilities.Initializers(input);
                              break;
                      }
@@ -86,69 +90,24 @@ public class MainWindowViewModel : ViewModelBase
     private static string CheckMagnitudeLimit(string input)
     {
         var limitMessage = "";
-        
-        if (input.StartsWith('-'))
+        switch (TypeClassification.ClassifiedType)
         {
-            if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
-                limitMessage = "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648";
-            //else
-                //Add limit to negative fractions
-        }
-        else
-        {
-            if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
-                limitMessage = "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
-            //else
-                //Add limit to positive fractions
-        }
-
-        return limitMessage;
-    }
-
-    private static bool IsWithinLimit(string input)
-    {
-        var isWithinLimit = false;
-        string integerLimit;
-        bool isNegative;
-
-        if (input.StartsWith('-'))
-            (integerLimit, isNegative) =
-                input.Contains(',') ? ("2,147,483,648", true) : ("2147483648", true);
-        else
-            (integerLimit, isNegative) =
-                input.Contains(',') ? ("4,294,967,295", false) : ("4294967295", false);
-        
-        if (TypeClassification.ClassifiedType == DefinedTypes.Integer)
-        {
-            input = isNegative ? input.Remove('-') : input;
-            var limitLength = input.Contains(',') ? 13 : 10;
+            case DefinedTypes.Integer:
+                limitMessage = input.StartsWith('-')
+                    ? "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648"
+                    : "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
+                break;
             
-            // Has one less digit than the limit, automatically smaller: input < limit 
-            if (input.Length < limitLength)
-                isWithinLimit = true;
-            // Has the same amount of digits, requiring iteration: input == limit
-            else if (input.Length == limitLength)
-            {
-                for (var index = 0; index <= limitLength - 1; index++)
-                {
-                    var userDigit = input[index] - '0';
-                    var limitDigit = integerLimit[index] - '0';
-                   
-                    if (userDigit <= limitDigit) 
-                        isWithinLimit = true;
-                    else
-                    {
-                        isWithinLimit = false;
-                        break;
-                    }
-                }
-            }
-            // Has more digits, automatically bigger: input > limit
-            else 
-                isWithinLimit = false;
+            case DefinedTypes.ENotation:
+                limitMessage = "VALID E-NOTATION RANGE: ±1.4e-45 TO ±3.4e38";
+                break;
+            
+            case DefinedTypes.FloatingPoint:
+                //
+                break;
         }
         
-        return isWithinLimit;
+        return limitMessage;
     }
     
     private void OnConvertInput()
