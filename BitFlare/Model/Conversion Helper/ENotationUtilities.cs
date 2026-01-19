@@ -1,6 +1,4 @@
-using System.Text;
 using System.Text.RegularExpressions;
-
 namespace BitFlare.Model.Conversion_Helper;
 
 public static class ENotationUtilities
@@ -8,14 +6,13 @@ public static class ENotationUtilities
     private const string GroupCapturing =
         @"^(?<sign>-?)(?<fixedDigit>[1-9])(?:\.(?<varyingDigits>[0-9]+))?e-?(?<coefficient>[0-9]{1,2})$";
     
-    public static string ToBaseTen( string input)
+    public static string ToBaseTen(string input)
     {
         var normalized = input;
         var eNotation = Regex.Match(normalized, GroupCapturing);
         var baseTen = new List<string[]>();
 
         if (normalized == "0.0e0") return "0";
-        
         if (normalized.Contains('.'))
         {
             //5.5e-5 => 0.000055
@@ -28,13 +25,33 @@ public static class ENotationUtilities
                 ];
             //5.5e5 => 550000
             else
-                baseTen =
-                [
-                    [$"{eNotation.Groups["fixedDigit"].Value}"],
-                    [$"{eNotation.Groups["varyingDigits"].Value}"],
-                    [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}") -
-                                                             $"{eNotation.Groups["varyingDigits"].Value}".Length))}"]
-                ];
+            {
+                var exponent = int.Parse(normalized[(normalized.IndexOf('e') + 1)..]);
+                
+                normalized = normalized[..normalized.IndexOf('e')];
+                normalized += string.Concat(Enumerable.Repeat("0", 10 - normalized.Length));
+                
+                if (exponent != 0)
+                {
+                    normalized = normalized.Insert(normalized.IndexOf('.', StringComparison.Ordinal) + exponent + 1, ".");
+                    normalized = normalized.Remove(normalized.IndexOf('.', StringComparison.Ordinal), 1);
+                }
+
+                for (var bit = 1;; bit++)
+                {
+                    if (normalized[^bit] != '0')
+                    {
+                        normalized = normalized[..(normalized.Length - bit + 1)]; 
+                        break;   
+                    }
+                    if (normalized[^bit] == '.')
+                    {
+                        normalized = normalized[..(normalized.IndexOf('.') + 2)];
+                        break; 
+                    }
+                }
+                return normalized;
+            }
         }
         else
         {   //5e-5 => 0.00005

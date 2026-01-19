@@ -31,7 +31,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         if (input.HasOnlyValidChars())
         {
-            TypeClassification.classifyInputType(input);
+            TypeClassification.ClassifyInputType(input);
             
             if (TypeClassification.ClassifiedType != DefinedTypes.InvalidType)
             {
@@ -47,9 +47,8 @@ public class MainWindowViewModel : ViewModelBase
                              ConversionUtilities.Initializers(input);
                              break;
                          case DefinedTypes.ENotation:
-                             BinaryOutput = input;
-                             HexadecimalOutput = ENotationUtilities.ToBaseTen(input);
-                             //ConversionUtilities.Initializers(input);
+                             // BinaryOutput = input;
+                             ConversionUtilities.Initializers(ENotationUtilities.ToBaseTen(input));
                              break;
                      }
                     IsValid();
@@ -113,7 +112,7 @@ public class MainWindowViewModel : ViewModelBase
     private void OnConvertInput()
     {
         ConvertAnimation.Invoke();
-        BinaryOutput = ConverterPointer.PointerCaller(Input);
+        BinaryOutput = ConverterPointer.CallPointer();
         OutputDynamicTitle = OutputTitleUpdater.UpdateTitle(Input, ConversionUtilities.BitMagnitude);
     }
     private void OnBinaryCopy()

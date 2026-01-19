@@ -4,7 +4,7 @@ namespace BitFlare.Logic;
 
 public static class IntegerConverter
 {
-    public static string BasicConverter(ulong input)
+    public static string BasicConverter(uint input)
     {
         if (input == 0) return "0";
 
@@ -21,19 +21,19 @@ public static class IntegerConverter
 
     public static char[] TwosComplement(string paddedResult)
     {
-        //inverts the bits 
-        var inverterd = string.Empty;
+        // Bit inversion 
+        var inverted = string.Empty;
         
         for (var bit = 0; bit <= paddedResult.Length - 1; bit++)
         {
             if (paddedResult[bit] == '0')
-                inverterd += "1";
+                inverted += "1";
             else
-                inverterd += "0";
+                inverted += "0";
         }
         
-        //Increments most significant digit
-        var incremented = inverterd.ToCharArray();
+        // MSD incrementation
+        var incremented = inverted.ToCharArray();
         
         for (var bit = 1; ; bit++)
         {

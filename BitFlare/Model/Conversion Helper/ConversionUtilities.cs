@@ -7,23 +7,26 @@ namespace BitFlare.Model.Conversion_Helper;
 public static class ConversionUtilities
 {
     public static bool IsNegative { get; private set; }
-    public static ulong ReadyToConvert { get; private set; }
+    public static uint ToConvertInt { get; private set; }
+    public static double ToConvertFloat { get; private set; }
     public static DefinedBits BitMagnitude { get; private set; }
-    public static DefinedTypes InputType { get; private set; } = DefinedTypes.Integer;
+    public static DefinedTypes InputType { get; set; } = DefinedTypes.Integer;
 
     public static void Initializers(string input)
     {
-        if (input.StartsWith('-'))
-        {
-            IsNegative = true;
-            input = input.Replace("-","");
-        }
+        (input, IsNegative) = input.StartsWith('-')
+            ? (input.Replace("-",""), true)
+            : (input, IsNegative) ;
+        
         if (input.Contains(','))
             input = input.Replace(",","");
         
-        ReadyToConvert = uint.Parse(input);
+        if (input.Contains('.'))
+            (ToConvertFloat, InputType) = (double.Parse(input), DefinedTypes.FloatingPoint);
+        else
+            (ToConvertInt, InputType) = (uint.Parse(input), InputType);
         
-        BitMagnitude = ReadyToConvert switch
+        BitMagnitude = ToConvertInt switch
         { 
             <= byte.MaxValue
                 => DefinedBits.EightBit,

@@ -11,7 +11,7 @@ public static class TypeClassification
 
     public static DefinedTypes ClassifiedType { get; private set; }
 
-    public static void classifyInputType(string input)
+    public static void ClassifyInputType(string input)
     {
         var filters =
             (IntegerFilter: new Regex(IntegerRegexFilter),

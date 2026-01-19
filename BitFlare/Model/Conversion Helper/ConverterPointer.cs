@@ -1,37 +1,30 @@
+using System.Globalization;
 using BitFlare.Logic;
-using BitFlare.Model.Input_Logic;
 
 namespace BitFlare.Model.Conversion_Helper;
 
 public static class ConverterPointer
 {
-    public static string PointerCaller(string inputBoxText)
+    public static string CallPointer()
     {
-        var conversionResult = "";
-        
-        switch (TypeClassification.ClassifiedType)
-        {
-            case DefinedTypes.Integer:
-                conversionResult = IntegerConversionPointer();
-                break;
-            /*case "FLOATING POINT":
-                conversionResult = FractionConverterPointer(inputBoxText);
-                break;
-            case "E-NOTATION":
-                conversionResult = ENotationUtilities(inputBoxText);
-                break;*/
-        }
+        string conversionResult;
+
+        if (ConversionUtilities.InputType == DefinedTypes.Integer)
+            conversionResult = IntegerPointer();
+        else 
+            conversionResult = FloatingPointPointer();
+       
         return conversionResult;
     }
 
-    private static string IntegerConversionPointer()
+    private static string IntegerPointer()
     {
-        var conversionResult = IntegerConverter.BasicConverter(ConversionUtilities.ReadyToConvert);
+        var rawConversion = IntegerConverter.BasicConverter(ConversionUtilities.ToConvertInt);
         var paddedResult = new int[(int)ConversionUtilities.BitMagnitude];
 
-        for (var bit = 1; conversionResult.Length >= bit; bit++)
+        for (var bit = 1; rawConversion.Length >= bit; bit++)
         {
-            paddedResult[^bit] = (int)char.GetNumericValue(conversionResult[^bit]);
+            paddedResult[^bit] = (int)char.GetNumericValue(rawConversion[^bit]);
         }
 
         if (!ConversionUtilities.IsNegative) return ConversionUtilities.FormatedOutput(paddedResult);
@@ -43,17 +36,23 @@ public static class ConverterPointer
         return ConversionUtilities.FormatedOutput(paddedResult);
     }
     
-    private static void FractionConverterPointer(string inputBoxText)
+    private static string FloatingPointPointer()
     {
-        if (inputBoxText.Contains(','))
+        string binary;
+        var toConvert = ConversionUtilities.ToConvertFloat;
+        
+        if (!toConvert.ToString(CultureInfo.InvariantCulture).StartsWith('0'))
         {
-            // FractionConverter(inputBoxText.Replace(',', '_'));
+            var integerPart = (uint)Math.Abs(Math.Truncate(toConvert));
+            var floatPart = toConvert - integerPart;
+            
+            binary = FloatingPointConverter.Ieee754(
+                $"{IntegerConverter.BasicConverter(integerPart)}.{FloatingPointConverter.BasicConverter(floatPart)}");
         }
+        else 
+            binary = FloatingPointConverter.Ieee754(
+                FloatingPointConverter.BasicConverter(Math.Abs(toConvert)));
+        
+        return binary;
     } 
-    
-    private static void ENotationDecoder(string inputBoxText)
-    {
-        //create method
-    }
-
 }
