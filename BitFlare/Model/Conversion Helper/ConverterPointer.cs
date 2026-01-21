@@ -19,19 +19,11 @@ public static class ConverterPointer
 
     private static string IntegerPointer()
     {
-        var rawConversion = IntegerConverter.BasicConverter(ConversionUtilities.ToConvertInt);
-        var paddedResult = new int[(int)ConversionUtilities.BitMagnitude];
-
-        for (var bit = 1; rawConversion.Length >= bit; bit++)
-        {
-            paddedResult[^bit] = (int)char.GetNumericValue(rawConversion[^bit]);
-        }
-
+        var paddedResult = IntegerConverter.PaddedBasicConverter(ConversionUtilities.ToConvertInt);
+        
         if (!ConversionUtilities.IsNegative) return ConversionUtilities.FormatedOutput(paddedResult);
-
-        var joined = string.Join("", paddedResult);
-        var converted = IntegerConverter.TwosComplement(joined);
-        paddedResult = converted.Select(c => c - '0').ToArray();
+        
+        paddedResult = string.Join("", IntegerConverter.TwosComplement(paddedResult));
 
         return ConversionUtilities.FormatedOutput(paddedResult);
     }
@@ -48,6 +40,7 @@ public static class ConverterPointer
             
             binary = FloatingPointConverter.Ieee754(
                 $"{IntegerConverter.BasicConverter(integerPart)}.{FloatingPointConverter.BasicConverter(floatPart)}");
+            // 5.75 101.11 = 2 = exponent 0.75 = 0000001010100101
         }
         else 
             binary = FloatingPointConverter.Ieee754(

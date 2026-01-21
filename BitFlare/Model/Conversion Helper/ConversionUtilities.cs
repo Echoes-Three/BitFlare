@@ -8,7 +8,7 @@ public static class ConversionUtilities
 {
     public static bool IsNegative { get; private set; }
     public static uint ToConvertInt { get; private set; }
-    public static double ToConvertFloat { get; private set; }
+    public static decimal ToConvertFloat { get; private set; }
     public static DefinedBits BitMagnitude { get; private set; }
     public static DefinedTypes InputType { get; set; } = DefinedTypes.Integer;
 
@@ -22,7 +22,7 @@ public static class ConversionUtilities
             input = input.Replace(",","");
         
         if (input.Contains('.'))
-            (ToConvertFloat, InputType) = (double.Parse(input), DefinedTypes.FloatingPoint);
+            (ToConvertFloat, InputType) = (decimal.Parse(input), DefinedTypes.FloatingPoint);
         else
             (ToConvertInt, InputType) = (uint.Parse(input), InputType);
         
@@ -37,33 +37,19 @@ public static class ConversionUtilities
         };
     }
     
-    internal static string FormatedOutput(int[] paddedResult)
+    internal static string FormatedOutput(string paddedResult)
     {
-        var formatted = string.Join("", paddedResult);
+        // 0000 0000 0000 0000
+        var result = "";
 
-        switch (InputType)
+        for (var bit = 0; bit <= paddedResult.Length - 1 ; bit++)
         {
-            case DefinedTypes.Integer:
-            case DefinedTypes.FloatingPoint:
-                // 0000 0000 0000 0000
-                var spaceLimiter = BitMagnitude switch
-                {
-                    DefinedBits.EightBit => 0,
-                    DefinedBits.SixteenBit => 2,
-                    DefinedBits.ThirtyTwoBit => 6
-                };
-        
-                for (var i = (bitSpaces: 4, accounter: 0);
-                     i.accounter <= spaceLimiter;
-                     i.bitSpaces += 4, i.accounter++)
-                {
-                    formatted = formatted.Insert(i.bitSpaces + i.accounter, " ");
-                }
-                break;
-            case DefinedTypes.ENotation:
-                // 0 00000000 00000000000000000000000
-                break;
+            if (bit % 4 == 0)
+                result += " ";
+            
+            result += paddedResult[bit];
         }
-        return formatted;
+        
+        return result;
     }
 }
