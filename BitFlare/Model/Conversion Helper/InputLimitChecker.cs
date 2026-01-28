@@ -9,6 +9,19 @@ public static class InputLimitChecker
     {
         var isWithinLimit = false;
         bool isNegative;
+        (double Mantissa, int Exponent) eNotationLimit;
+        
+        if (TypeClassification.ClassifiedType == DefinedTypes.ENotation)
+            eNotationLimit = 
+                input[input.IndexOf('e') + 1] == '-' 
+                    ? (1.4, 45)
+                    : (3.4, 38);
+        else
+            eNotationLimit = 
+                input.StartsWith('-') 
+                    ? (2.14, 9) 
+                    : (4.29, 9);
+        
         
         switch (TypeClassification.ClassifiedType)
         {
@@ -51,15 +64,11 @@ public static class InputLimitChecker
                     isWithinLimit = false;
                 break;
             
+            case DefinedTypes.IntENotation:
             case DefinedTypes.ENotation:
                 
                 isNegative = input.StartsWith('-');
                 input = isNegative ? input[1..] : input;
-                
-                var eNotationLimit =
-                    input[input.IndexOf('e') + 1] == '-'
-                        ? (Mantissa: 1.4, Exponent: 45)
-                        : (Mantissa: 3.4, Exponent: 38);
                 
                 var inputMantissa = double.Parse(input[..input.IndexOf('e')]);
                 var inputExponent = Math.Abs(int.Parse(input[(input.IndexOf('e') + 1)..]));
@@ -71,11 +80,10 @@ public static class InputLimitChecker
                     isWithinLimit = false;
                 
                 break;
-            
             case DefinedTypes.FloatingPoint:
                 //code
                 break;
-        }
+        } // 3.4e38 != 4e9 4,000,000,000
         return isWithinLimit;
     }
 }

@@ -4,4 +4,4 @@ public enum DefinedBits
 {EightBit = 8, SixteenBit = 16, ThirtyTwoBit = 32 }
 
 public enum DefinedTypes
-{Integer,  FloatingPoint, ENotation, InvalidType}
+{Integer,  FloatingPoint, ENotation, IntENotation, InvalidType}

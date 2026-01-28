@@ -1,5 +1,4 @@
 using BitFlare.Logic;
-using BitFlare.Logic.Input_Logic;
 using BitFlare.Model.Input_Logic;
 
 namespace BitFlare.Model.Conversion_Helper;
@@ -24,7 +23,7 @@ public static class ConversionUtilities
         if (input.Contains('.'))
             (ToConvertFloat, InputType) = (decimal.Parse(input), DefinedTypes.FloatingPoint);
         else
-            (ToConvertInt, InputType) = (uint.Parse(input), InputType);
+            (ToConvertInt, InputType) = (uint.Parse(input), DefinedTypes.Integer);
         
         BitMagnitude = ToConvertInt switch
         { 

@@ -3,10 +3,9 @@
     
     <!-- Window border -->
     <Style x:Key="MainWindowBorder" TargetType="{x:Type Border}">
-        <Setter Property="CornerRadius" Value="4"/>
         <Setter Property="Background" Value="{StaticResource BlackBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WhiteBrush}"/>
     </Style>
     
     <!-- Draggable area -->
@@ -29,7 +28,7 @@
             </Trigger>
             <Trigger Property="Tag" Value="OutputTitle">
                 <Setter Property="FontSize" Value="11"/>
-                <Setter Property="Margin" Value="16,0,0,0"/>
+                <Setter Property="Margin" Value="12,0,0,0"/>
                 <Setter Property="HorizontalAlignment" Value="Left"/>
                 <Setter Property="VerticalAlignment" Value="Bottom"/>
             </Trigger>
@@ -53,9 +52,22 @@
                 <Setter Property="FontSize" Value="11"/>
                 <Setter Property="Cursor" Value="Help"/>
             </Trigger>
+            <Trigger Property="Tag" Value="ToggleTextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="12"/>
+            </Trigger>
         </Style.Triggers>
     </Style>
     
+    <!--Data triggered tooltip text-->
+    <Style x:Key="foreground" BasedOn="{StaticResource BasicTextStyle}" TargetType="{x:Type TextBlock}">
+        
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsIeee754}" Value="true">
+                <Setter Property="Text" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
     <!-- Text box -->
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>
@@ -93,10 +105,10 @@
     
     <!-- Tooltip -->
     <Style x:Key="ToolTip" TargetType="{x:Type ToolTip}">
-        <Setter Property="Placement" Value="Left"/>
+        <Setter Property="Placement" Value="Right"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Width" Value="160"/>
-        <Setter Property="Height" Value="80"/>
+        <Setter Property="Width" Value="300"/>
+        <Setter Property="Height" Value="40"/>
         <Setter Property="HorizontalOffset" Value="10"/>
         
         <Setter Property="Template">

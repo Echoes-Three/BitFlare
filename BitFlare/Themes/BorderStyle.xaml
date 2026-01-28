@@ -3,26 +3,16 @@
     
     <!-- Basic border -->
     <Style x:Key="BasicBorderStyle" TargetType="{x:Type Border}">
-        <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Margin" Value="4, 4, 4, 3"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="BorderBrush" Value="{StaticResource WhiteBrush}"/>
         
         <Style.Triggers>
-            <Trigger Property="Tag" Value="CloseButtonHover">
-                <Setter Property="Margin" Value="4,12,15, 12"/>
-            </Trigger>
-            
-            <Trigger Property="Tag" Value="MinimizeButtonHover">
-                <Setter Property="Margin" Value="16,12, 4, 12"/>
-            </Trigger>
-            
             <Trigger Property="Tag" Value="InputBox">
-                <Setter Property="Margin" Value="150, 4"/>
+                <Setter Property="Margin" Value="153.6, 0"/>
             </Trigger>
             
             <Trigger Property="Tag" Value="ConvertButton">
-                <Setter Property="Margin" Value="200, 10"/>
+                <Setter Property="Margin" Value="190,0,190,0"/>
             </Trigger>
             
             <Trigger Property="Tag" Value="BinaryOutputBox">
@@ -46,7 +36,7 @@
     </Style>
     
     <!-- Data Triggered Binary output copy button border-->
-    <Style x:Key="OutputCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
+    <Style x:Key="MainOutputCopyButtonBorderHover" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding BinaryOutput}" Value="">
                 <Setter Property="IsEnabled" Value="False"/>
@@ -65,6 +55,24 @@
             </DataTrigger>
             <DataTrigger Binding="{Binding HexadecimalOutput}" Value="{x:Null}">
                 <Setter Property="IsEnabled" Value="False"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Data Triggered integer switch border-->
+    <Style x:Key="IntegerSwitchBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsInteger}" Value="true">
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!-- Data Triggered IEEE-754 border -->
+    <Style x:Key="Ieee754SwitchBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsIeee754}" Value="true">
+                <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

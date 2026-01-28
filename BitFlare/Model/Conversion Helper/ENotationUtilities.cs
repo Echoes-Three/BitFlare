@@ -23,13 +23,13 @@ public static class ENotationUtilities
                     [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}") - 1))}"],
                     [$"{eNotation.Groups["fixedDigit"].Value}", $"{eNotation.Groups["varyingDigits"].Value}"]
                 ];
-            //5.5e5 => 550000
+            //5.5e5 => 550000 5.52312.0000000 5.32.55465e2 2-8 = -6 - 8 = 2
             else
             {
                 var exponent = int.Parse(normalized[(normalized.IndexOf('e') + 1)..]);
                 
                 normalized = normalized[..normalized.IndexOf('e')];
-                normalized += string.Concat(Enumerable.Repeat("0", 10 - normalized.Length));
+                normalized += string.Concat(Enumerable.Repeat("0", 40 - normalized.Length ));
                 
                 if (exponent != 0)
                 {

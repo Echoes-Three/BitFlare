@@ -1,5 +1,6 @@
 using System.Globalization;
 using BitFlare.Logic;
+using BitFlare.Model.Conversion_Logic;
 
 namespace BitFlare.Model.Conversion_Helper;
 
@@ -8,12 +9,12 @@ public static class ConverterPointer
     public static string CallPointer()
     {
         string conversionResult;
-
+        //DO NOT USE TERNARY OPERATOR
         if (ConversionUtilities.InputType == DefinedTypes.Integer)
             conversionResult = IntegerPointer();
         else 
             conversionResult = FloatingPointPointer();
-       
+        
         return conversionResult;
     }
 
@@ -30,21 +31,21 @@ public static class ConverterPointer
     
     private static string FloatingPointPointer()
     {
+        var floatConverter = new FloatingPointConverter();
         string binary;
         var toConvert = ConversionUtilities.ToConvertFloat;
+        var hasNoIntegerPart = Math.Abs(toConvert) < 1;
         
-        if (!toConvert.ToString(CultureInfo.InvariantCulture).StartsWith('0'))
+        if (hasNoIntegerPart)
+            binary = floatConverter.Ieee754(floatConverter.BasicConverter(Math.Abs(toConvert))); 
+        else
         {
             var integerPart = (uint)Math.Abs(Math.Truncate(toConvert));
             var floatPart = toConvert - integerPart;
             
-            binary = FloatingPointConverter.Ieee754(
-                $"{IntegerConverter.BasicConverter(integerPart)}.{FloatingPointConverter.BasicConverter(floatPart)}");
-            // 5.75 101.11 = 2 = exponent 0.75 = 0000001010100101
+            binary = floatConverter.Ieee754(
+                $"{IntegerConverter.BasicConverter(integerPart)}.{floatConverter.NonZeroBasicConverter(floatPart)}");
         }
-        else 
-            binary = FloatingPointConverter.Ieee754(
-                FloatingPointConverter.BasicConverter(Math.Abs(toConvert)));
         
         return binary;
     } 

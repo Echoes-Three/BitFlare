@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using BitFlare.Logic;
-using BitFlare.Logic.Input_Logic;
 using BitFlare.Model.Conversion_Helper;
 using BitFlare.Model.Input_Logic;
 using BitFlare.MVVM;
@@ -15,27 +14,35 @@ public class MainWindowViewModel : ViewModelBase
     public RelayCommand CopyBinary { get; }
     public RelayCommand CopyHexadecimal { get; }
     public RelayCommand ConvertInput { get; }
+    public RelayCommand IntegerSwitch { get; }
+    public RelayCommand Ieee754Switch { get; }
     
     public MainWindowViewModel()
     {
         CopyBinary = new RelayCommand(execute: _ => OnBinaryCopy());
         CopyHexadecimal = new RelayCommand(execute: _ => OnHexadecimalCopy());
         ConvertInput = new RelayCommand(execute: _ => OnConvertInput(), canExecute: _ => IsValidToConvert );
+        IntegerSwitch = new RelayCommand(execute: _ => OnIntegerSwitch());
+        Ieee754Switch = new RelayCommand(execute: _ => OnIeee754Switch());
     }
 
     public Action BinaryCopyAnimation;
     public Action HexadecimalCopyAnimation;
     public Action ConvertAnimation;
+    public Action IntegerClickAnimation;
+    public Action Ieee754ClickAnimation;
     
     private void InputValidation(string input)
     {
         if (input.HasOnlyValidChars())
         {
-            TypeClassification.ClassifyInputType(input);
+            TypeClassification.ClassifyInputType(input, IsInteger);
             
             if (TypeClassification.ClassifiedType != DefinedTypes.InvalidType)
             {
-                if (TypeClassification.ClassifiedType == DefinedTypes.ENotation)
+                var isENotation = TypeClassification.ClassifiedType == DefinedTypes.ENotation ||
+                                  TypeClassification.ClassifiedType == DefinedTypes.IntENotation;
+                if (isENotation)
                     input = ENotationUtilities.ToNormalized(input);
                 
                 if (input.IsWithinLimit())
@@ -46,8 +53,8 @@ public class MainWindowViewModel : ViewModelBase
                          case DefinedTypes.Integer:
                              ConversionUtilities.Initializers(input);
                              break;
+                         case DefinedTypes.IntENotation:
                          case DefinedTypes.ENotation:
-                             // BinaryOutput = input;
                              ConversionUtilities.Initializers(ENotationUtilities.ToBaseTen(input));
                              break;
                      }
@@ -91,14 +98,15 @@ public class MainWindowViewModel : ViewModelBase
         var limitMessage = "";
         switch (TypeClassification.ClassifiedType)
         {
+            case DefinedTypes.IntENotation:
             case DefinedTypes.Integer:
                 limitMessage = input.StartsWith('-')
-                    ? "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648"
-                    : "MAX POSITIVE INTEGER VALUE IS 4,294,967,295";
+                    ? "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648 OR -2.14e9"
+                    : "MAX POSITIVE INTEGER VALUE IS 4,294,967,295 OR 4.29e9";
                 break;
             
             case DefinedTypes.ENotation:
-                limitMessage = "VALID E-NOTATION RANGE: ±1.4e-45 TO ±3.4e38";
+                limitMessage = "INVALID E-NOTATION RANGE: ±1.4e-45 TO ±3.4e38";
                 break;
             
             case DefinedTypes.FloatingPoint:
@@ -113,7 +121,6 @@ public class MainWindowViewModel : ViewModelBase
     {
         ConvertAnimation.Invoke();
         BinaryOutput = ConverterPointer.CallPointer();
-        OutputDynamicTitle = OutputTitleUpdater.UpdateTitle(Input, ConversionUtilities.BitMagnitude);
     }
     private void OnBinaryCopy()
     {
@@ -125,9 +132,60 @@ public class MainWindowViewModel : ViewModelBase
         Clipboard.SetText(HexadecimalOutput);
         HexadecimalCopyAnimation.Invoke();
     }
+
+    private void OnIntegerSwitch()
+    {
+        if (IsInteger)
+        {
+        }
+        else
+        {
+            IntegerClickAnimation.Invoke();
+            IsInteger = true;
+            IsIeee754 = false;
+        }
+    }
+
+    private void OnIeee754Switch()
+    {
+        if (IsIeee754)
+        {
+        }
+        else
+        {
+            Ieee754ClickAnimation.Invoke();
+            IsIeee754 = true;
+            IsInteger = false;
+        }
+    }
     
     ////////////// Properties
 
+    private bool _isInteger = true;
+    public bool IsInteger
+    {
+        get => _isInteger;
+        set
+        {
+            if (Equals(_isInteger, value)) return;
+            _isInteger = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _isIeee754;
+    public bool IsIeee754
+    {
+        get => _isIeee754;
+        set
+        {
+            if (Equals(_isIeee754, value)) return;
+            _isIeee754 = value;
+            OnPropertyChanged();
+        }
+    }
+
+    
     private string _input;
     public string Input
     {
@@ -166,20 +224,7 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-
-
-    private string _outputDynamicTitle = "OUTPUT";
-    public string OutputDynamicTitle
-    {
-        get => _outputDynamicTitle;
-        set
-        {
-            _outputDynamicTitle = value;
-            OnPropertyChanged();
-        }
-    }
-
-
+    
     private string _binaryOutput = "testing";
     public string BinaryOutput
     {
@@ -230,7 +275,7 @@ public class MainWindowViewModel : ViewModelBase
     }
 
 
-    private Brush _inputBoxBorder = Brushes.White;
+    private Brush _inputBoxBorder = (Brush)Application.Current.FindResource("WhiteBrush");
     public Brush InputBoxBorder
     {
         get => _inputBoxBorder;

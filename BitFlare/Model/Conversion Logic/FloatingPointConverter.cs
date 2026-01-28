@@ -1,79 +1,48 @@
-using System.Globalization;
-using System.Windows.Media.Animation;
+using BitFlare.Logic;
 using BitFlare.Model.Conversion_Helper;
 
-namespace BitFlare.Logic;
+namespace BitFlare.Model.Conversion_Logic;
 
-public static class FloatingPointConverter
+public class FloatingPointConverter
 {
-    private static bool ReadyToCount { get; set; }
-    private static bool IsFull { get; set; }
-    private static bool IsFinite{ get; set; }
-    private static int MantissaBitCounter { get; set; }
-    private static string Converted { get; set; } = string.Empty;
-    private static string RoundingBits { get; set; } = "";
+    private bool ReadyToCount { get; set; }
+    private bool IsFull { get; set; }
+    private bool IsFinite { get; set; }
+    private int MantissaBitCounter { get; set; }
+    private string Converted { get; set; } = string.Empty;
+    private string RoundingBits { get; set; } = "";
+    private string StickyBits { get; set; } = "";
 
-    public static string BasicConverter(decimal input)
+    public string NonZeroBasicConverter(decimal input)
     {
         while (!IsFinite && !IsFull)
         {
-            if (MantissaBitCounter < 24)
+            if (Converted.Length < 23)
             {
-                input *= 2;
-                            
-                switch (decimal.Truncate(input))
-                {
-                    case 1:
-                        Converted += "1";
-                        input -= decimal.Truncate(input);
-                        ReadyToCount = true;
-                        break;
-                    case 0:
-                        Converted += "0";
-                        break;
-                }
+                var result = ConvertingMechanism(input);
+                input = result.Item1;
+                Converted += result.Item2;
             }
             else
             {
                 if (RoundingBits.Length != 2)
-                { 
-                    switch (decimal.Truncate(input))
-                       {
-                           case 1:
-                               RoundingBits += "1";
-                               input -= decimal.Truncate(input);
-                               ReadyToCount = true;
-                               break;
-                           case 0:
-                               RoundingBits += "0";
-                               break;
-                       } 
+                {
+                    var result = ConvertingMechanism(input);
+                    input = result.Item1;
+                    RoundingBits += result.Item2;
                 }
                 else
                 {
-                    var stickyBit = "";
-                    
-                    switch (decimal.Truncate(input))
-                    {
-                        case 1:
-                            stickyBit += "1";
-                            input -= decimal.Truncate(input);
-                            ReadyToCount = true;
-                            break;
-                        case 0:
-                            stickyBit += "0";
-                            break;
-                    }
+                    var result = ConvertingMechanism(input);
+                    input = result.Item1;
+                    StickyBits += result.Item2;
 
-                    (RoundingBits, IsFull) = stickyBit.Contains('1')
-                        ? (RoundingBits + "1", true)
-                        : (RoundingBits, false); 
+                    (RoundingBits, IsFull) =
+                        StickyBits.Contains('1') ? (RoundingBits + "1", true) : (RoundingBits, false);
                 }
             }
-            
-            MantissaBitCounter += ReadyToCount ? 1 : 0;
-            
-            switch (input == 0,  RoundingBits.Length < 3)
+
+            switch (input == 0, RoundingBits.Length == 3)
             {
                 case (true, _):
                     IsFinite = true;
@@ -84,10 +53,57 @@ public static class FloatingPointConverter
             }
         }
 
+        RoundingBits += IsFinite && RoundingBits.Length == 2 ? "0" : "";
+        return Converted;
+        
+    }
+
+    public string BasicConverter(decimal input)
+    {
+        while (!IsFinite && !IsFull)
+        {
+            if (MantissaBitCounter < 24)
+            {
+                var result = ConvertingMechanism(input);
+                input = result.Item1;
+                Converted += result.Item2;
+            }
+            else
+            {
+                if (RoundingBits.Length != 2)
+                {
+                    var result = ConvertingMechanism(input);
+                    input = result.Item1;
+                    RoundingBits += result.Item2;
+                }
+                else
+                {
+                    var result = ConvertingMechanism(input);
+                    input = result.Item1;
+                    StickyBits += result.Item2;
+
+                    (RoundingBits, IsFull) =
+                        StickyBits.Contains('1') ? (RoundingBits + "1", true) : (RoundingBits, false);
+                }
+            }
+
+            MantissaBitCounter += ReadyToCount ? 1 : 0;
+            switch (input == 0, RoundingBits.Length == 3)
+            {
+                case (true, _):
+                    IsFinite = true;
+                    break;
+                case (_, true):
+                    IsFull = true;
+                    break;
+            }
+        }
+
+        RoundingBits += IsFinite && RoundingBits.Length == 2 ? "0" : "";
         return Converted;
     }
 
-    public static string Ieee754(string binary)
+    public string Ieee754(string binary)
     {
         var sign = ConversionUtilities.ToConvertFloat < 0 ? "1" : "0";
         string exponent;
@@ -97,7 +113,7 @@ public static class FloatingPointConverter
         {
             exponent = IntegerConverter.PaddedBasicConverter((uint)(binary[1..binary.IndexOf('.')].Length + 127));
             binary = binary.Replace(".", "");
-            mantissa = binary[1..];
+            mantissa = binary[1..24];
             mantissa += string.Concat(Enumerable.Repeat("0", 23 - mantissa.Length));
         }
         else
@@ -111,9 +127,55 @@ public static class FloatingPointConverter
                 break;
             }
         }
-        
-        // Add rounding mechanics 
-        
+
+        if (RoundingBits.Length != 3) return $"{sign} {exponent} {mantissa}";
+
+        var (g, r, s) = (RoundingBits[0], RoundingBits[1], RoundingBits[2]);
+
+        if (g == '0')
+        {
+        }
+        else if (r == '1' || s == '1' || mantissa[23] == '1')
+            mantissa = RoundingMechanism(mantissa);
+
         return $"{sign} {exponent} {mantissa}";
+    }
+
+    private static string RoundingMechanism(string mantissa)
+    {
+        var rounded = mantissa.ToCharArray();
+
+        for (var bit = 1;; bit++)
+        {
+            if (rounded[^bit] == '0')
+            {
+                rounded[^bit] = '1';
+                break;
+            }
+
+            rounded[^bit] = '0';
+        }
+
+        return string.Join("", rounded);
+    }
+
+    private (decimal, string) ConvertingMechanism(decimal toConvert)
+    {
+        var toStore = "";
+
+        toConvert *= 2;
+        switch (decimal.Truncate(toConvert))
+        {
+            case 1:
+                toStore += "1";
+                toConvert -= decimal.Truncate(toConvert);
+                ReadyToCount = true;
+                break;
+            case 0:
+                toStore += "0";
+                break;
+        }
+
+        return (toConvert, toStore);
     }
 }
