@@ -8,7 +8,7 @@
         
         <Style.Triggers>
             <Trigger Property="Tag" Value="InputBox">
-                <Setter Property="Margin" Value="153.6, 0"/>
+                <Setter Property="Margin" Value="153, 0"/>
             </Trigger>
             
             <Trigger Property="Tag" Value="ConvertButton">
@@ -59,8 +59,8 @@
         </Style.Triggers>
     </Style>
     
-    <!-- Data Triggered integer switch border-->
-    <Style x:Key="IntegerSwitchBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
+    <!-- Data Triggered integer Toggle border-->
+    <Style x:Key="IntegerToggleBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsInteger}" Value="true">
                 <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>
@@ -69,7 +69,7 @@
     </Style>
     
     <!-- Data Triggered IEEE-754 border -->
-    <Style x:Key="Ieee754SwitchBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
+    <Style x:Key="Ieee754ToggleBorder" BasedOn="{StaticResource ButtonBorderHover}" TargetType="{x:Type Border}">
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsIeee754}" Value="true">
                 <Setter Property="Background" Value="{StaticResource WhiteBrush}"/>

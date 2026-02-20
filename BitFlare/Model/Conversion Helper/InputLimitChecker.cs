@@ -1,4 +1,4 @@
-using BitFlare.Logic;
+using BitFlare.Model.Conversion_Logic;
 using BitFlare.Model.Input_Logic;
 
 namespace BitFlare.Model.Conversion_Helper;
@@ -11,17 +11,17 @@ public static class InputLimitChecker
         bool isNegative;
         (double Mantissa, int Exponent) eNotationLimit;
         
-        if (TypeClassification.ClassifiedType == DefinedTypes.ENotation)
-            eNotationLimit = 
-                input[input.IndexOf('e') + 1] == '-' 
-                    ? (1.4, 45)
-                    : (3.4, 38);
-        else
+        // Defines the roof for E-Notations based on the input type
+        if (TypeClassification.ClassifiedType == DefinedTypes.IntENotation)
             eNotationLimit = 
                 input.StartsWith('-') 
                     ? (2.14, 9) 
                     : (4.29, 9);
-        
+        else
+            eNotationLimit = 
+                input[input.IndexOf('e') + 1] == '-' 
+                    ? (1.4, 45)
+                    : (3.4, 38);
         
         switch (TypeClassification.ClassifiedType)
         {
@@ -78,10 +78,6 @@ public static class InputLimitChecker
                     isWithinLimit = true;
                 else 
                     isWithinLimit = false;
-                
-                break;
-            case DefinedTypes.FloatingPoint:
-                //code
                 break;
         } // 3.4e38 != 4e9 4,000,000,000
         return isWithinLimit;

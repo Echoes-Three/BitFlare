@@ -15,8 +15,8 @@ public partial class MainWindow : Window
         viewModel.BinaryCopyAnimation = BinaryCopyButtonAnimation;
         viewModel.HexadecimalCopyAnimation = HexadecimalCopyButtonAnimation;
         viewModel.ConvertAnimation = ConvertAnimation;
-        viewModel.IntegerClickAnimation  = IntegerSwitchAnimation;
-        viewModel.Ieee754ClickAnimation  = Ieee754SwitchAnimation;
+        viewModel.IntegerClickAnimation  = IntegerToggleAnimation;
+        viewModel.Ieee754ClickAnimation  = Ieee754ToggleAnimation;
     }
     
     private void Close_Click(object sender, RoutedEventArgs e) => Close();
@@ -48,11 +48,11 @@ public partial class MainWindow : Window
         button.Margin = button.Margin with { Top = 0 };
     }
     
-    private async void IntegerSwitchAnimation() =>
-        ClickAnimation(IntegerSwitcher);
+    private async void IntegerToggleAnimation() =>
+        ClickAnimation(IntegerToggleer);
     
-    private async void Ieee754SwitchAnimation() =>
-        ClickAnimation(Ieee754Switcher);
+    private async void Ieee754ToggleAnimation() =>
+        ClickAnimation(Ieee754Toggleer);
     
     
     private async void BinaryCopyButtonAnimation()

@@ -1,45 +1,35 @@
 using BitFlare.Model.Conversion_Helper;
-
-namespace BitFlare.Logic;
+namespace BitFlare.Model.Conversion_Logic;
 
 public static class IntegerConverter
 {
-    public static string PaddedBasicConverter(uint input)
-    {
-        var converted = BasicConverter(input);
-        
-        var padded = new int[(int)ConversionUtilities.BitMagnitude]; 
-        for (var bit = 1; converted.Length >= bit; bit++) 
-        { 
-            padded[^bit] = (int)char.GetNumericValue(converted[^bit]); 
-        }
-        
-        return string.Join("", padded);
-    }
-    
-    public static string BasicConverter(uint input)
+    public static string Convert(uint input)
     {
         if (input == 0) return "0";
-
-        var converted = string.Empty;
+        var output = string.Empty;
         
-        while (input > 0)
+        for (var i = (int)ConversionUtilities.BitMagnitude - 1; i >=0; i--)
         {
-            converted = input % 2 + converted;
-            input /= 2;
+            output += (input >> i) & 1;
         }
         
-        return converted;
+        var paddedOutput = new int[(int)ConversionUtilities.BitMagnitude]; 
+        for (var bit = 1; output.Length >= bit; bit++) 
+        { 
+            paddedOutput[^bit] = (int)char.GetNumericValue(output[^bit]); 
+        }
+        
+        return string.Join("", paddedOutput);
     }
-
-    public static char[] TwosComplement(string paddedResult)
+    
+    public static char[] TwosComplement(string paddedOutput)
     {
         // Bit inversion 
         var inverted = string.Empty;
         
-        for (var bit = 0; bit <= paddedResult.Length - 1; bit++)
+        for (var bit = 0; bit <= paddedOutput.Length - 1; bit++)
         {
-            if (paddedResult[bit] == '0')
+            if (paddedOutput[bit] == '0')
                 inverted += "1";
             else
                 inverted += "0";
@@ -60,5 +50,4 @@ public static class IntegerConverter
         
         return incremented;
     }
-    
 }

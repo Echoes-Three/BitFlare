@@ -120,58 +120,40 @@
                     <ColumnDefinition Width="10*"/>
                 </Grid.ColumnDefinitions>
                 
-                <!--<Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Background="Pink" Opacity="0.1"/>
-                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Background="Aqua" Opacity="0.1"/>
-                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Background="Aqua" Opacity="0.1"/>
-                <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" Background="Pink" Opacity="0.1"/>
-                <Border Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Background="Aqua" Opacity="0.1"/>
-                <Border Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="3" Background="Pink" Opacity="0.1"/>
-                <Border Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" Background="Aqua" Opacity="0.1"/>
-                <Border Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="3" Background="Pink" Opacity="0.1"/>
-                -->
-               
-                <!-- Invalid character warning -->
-                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"
-                           x:Name="InvalidCharacterWarning"
-                           Text="{Binding WarningText}"
-                           Visibility="{Binding WarningVisibility}"
-                           Style="{DynamicResource BasicTextStyle}"
-                           Tag="WarningText"/>
-                
-                <!-- Converter switcher-->
-                <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="1">
+                <!-- Converter toggle-->
+                <Grid Grid.Row="1" Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="32*"/>
                         <ColumnDefinition Width="18*"/>
                         <ColumnDefinition Width="18*"/>
                         <ColumnDefinition Width="32*"/>
                     </Grid.ColumnDefinitions>
-                    <!-- Integer switcher-->
+                    
+                    <!-- Integer toggle-->
                     <Border Grid.Column="1"
-                        Style="{StaticResource IntegerSwitchBorder}">
+                        Style="{StaticResource IntegerToggleBorder}">
                         <Button 
-                            x:Name="IntegerSwitcher"
-                            Command="{Binding IntegerSwitch}"
+                            x:Name="IntegerToggleer"
+                            Command="{Binding IntegerToggle}"
                             Content="INTEGER"
-                            Style="{DynamicResource IntegerSwitchButton}">
+                            Style="{DynamicResource IntegerToggleButton}">
                         </Button>
                     </Border>
                     
-                    <!-- IEEE-754 switcher-->
+                    <!-- IEEE-754 toggle-->
                     <Border Grid.Column="2"
-                        Style="{StaticResource Ieee754SwitchBorder}">
+                        Style="{StaticResource Ieee754ToggleBorder}">
                         <Button 
-                            x:Name="Ieee754Switcher"
-                            Command="{Binding Ieee754Switch}"
+                            x:Name="Ieee754Toggleer"
+                            Command="{Binding Ieee754Toggle}"
                             Content="IEEE-754"
-                            Style="{DynamicResource Ieee754SwitchButton}">
+                            Style="{DynamicResource Ieee754ToggleButton}">
                         </Button>
                     </Border>
                 </Grid>
                 
                 <!-- Input box -->
                 <Border Grid.Row="2" Grid.Column="1"
-                        BorderBrush="{Binding InputBoxBorder}"
                         Style="{DynamicResource BasicBorderStyle}"
                         Tag="InputBox">
                     <TextBox
@@ -183,7 +165,7 @@
                 <!-- Tooltip -->
                 <TextBlock Grid.Row="1" Grid.Column="1"
                            Text="ⓘ"
-                           Style="{StaticResource BasicTextStyle}"
+                           Style="{StaticResource TooltipAnimation}"
                            Tag="ToolTipHover">
                     
                     <TextBlock.ToolTip>
@@ -195,18 +177,17 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                
                                 <TextBlock Grid.Row="0" 
                                            Style="{StaticResource BasicTextStyle}"
                                            Text="RANGE:"
                                            Tag="ToolTipTextBlock"/>
                                 <TextBlock Grid.Row="1"
                                            Style="{StaticResource BasicTextStyle}" 
-                                           Text="-2,147,483,648 OR -2.14e9"
+                                           Text="{Binding TooltipBlockOne}"
                                            Tag="ToolTipTextBlock"/>
                                 <TextBlock Grid.Row="2"
                                            Style="{StaticResource BasicTextStyle}" 
-                                           Text="4,294,967,295 OR 4.29e9"
+                                           Text="{Binding TooltipBlockTwo}"
                                            Tag="ToolTipTextBlock"/>
                             </Grid>
                         </ToolTip>
@@ -243,12 +224,6 @@
                         <ColumnDefinition Width="88*"/>
                         <ColumnDefinition Width="12*"/>
                     </Grid.ColumnDefinitions>
-
-                    <!--<Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="Pink" Opacity="0.1"/>
-                    <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Background="Aqua" Opacity="0.1"/>
-                    <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Background="Pink" Opacity="0.1"/>
-                    <Border Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Background="Aqua" Opacity="0.1"/>
-                    -->
                     
                     <!-- Output title -->
                     <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
@@ -298,10 +273,10 @@
                                 Style="{DynamicResource HexadecimalCopyButtonHover}"/>
                     </Border>
                     
-                    
                 </Grid>
             </Grid>
         </Grid>
         
     </Border>
+    
 </Window>

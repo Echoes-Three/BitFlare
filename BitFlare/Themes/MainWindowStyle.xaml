@@ -60,14 +60,27 @@
     </Style>
     
     <!--Data triggered tooltip text-->
-    <Style x:Key="foreground" BasedOn="{StaticResource BasicTextStyle}" TargetType="{x:Type TextBlock}">
-        
+    <Style x:Key="TooltipAnimation" BasedOn="{StaticResource BasicTextStyle}" TargetType="{x:Type TextBlock}">
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsIeee754}" Value="true">
-                <Setter Property="Text" Value="False"/>
+            <DataTrigger Binding="{Binding WarnTooltip}" Value="true">
+                <DataTrigger.EnterActions>
+                    <BeginStoryboard x:Name="Blink">
+                        <Storyboard RepeatBehavior="Forever" AutoReverse="True">
+                            <DoubleAnimation
+                                Storyboard.TargetProperty="Opacity"
+                                To="0.3"
+                                Duration="0:0:0.3" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </DataTrigger.EnterActions>
+
+                <DataTrigger.ExitActions>
+                    <StopStoryboard BeginStoryboardName="Blink" />
+                </DataTrigger.ExitActions>
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    
     <!-- Text box -->
     <Style x:Key="OutputTextBox" TargetType="{x:Type TextBox}">
         <Setter Property="Text" Value=""/>
@@ -105,11 +118,12 @@
     
     <!-- Tooltip -->
     <Style x:Key="ToolTip" TargetType="{x:Type ToolTip}">
-        <Setter Property="Placement" Value="Right"/>
+        <Setter Property="Placement" Value="Top"/>
         <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="Width" Value="300"/>
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="HorizontalOffset" Value="10"/>
+        <Setter Property="Width" Value="180"/>
+        <Setter Property="Height" Value="75"/>
+        <Setter Property="HorizontalOffset" Value="20"/>
+        <Setter Property="VerticalOffset" Value="71"/>
         
         <Setter Property="Template">
             <Setter.Value>
@@ -117,8 +131,7 @@
                     <Border 
                         Background="Transparent"
                         BorderBrush="{StaticResource WhiteBrush}"
-                        BorderThickness="1"
-                        CornerRadius="4"
+                        BorderThickness="2"
                     
                         Padding="{TemplateBinding Padding}">
                     
@@ -128,5 +141,10 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsIeee754}" Value="true">
+                <Setter Property="Width" Value="140"/>
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 </ResourceDictionary>

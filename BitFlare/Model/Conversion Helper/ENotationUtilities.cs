@@ -8,70 +8,49 @@ public static class ENotationUtilities
     
     public static string ToBaseTen(string input)
     {
-        var normalized = input;
-        var eNotation = Regex.Match(normalized, GroupCapturing);
+        var normalizedInput = input;
+        var eNotation = Regex.Match(normalizedInput, GroupCapturing);
         var baseTen = new List<string[]>();
 
-        if (normalized == "0.0e0") return "0";
-        if (normalized.Contains('.'))
+        if (normalizedInput == "0.0e0") return "0";
+        if (normalizedInput.Contains('.'))
         {
-            //5.5e-5 => 0.000055
-            if (normalized[normalized.IndexOf('e') + 1] == '-')
-                baseTen =
-                [
-                    [$"{eNotation.Groups["sign"].Value}", "0", "."],
-                    [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}") - 1))}"],
-                    [$"{eNotation.Groups["fixedDigit"].Value}", $"{eNotation.Groups["varyingDigits"].Value}"]
-                ];
-            //5.5e5 => 550000 5.52312.0000000 5.32.55465e2 2-8 = -6 - 8 = 2
-            else
+            //5.5e5 => 550000
+            var exponent = int.Parse(normalizedInput[(normalizedInput.IndexOf('e') + 1)..]);
+            
+            normalizedInput = normalizedInput[..normalizedInput.IndexOf('e')];
+            normalizedInput += string.Concat(Enumerable.Repeat("0", 40 - normalizedInput.Length ));
+            
+            if (exponent != 0)
             {
-                var exponent = int.Parse(normalized[(normalized.IndexOf('e') + 1)..]);
-                
-                normalized = normalized[..normalized.IndexOf('e')];
-                normalized += string.Concat(Enumerable.Repeat("0", 40 - normalized.Length ));
-                
-                if (exponent != 0)
-                {
-                    normalized = normalized.Insert(normalized.IndexOf('.', StringComparison.Ordinal) + exponent + 1, ".");
-                    normalized = normalized.Remove(normalized.IndexOf('.', StringComparison.Ordinal), 1);
-                }
-
-                for (var bit = 1;; bit++)
-                {
-                    if (normalized[^bit] != '0')
-                    {
-                        normalized = normalized[..(normalized.Length - bit + 1)]; 
-                        break;   
-                    }
-                    if (normalized[^bit] == '.')
-                    {
-                        normalized = normalized[..(normalized.IndexOf('.') + 2)];
-                        break; 
-                    }
-                }
-                return normalized;
+                normalizedInput = normalizedInput.Insert(normalizedInput.IndexOf('.', StringComparison.Ordinal) + exponent + 1, ".");
+                normalizedInput = normalizedInput.Remove(normalizedInput.IndexOf('.', StringComparison.Ordinal), 1);
             }
-        }
-        else
-        {   //5e-5 => 0.00005
-            if (normalized[normalized.IndexOf('e') + 1] == '-')
-                baseTen =
-                [
-                    [$"{eNotation.Groups["sign"].Value}", "0", "."],
-                    [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}") - 1))}"],
-                    [$"{eNotation.Groups["fixedDigit"].Value}"]
-                ];
-            //5e5 => 500000
-            else
-                baseTen =
-                [
-                    [$"{eNotation.Groups["fixedDigit"].Value}"],
-                    [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}")))}"],
-                    [""]
-                ];
-        }
 
+            for (var bit = 1;; bit++)
+            {
+                if (normalizedInput[^bit] != '0')
+                {
+                    normalizedInput = normalizedInput[..(normalizedInput.Length - bit + 1)]; 
+                    break;   
+                }
+                if (normalizedInput[^bit] == '.')
+                {
+                    normalizedInput = normalizedInput[..(normalizedInput.IndexOf('.') + 2)];
+                    break; 
+                }
+            }
+            return normalizedInput;
+            
+        }
+        //5e5 => 500000
+        baseTen =
+        [
+            [$"{eNotation.Groups["fixedDigit"].Value}"],
+            [$"{string.Concat(Enumerable.Repeat("0", int.Parse($"{eNotation.Groups["coefficient"].Value}")))}"],
+            [""]
+        ];
+        
         return string.Join("",baseTen[0]) + string.Join("",baseTen[1]) + string.Join("",baseTen[2]);
     }
 
@@ -211,5 +190,6 @@ public static class ENotationUtilities
         result += power;
         
         return isNegative ? $"-{result}" : result;
+        
         }
 }

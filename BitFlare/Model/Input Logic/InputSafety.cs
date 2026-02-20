@@ -1,5 +1,3 @@
-using BitFlare.Logic;
-
 namespace BitFlare.Model.Input_Logic;
 
 public static class InputSafety
@@ -40,9 +38,6 @@ public static class InputSafety
         
         if (Input.Contains('E'))
             Input = Input.ToLower();
-        
-        if (Input.StartsWith('.'))
-            (Input, CaretIndex) = ($"0{Input}", + 2);
     }
     
     private static void DuplicateSanitizer()

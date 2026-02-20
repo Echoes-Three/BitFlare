@@ -1,9 +1,6 @@
-using System.Diagnostics;
 using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using BitFlare.Logic;
 using BitFlare.Model.Conversion_Helper;
+using BitFlare.Model.Conversion_Logic;
 using BitFlare.Model.Input_Logic;
 using BitFlare.MVVM;
 
@@ -14,16 +11,16 @@ public class MainWindowViewModel : ViewModelBase
     public RelayCommand CopyBinary { get; }
     public RelayCommand CopyHexadecimal { get; }
     public RelayCommand ConvertInput { get; }
-    public RelayCommand IntegerSwitch { get; }
-    public RelayCommand Ieee754Switch { get; }
+    public RelayCommand IntegerToggle { get; }
+    public RelayCommand Ieee754Toggle { get; }
     
     public MainWindowViewModel()
     {
         CopyBinary = new RelayCommand(execute: _ => OnBinaryCopy());
         CopyHexadecimal = new RelayCommand(execute: _ => OnHexadecimalCopy());
         ConvertInput = new RelayCommand(execute: _ => OnConvertInput(), canExecute: _ => IsValidToConvert );
-        IntegerSwitch = new RelayCommand(execute: _ => OnIntegerSwitch());
-        Ieee754Switch = new RelayCommand(execute: _ => OnIeee754Switch());
+        IntegerToggle = new RelayCommand(execute: _ => OnIntegerToggle());
+        Ieee754Toggle = new RelayCommand(execute: _ => OnIeee754Toggle());
     }
 
     public Action BinaryCopyAnimation;
@@ -37,103 +34,73 @@ public class MainWindowViewModel : ViewModelBase
         if (input.HasOnlyValidChars())
         {
             TypeClassification.ClassifyInputType(input, IsInteger);
+            var classifiedType = TypeClassification.ClassifiedType;
             
-            if (TypeClassification.ClassifiedType != DefinedTypes.InvalidType)
+            if (InputMachesToggle(classifiedType))
             {
-                var isENotation = TypeClassification.ClassifiedType == DefinedTypes.ENotation ||
-                                  TypeClassification.ClassifiedType == DefinedTypes.IntENotation;
-                if (isENotation)
+                if (classifiedType is DefinedTypes.ENotation or DefinedTypes.IntENotation)
                     input = ENotationUtilities.ToNormalized(input);
                 
                 if (input.IsWithinLimit())
                 {
-                    switch (TypeClassification.ClassifiedType)
+                    switch (classifiedType)
                      {
-                         case DefinedTypes.FloatingPoint:
                          case DefinedTypes.Integer:
                              ConversionUtilities.Initializers(input);
                              break;
                          case DefinedTypes.IntENotation:
-                         case DefinedTypes.ENotation:
                              ConversionUtilities.Initializers(ENotationUtilities.ToBaseTen(input));
                              break;
+                         case DefinedTypes.ENotation:
+                             ConversionUtilities.Initializers(input);
+                             break;
                      }
-                    IsValid();
-                    WarningText = "INVALID CHARACTER!";
+
+                    (IsValidToConvert, WarnTooltip) = (true, false);
                 }
                 else
-                {
-                    IsInvalid();
-                    WarningText = CheckMagnitudeLimit(input);
-                }
+                    (IsValidToConvert, WarnTooltip) = (false, true);
             }
             else
-            {
-                IsInvalid();
-                WarningText = "INVALID NUMBER FORMAT!";
-            }
+                (IsValidToConvert, WarnTooltip) = (false, true);
         }
         else
+            IsValidToConvert = false;
+    }
+
+    private bool InputMachesToggle(DefinedTypes classifiedType)
+    {
+        var isvalid = false;
+        switch (classifiedType)
         {
-            IsInvalid();
-            WarningText = "INVALID CHARACTER!";
-        }
-    }
-    
-    private void IsInvalid()
-    {
-        InputBoxBorder = Brushes.Yellow;
-        WarningVisibility = Visibility.Visible;
-        IsValidToConvert = false;
-    }
-    private void IsValid()
-    {
-        InputBoxBorder = Brushes.White;
-        WarningVisibility = Visibility.Hidden;
-        IsValidToConvert = true;
-    }
-    
-    private static string CheckMagnitudeLimit(string input)
-    {
-        var limitMessage = "";
-        switch (TypeClassification.ClassifiedType)
-        {
-            case DefinedTypes.IntENotation:
-            case DefinedTypes.Integer:
-                limitMessage = input.StartsWith('-')
-                    ? "MIN NEGATIVE INTEGER VALUE IS -2,147,483,648 OR -2.14e9"
-                    : "MAX POSITIVE INTEGER VALUE IS 4,294,967,295 OR 4.29e9";
-                break;
-            
-            case DefinedTypes.ENotation:
-                limitMessage = "INVALID E-NOTATION RANGE: ±1.4e-45 TO ±3.4e38";
-                break;
-            
-            case DefinedTypes.FloatingPoint:
-                //
+            case DefinedTypes.IntENotation or DefinedTypes.Integer when IsInteger:
+            case DefinedTypes.ENotation when IsIeee754:
+                isvalid = true;
                 break;
         }
-        
-        return limitMessage;
+
+        return isvalid;
     }
     
     private void OnConvertInput()
     {
         ConvertAnimation.Invoke();
-        BinaryOutput = ConverterPointer.CallPointer();
+        (BinaryOutput, HexadecimalOutput) = ConverterPointer.CallPointer();
     }
+    
     private void OnBinaryCopy()
     {
         Clipboard.SetText(BinaryOutput);
         BinaryCopyAnimation.Invoke();
     }
+    
     private void OnHexadecimalCopy()
     {
         Clipboard.SetText(HexadecimalOutput);
         HexadecimalCopyAnimation.Invoke();
     }
-
-    private void OnIntegerSwitch()
+    
+    private void OnIntegerToggle()
     {
         if (IsInteger)
         {
@@ -141,12 +108,17 @@ public class MainWindowViewModel : ViewModelBase
         else
         {
             IntegerClickAnimation.Invoke();
-            IsInteger = true;
-            IsIeee754 = false;
+            
+            (IsInteger,IsIeee754) = (true, false);
+            TooltipBlockOne = "-2,147,483,648 OR -2.14E9";
+            TooltipBlockTwo = "4,294,967,295 OR 4.29E9";
+
+            if (!string.IsNullOrEmpty(Input))
+                InputValidation(Input);
         }
     }
 
-    private void OnIeee754Switch()
+    private void OnIeee754Toggle()
     {
         if (IsIeee754)
         {
@@ -154,13 +126,41 @@ public class MainWindowViewModel : ViewModelBase
         else
         {
             Ieee754ClickAnimation.Invoke();
-            IsIeee754 = true;
-            IsInteger = false;
+            
+            (IsInteger,IsIeee754) = (false, true);
+            TooltipBlockOne = "±1.4e-45 TO ±3.4e38";
+            TooltipBlockTwo = "";
+            
+            if (!string.IsNullOrEmpty(Input))
+                InputValidation(Input);
         }
     }
     
     ////////////// Properties
+    
+    private string _tooltipBlockOne = "-2,147,483,648 OR -2.14E9";
+    public string TooltipBlockOne
+    {
+        get => _tooltipBlockOne;
+        set
+        {
+            _tooltipBlockOne = value;
+            OnPropertyChanged();
+        }
+    }
+    
+    private string _tooltipBlockTwo = "4,294,967,295 OR 4.29E9";
+    public string TooltipBlockTwo
+    {
+        get => _tooltipBlockTwo;
+        set
+        {
+            _tooltipBlockTwo = value;
+            OnPropertyChanged();
+        }
+    }
 
+    
     private bool _isInteger = true;
     public bool IsInteger
     {
@@ -201,8 +201,6 @@ public class MainWindowViewModel : ViewModelBase
             
             if (string.IsNullOrEmpty(_input))
             {
-                InputBoxBorder = Brushes.White;
-                WarningVisibility = Visibility.Hidden;
                 IsValidToConvert = false;
                 return;
             }
@@ -225,7 +223,7 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
     
-    private string _binaryOutput = "testing";
+    private string _binaryOutput;
     public string BinaryOutput
     {
         get => _binaryOutput;
@@ -247,48 +245,8 @@ public class MainWindowViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-
     
-    private string _warningText = "INVALID CHARACTER OR FORMAT";
-    public string WarningText
-    {
-        get => _warningText;
-        set
-        {
-            if (Equals(_warningText, value)) return;
-            _warningText = value;
-            OnPropertyChanged();
-        }
-    }
-
-
-    private Visibility _warningVisibility = Visibility.Hidden;
-    public Visibility WarningVisibility
-    {
-        get => _warningVisibility;
-        set
-        {
-            if (Equals(_warningVisibility, value)) return;
-            _warningVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-
-
-    private Brush _inputBoxBorder = (Brush)Application.Current.FindResource("WhiteBrush");
-    public Brush InputBoxBorder
-    {
-        get => _inputBoxBorder;
-        set
-        {
-            if (Equals(_inputBoxBorder, value)) return;
-            _inputBoxBorder = value;
-            OnPropertyChanged();
-        }
-    }
-
-    
-    private bool _isValidToConvert;
+    private bool _isValidToConvert = true;
     public bool IsValidToConvert
     {
         get => _isValidToConvert;
@@ -300,4 +258,18 @@ public class MainWindowViewModel : ViewModelBase
             ConvertInput.RaiseCanExecuteChanged();
         }
     }
+
+    private bool _warnTooltip;
+    public bool WarnTooltip
+    {
+        get => _warnTooltip;
+        set
+        {
+            _warnTooltip = value;
+            if(string.IsNullOrEmpty(Input))
+                _warnTooltip = false;
+            OnPropertyChanged();
+        }
+    }
+
 }
